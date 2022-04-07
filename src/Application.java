@@ -1,8 +1,11 @@
 import javax.swing.*;
+import javax.swing.text.html.HTML;
+import java.awt.*;
 
 public class Application {
 
     private GUI gui, errorGUI;
+    HomeScreen homeScreen = new HomeScreen();
 
     // instantiates the application and both the main frame and error frame
     public Application(){
@@ -27,23 +30,14 @@ public class Application {
     // creates the main user application frame
     public void initMainFrame(){
         // instantiating the GUI automatically shows the window
-        gui = new GUI("Hearing Clinic App", 1000, 600);
-
-        // Example title
-
-        JLabel titleLabel = new JLabel("ListenHere Hearing Clinic");
-
-        gui.addComponent(titleLabel);
+        gui = new GUI("Hearing Clinic App", GUI.DEFAULT_WIDTH, GUI.DEFAULT_HEIGHT);
+        gui.addScreen(homeScreen);
     }
 
     // creates the error frame that pops up if there is a database error
     private void initErrorFrame(){
         // instantiate error GUI
         errorGUI = new GUI("ERROR", 500, 500);
-
-        JLabel errorLabel = new JLabel("Sorry, we couldn't connect to the server! Please try again later.");
-
-        errorGUI.addComponent(errorLabel);
     }
 
     /*
