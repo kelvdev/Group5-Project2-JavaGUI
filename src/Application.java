@@ -1,11 +1,12 @@
-import javax.swing.*;
-import javax.swing.text.html.HTML;
-import java.awt.*;
+import UserInterface.GUI;
+import UserInterface.HomeScreen;
+import UserInterface.PatientsScreen;
 
 public class Application {
 
     private GUI gui, errorGUI;
     HomeScreen homeScreen = new HomeScreen();
+    PatientsScreen patientsScreen = new PatientsScreen();
 
     // instantiates the application and both the main frame and error frame
     public Application(){
@@ -29,15 +30,15 @@ public class Application {
 
     // creates the main user application frame
     public void initMainFrame(){
-        // instantiating the GUI automatically shows the window
-        gui = new GUI("Hearing Clinic App", GUI.DEFAULT_WIDTH, GUI.DEFAULT_HEIGHT);
+        // instantiating the UserInterface.GUI automatically shows the window
+        gui = new GUI();
         gui.addScreen(homeScreen);
     }
 
     // creates the error frame that pops up if there is a database error
     private void initErrorFrame(){
-        // instantiate error GUI
-        errorGUI = new GUI("ERROR", 500, 500);
+        // instantiate error UserInterface.GUI
+        errorGUI = new GUI();
     }
 
     /*
