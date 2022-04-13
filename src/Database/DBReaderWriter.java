@@ -7,4 +7,11 @@ public class DBReaderWriter {
 
     }
 
+    public void createPatient(){
+
+    }
+
+    public void editPatient(){
+
+    }
 }

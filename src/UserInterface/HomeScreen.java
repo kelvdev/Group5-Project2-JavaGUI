@@ -1,5 +1,9 @@
 package UserInterface;
 
+import Database.DBReaderWriter;
+import Main.Application;
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -7,11 +11,10 @@ import java.awt.event.MouseListener;
 
 public class HomeScreen extends JPanel{
 
-    private JButton patientsButton, visitsButton, analyticsButton, otherButton;
+    private JButton patientsButton, visitsButton, analyticsButton, otherButton, backButton;
     private int buttonWidth = GUI.DEFAULT_WIDTH/2;
     private int buttonHeight = GUI.DEFAULT_HEIGHT/2;
-    private Font buttonFont;
-    private JPanel thisScreen = this;
+    private Font mainFont;
 
     public HomeScreen(){
         this.setBackground(GUI.bgColor);
@@ -48,10 +51,10 @@ public class HomeScreen extends JPanel{
         analyticsButton.setBounds(0, GUI.DEFAULT_HEIGHT/2, buttonWidth, buttonHeight);
         otherButton.setBounds(GUI.DEFAULT_WIDTH/2, GUI.DEFAULT_HEIGHT/2, buttonWidth, buttonHeight);
 
-        patientsButton.setFont(buttonFont);
-        visitsButton.setFont(buttonFont);
-        analyticsButton.setFont(buttonFont);
-        otherButton.setFont(buttonFont);
+        patientsButton.setFont(mainFont);
+        visitsButton.setFont(mainFont);
+        analyticsButton.setFont(mainFont);
+        otherButton.setFont(mainFont);
 
         patientsButton.setForeground(Color.WHITE);
         visitsButton.setForeground(Color.WHITE);
@@ -72,7 +75,7 @@ public class HomeScreen extends JPanel{
     // init fonts
 
     private void initFonts(){
-        buttonFont = new Font("name", Font.BOLD, 28);
+        mainFont = new Font("name", Font.BOLD, 28);
     }
 
     // initializes all action listeners for the buttons
@@ -80,6 +83,7 @@ public class HomeScreen extends JPanel{
         patientsButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
+                Application.setCurrentScreen(Application.PATIENTS_SCREEN);
                 System.out.println("Patient button clicked");
             }
 
