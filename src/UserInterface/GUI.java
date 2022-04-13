@@ -38,7 +38,7 @@ public class GUI {
 
         frame.setLayout(null);
         frame.setSize(this.width, this.height);
-        frame.setResizable(true);
+        frame.setResizable(false);
         frame.setLocation(0,0);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBackground(bgColor);
@@ -56,6 +56,14 @@ public class GUI {
     public void addScreen(JPanel jPanel){
         frame.add(jPanel);
         jPanel.setVisible(true);
+    }
+
+    public void removeScreen(JPanel jPanel){
+        frame.remove(jPanel);
+    }
+
+    public JFrame getFrame(){
+        return frame;
     }
 
 }
