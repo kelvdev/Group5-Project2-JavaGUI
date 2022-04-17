@@ -11,7 +11,7 @@ import java.awt.event.MouseListener;
 
 public class HomeScreen extends JPanel{
 
-    private JButton patientsButton, visitsButton, analyticsButton, otherButton, backButton;
+    private JButton patientsButton, visitsButton, analyticsButton;
     private int buttonWidth = GUI.DEFAULT_WIDTH/2;
     private int buttonHeight = GUI.DEFAULT_HEIGHT/2;
     private Font mainFont;
@@ -44,32 +44,26 @@ public class HomeScreen extends JPanel{
         patientsButton = new JButton("Patients");
         visitsButton = new JButton("Visits");
         analyticsButton = new JButton("Analytics");
-        otherButton = new JButton("Other");
 
         patientsButton.setBounds(0, 0, buttonWidth, buttonHeight);
         visitsButton.setBounds(GUI.DEFAULT_WIDTH/2,0, buttonWidth, buttonHeight);
-        analyticsButton.setBounds(0, GUI.DEFAULT_HEIGHT/2, buttonWidth, buttonHeight);
-        otherButton.setBounds(GUI.DEFAULT_WIDTH/2, GUI.DEFAULT_HEIGHT/2, buttonWidth, buttonHeight);
+        analyticsButton.setBounds(0, GUI.DEFAULT_HEIGHT/2, GUI.DEFAULT_WIDTH, buttonHeight);
 
         patientsButton.setFont(mainFont);
         visitsButton.setFont(mainFont);
         analyticsButton.setFont(mainFont);
-        otherButton.setFont(mainFont);
 
         patientsButton.setForeground(Color.WHITE);
         visitsButton.setForeground(Color.WHITE);
         analyticsButton.setForeground(Color.WHITE);
-        otherButton.setForeground(Color.WHITE);
 
         patientsButton.setBackground(GUI.bgColor);
         visitsButton.setBackground(GUI.bgColor);
         analyticsButton.setBackground(GUI.bgColor);
-        otherButton.setBackground(GUI.bgColor);
 
         this.add(patientsButton);
         this.add(visitsButton);
         this.add(analyticsButton);
-        this.add(otherButton);
     }
 
     // init fonts
@@ -162,32 +156,6 @@ public class HomeScreen extends JPanel{
             }
         });
 
-        otherButton.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent mouseEvent) {
-                System.out.println("Other Button");
-            }
-
-            @Override
-            public void mousePressed(MouseEvent mouseEvent) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent mouseEvent) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent mouseEvent) {
-                otherButton.setBackground(GUI.BUTTON_HOVER_COLOR);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent mouseEvent) {
-                otherButton.setBackground(GUI.bgColor);
-            }
-        });
     }
 
 }

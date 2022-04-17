@@ -9,7 +9,7 @@ import java.awt.event.MouseListener;
 
 public class PatientScreen extends JPanel {
 
-    private JButton addPatientsButton, viewEditPatientsButton;
+    private JButton addPatientsButton, viewEditPatientsButton, backButton;
     private int buttonWidth = GUI.DEFAULT_WIDTH/4;
     private int buttonHeight = GUI.DEFAULT_HEIGHT/5;
     private Font buttonFont;
@@ -41,23 +41,29 @@ public class PatientScreen extends JPanel {
     private void initButtons(){
         addPatientsButton = new JButton("Add Patient");
         viewEditPatientsButton = new JButton("Edit/View Patient");
+        backButton = new JButton("⬅");
 
         int xpos = (GUI.DEFAULT_WIDTH/2)-(buttonWidth/2);
 
         addPatientsButton.setBounds(xpos, (GUI.DEFAULT_HEIGHT/2)-(buttonHeight + 10), buttonWidth, buttonHeight);
         viewEditPatientsButton.setBounds(xpos, (GUI.DEFAULT_HEIGHT/2) + 10, buttonWidth, buttonHeight);
+        backButton.setBounds(0, 0, 80, 80);
 
         addPatientsButton.setFont(buttonFont);
         viewEditPatientsButton.setFont(buttonFont);
+        backButton.setFont(buttonFont);
 
         addPatientsButton.setForeground(Color.WHITE);
         viewEditPatientsButton.setForeground(Color.WHITE);
+        backButton.setForeground(Color.YELLOW);
 
         addPatientsButton.setBackground(GUI.bgColor);
         viewEditPatientsButton.setBackground(GUI.bgColor);
+        backButton.setBackground(GUI.bgColor);
 
         this.add(addPatientsButton);
         this.add(viewEditPatientsButton);
+        this.add(backButton);
     }
 
     // init fonts
@@ -72,7 +78,7 @@ public class PatientScreen extends JPanel {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 Application.setCurrentScreen(Application.ADD_PATIENTS_SCREEN);
-                System.out.println("Patients Button");
+                System.out.println("add Patients Button");
             }
 
             @Override
@@ -120,6 +126,33 @@ public class PatientScreen extends JPanel {
             @Override
             public void mouseExited(MouseEvent mouseEvent) {
                 viewEditPatientsButton.setBackground(GUI.bgColor);
+            }
+        });
+
+        backButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                Application.setCurrentScreen(Application.HOME_SCREEN);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+                backButton.setBackground(GUI.BUTTON_HOVER_COLOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+                backButton.setBackground(GUI.bgColor);
             }
         });
 

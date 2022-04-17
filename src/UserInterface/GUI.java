@@ -23,9 +23,8 @@ public class GUI {
     private int width, height;
 
     // dark theme
-    public static final Color bgColor = new Color(18, 18, 18);
+    public static final Color bgColor = Color.BLACK;
     public static final Color BUTTON_HOVER_COLOR = new Color(35, 35, 35);
-
 
 
     // Instantiates application main window
