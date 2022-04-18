@@ -1,5 +1,6 @@
 package UserInterface;
 
+import DataObjects.Patient;
 import Main.Application;
 
 import javax.swing.*;
@@ -9,12 +10,13 @@ import java.awt.event.MouseListener;
 
 public class AddDemographicsScreen extends JPanel {
 
-    private JButton addDemographicsButton, cancelButton, backButton;
-    private JTextField occupationTF, workStatusTF, educationalTF,
-            tinOnsetTF, tinEtiologyTF, hyperacOnsetTF, hyperacEtiologyTF, additionalCommentsTF;
+    private JButton addDemographicsButton, addVisitButton, cancelButton, backButton;
+    private JTextField occupationTF, workStatusTF,
+            tinOnsetTF, tinEtiologyTF, hyperacOnsetTF, hyperacEtiologyTF;
+    private JTextArea tinCommentsTA, hCommentsTA;
 
-    private JLabel occupationLabel, workStatusLabel, educationalLabel,
-            tinOnsetLabel, tinEtiologyLabel, hyperacOnsetLabel, hyperacEtiologyLabel, additionalCommentsLabel;
+    private JLabel occupationLabel, workStatusLabel,
+            tinOnsetLabel, tinEtiologyLabel, hyperacOnsetLabel, hyperacEtiologyLabel, tinCommentsLabel, hCommentsLabel;
     private int buttonWidth = GUI.DEFAULT_WIDTH/4;
     private int buttonHeight = GUI.DEFAULT_HEIGHT/10;
     private ComponentDesign componentDesign = new ComponentDesign();
@@ -45,33 +47,35 @@ public class AddDemographicsScreen extends JPanel {
     // initializes all buttons for home screen
     private void initButtons(){
         addDemographicsButton = new JButton("Save");
+        addVisitButton = new JButton("Add Visit");
         cancelButton = new JButton("Cancel");
         backButton = new JButton("⬅");
 
         int buttonX = GUI.DEFAULT_WIDTH - (buttonWidth + 20);
 
         addDemographicsButton.setBounds(buttonX, 80, buttonWidth, buttonHeight);
-        cancelButton.setBounds(buttonX, 160, buttonWidth, buttonHeight);
+        addVisitButton.setBounds(buttonX, 160, buttonWidth, buttonHeight);
+        cancelButton.setBounds(buttonX, 240, buttonWidth, buttonHeight);
         backButton.setBounds(0, 0, 80, 80);
 
         addDemographicsButton.setFont(componentDesign.buttonFont);
         cancelButton.setFont(componentDesign.buttonFont);
-        addDemographicsButton.setFont(componentDesign.buttonFont);
+        addVisitButton.setFont(componentDesign.buttonFont);
         backButton.setFont(componentDesign.buttonFont);
 
         addDemographicsButton.setForeground(Color.GREEN);
         cancelButton.setForeground(Color.RED);
-        addDemographicsButton.setForeground(Color.WHITE);
+        addVisitButton.setForeground(Color.WHITE);
         backButton.setForeground(Color.YELLOW);
 
         addDemographicsButton.setBackground(GUI.bgColor);
         cancelButton.setBackground(GUI.bgColor);
-        addDemographicsButton.setBackground(GUI.bgColor);
+        addVisitButton.setBackground(GUI.bgColor);
         backButton.setBackground(GUI.bgColor);
 
         this.add(addDemographicsButton);
         this.add(cancelButton);
-        this.add(addDemographicsButton);
+        this.add(addVisitButton);
         this.add(backButton);
     }
 
@@ -89,12 +93,23 @@ public class AddDemographicsScreen extends JPanel {
 
         occupationLabel = new JLabel("Occupation");
         workStatusLabel = new JLabel("Work Status");
-        educationalLabel = new JLabel("Educational Degree");
         tinOnsetLabel = new JLabel("Tinnitus Onset");
         tinEtiologyLabel = new JLabel("Tinnitus Etiology");
         hyperacOnsetLabel = new JLabel("Hyperacusis Onset");
         hyperacEtiologyLabel = new JLabel("Hyperacusis Etiology");
-        additionalCommentsLabel = new JLabel("Additional Comments");
+
+        tinCommentsLabel = new JLabel("Tinnitus Additional Comments");
+        hCommentsLabel = new JLabel("Hyperacusis Additional Comments");
+
+        occupationLabel.setForeground(Color.WHITE);
+        workStatusLabel.setForeground(Color.WHITE);
+        tinOnsetLabel.setForeground(Color.WHITE);
+        tinEtiologyLabel.setForeground(Color.WHITE);
+        hyperacOnsetLabel.setForeground(Color.WHITE);
+        hyperacEtiologyLabel.setForeground(Color.WHITE);
+
+        tinCommentsLabel.setForeground(Color.WHITE);
+        hCommentsLabel.setForeground(Color.WHITE);
 
         int width = GUI.DEFAULT_WIDTH/6;
         int height = GUI.DEFAULT_HEIGHT/20;
@@ -104,21 +119,22 @@ public class AddDemographicsScreen extends JPanel {
 
         occupationLabel.setBounds(x1, 80, width, height);
         workStatusLabel.setBounds(x1, 160, width, height);
-        educationalLabel.setBounds(x1, 240, width, height);
-        tinOnsetLabel.setBounds(x1, 320, width, height);
-        tinEtiologyLabel.setBounds(x1, 400, width, height);
-        hyperacOnsetLabel.setBounds(x1, 480, width, height);
-        hyperacEtiologyLabel.setBounds(x1, 560, width, height);
-        additionalCommentsLabel.setBounds(x2, 80, width, height);
+        tinOnsetLabel.setBounds(x1, 240, width, height);
+        tinEtiologyLabel.setBounds(x1, 320, width, height);
+        hyperacOnsetLabel.setBounds(x1, 400, width, height);
+        hyperacEtiologyLabel.setBounds(x1, 480, width, height);
+
+        tinCommentsLabel.setBounds(x2, 80, width, height);
+        hCommentsLabel.setBounds(x2, 240, width, height);
 
         this.add(occupationLabel);
         this.add(workStatusLabel);
-        this.add(educationalLabel);
         this.add(tinEtiologyLabel);
         this.add(tinOnsetLabel);
         this.add(hyperacOnsetLabel);
         this.add(hyperacEtiologyLabel);
-        this.add(additionalCommentsLabel);
+        this.add(tinCommentsLabel);
+        this.add(hCommentsLabel);
 
     }
 
@@ -127,12 +143,13 @@ public class AddDemographicsScreen extends JPanel {
     private void initTextFields(){
         occupationTF = new JTextField();
         workStatusTF = new JTextField();
-        educationalTF = new JTextField();
         tinOnsetTF = new JTextField();
         tinEtiologyTF = new JTextField();
         hyperacOnsetTF = new JTextField();
         hyperacEtiologyTF = new JTextField();
-        additionalCommentsTF = new JTextField();
+
+        tinCommentsTA = new JTextArea();
+        hCommentsTA = new JTextArea();
 
         int width = GUI.DEFAULT_WIDTH/6;
         int height = GUI.DEFAULT_HEIGHT/20;
@@ -142,31 +159,71 @@ public class AddDemographicsScreen extends JPanel {
 
         occupationTF.setBounds(x1, 80, width, height);
         workStatusTF.setBounds(x1, 160, width, height);
-        educationalTF.setBounds(x1, 240, width, height);
-        tinOnsetTF.setBounds(x1, 320, width, height);
-        tinEtiologyTF.setBounds(x1, 400, width, height);
-        hyperacOnsetTF.setBounds(x1, 480, width, height);
-        hyperacEtiologyTF.setBounds(x1, 560, width, height);
-        additionalCommentsTF.setBounds(x2, 80, width, height);
+        tinOnsetTF.setBounds(x1, 240, width, height);
+        tinEtiologyTF.setBounds(x1, 320, width, height);
+        hyperacOnsetTF.setBounds(x1, 400, width, height);
+        hyperacEtiologyTF.setBounds(x1, 480, width, height);
+
+        tinCommentsTA.setBounds(x2 - 150, 120, width + 50, height + 50);
+        hCommentsTA.setBounds(x2 - 150, 280, width + 50, height + 50);
+
+        tinCommentsTA.setLineWrap(true);
+        hCommentsTA.setLineWrap(true);
 
         this.add(occupationTF);
         this.add(workStatusTF);
-        this.add(educationalTF);
         this.add(tinOnsetTF);
         this.add(tinEtiologyTF);
         this.add(hyperacOnsetTF);
         this.add(hyperacEtiologyTF);
-        this.add(additionalCommentsTF);
+        this.add(tinCommentsTA);
+        this.add(hCommentsTA);
     }
 
 
+    private void submitInformation(){
+        Patient patient = new Patient(
+                -1, -1, -1,
+                -1, -1, "",
+                "", "", "", "",
+                "", tinEtiologyTF.getText(),
+                hyperacEtiologyTF.getText(), tinCommentsTA.getText(),
+                hCommentsTA.getText()
+        );
+
+        if(Application.dbReaderWriter.addDemographicsInformation(patient)){
+            System.out.println("Patient " + patient.getTHC() + " demographics added");
+            clearScreen();
+            Application.setCurrentScreen(Application.PATIENTS_SCREEN);
+        } else {
+            System.out.println("Patient " + patient.getTHC() + " demographics added FAILED");
+        }
+    }
+
+    private void clearScreen(){
+        for(Component component : getComponents()){
+            try{
+                JTextField textField = (JTextField) component;
+                textField.setText("");
+            } catch (Exception e){
+
+            }
+
+            try{
+                JTextArea textArea = (JTextArea) component;
+                textArea.setText("");
+            } catch (Exception e){
+
+            }
+        }
+    }
 
     // initializes all action listeners for the buttons
     private void initActionListeners(){
         backButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                Application.setCurrentScreen(Application.ADD_PATIENTS_SCREEN);
+                Application.setCurrentScreen(Application.PATIENTS_SCREEN);
             }
 
             @Override
@@ -193,7 +250,36 @@ public class AddDemographicsScreen extends JPanel {
         addDemographicsButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                System.out.println("addDemographicsButtonn");
+                submitInformation();
+                Application.setCurrentScreen(Application.PATIENTS_SCREEN);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+                addDemographicsButton.setBackground(GUI.BUTTON_HOVER_COLOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+                addDemographicsButton.setBackground(GUI.bgColor);
+            }
+        });
+
+        addVisitButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                submitInformation();
+                Application.setCurrentScreen(Application.ADD_VISITS_SCREEN);
             }
 
             @Override
@@ -220,8 +306,8 @@ public class AddDemographicsScreen extends JPanel {
         cancelButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                Application.setCurrentScreen(Application.ADD_PATIENTS_SCREEN);
-                System.out.println("cancelButtonn");
+                clearScreen();
+                Application.setCurrentScreen(Application.PATIENTS_SCREEN);
             }
 
             @Override
@@ -242,34 +328,6 @@ public class AddDemographicsScreen extends JPanel {
             @Override
             public void mouseExited(MouseEvent mouseEvent) {
                 cancelButton.setBackground(GUI.bgColor);
-            }
-        });
-
-        addDemographicsButton.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent mouseEvent) {
-                Application.setCurrentScreen(Application.ADD_DEMOGRAPHICS_SCREEN);
-                System.out.println("addDemographicsButton");
-            }
-
-            @Override
-            public void mousePressed(MouseEvent mouseEvent) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent mouseEvent) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent mouseEvent) {
-                addDemographicsButton.setBackground(GUI.BUTTON_HOVER_COLOR);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent mouseEvent) {
-                addDemographicsButton.setBackground(GUI.bgColor);
             }
         });
     }

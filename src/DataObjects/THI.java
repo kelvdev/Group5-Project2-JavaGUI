@@ -109,17 +109,14 @@ public class THI {
     public int getF12(){
         return F12;
     }
-    public int getF13(){
-        return F13;
-    }
+
+    public int getF13(){ return F13; }
 
     public int getE14(){
         return E14;
     }
 
-    public int getF15(){
-        return F15;
-    }
+    public int getF15(){ return F15; }
 
     public int getE16(){
         return E16;
@@ -141,9 +138,7 @@ public class THI {
         return F20;
     }
 
-    public int getE21(){
-        return E21;
-    }
+    public int getE21() { return E21; }
 
     public int getE22(){
         return E22;

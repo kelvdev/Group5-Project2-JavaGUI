@@ -1,5 +1,7 @@
 package Main;
 
+import Database.DBConnector;
+import Database.DBReaderWriter;
 import UserInterface.*;
 
 import javax.swing.*;
@@ -29,6 +31,12 @@ public class Application {
     private static JPanel[] allScreens = {
             homeScreen, patientsScreen, addPatientScreen,
             addDemographicsScreen};
+
+    public static DBConnector dbConnector = new DBConnector(
+            "INSERT SERVER NAME",
+            "USERNAME",
+            "PASSWORD");
+    public static DBReaderWriter dbReaderWriter = new DBReaderWriter(dbConnector);
 
     // instantiates the application and both the main frame and error frame
     public Application(){
