@@ -8,27 +8,40 @@ import java.util.ArrayList;
 public class DBReaderWriter {
 
     // TODO: ensure that DBReaderWriter is connected to the database using DBConnector
-    public DBReaderWriter(){
+    public DBReaderWriter(DBConnector dbConnector){
 
     }
 
-    // TODO: implement a INSERT INTO Patient VALUE(S) using this method. Return 1 if delete successful, else 0
-    public int createPatient(Patient patient){
-        return 0;
+    // TODO: implement a INSERT INTO Patient VALUE(S) using this method. Return true if create successful, else false
+    // Patient THC should be NULL as database will allocate a THC for the patient
+    public boolean createPatient(Patient patient){
+        return true;
     }
 
-    // TODO: implement a UPDATE Patient using this method. Return 1 if delete successful, else 0
-    public int updatePatient(Patient patient){
-        return 0;
+    // TODO: implement a UPDATE Patient to add demographics information using this method. Return true if update successful, else false
+    /* NOTE: Only update the sections that correspond to demographics for a patient.
+     DO NOT OVERRIDE THE ENTIRE PATIENT INFO IN THE DATABASE
+     only select these attributes from the patient to update:
+
+     */
+    public boolean addDemographicsInformation(Patient patient){
+        int thc = patient.getTHC();
+        return true;
     }
 
-    // TODO: implement a DELETE FROM Patient WHERE using this method. Return 1 if delete successful, else 0
-    public int deletePatient(int THC){
-        return 0;
+    // TODO: implement a UPDATE Patient using this method. Return true if update successful, else false
+    public boolean updatePatient(Patient patient){
+        int thc = patient.getTHC();
+        return false;
+    }
+
+    // TODO: implement a DELETE FROM Patient WHERE using this method. Return true if delete successful, else false
+    public boolean deletePatient(int THC){
+        return false;
     }
 
     // TODO: implement a SELECT FROM Patient WHERE using this method and return a Patient object
-    public Patient getPatient(){
+    public Patient getPatient(int THC){
 
         // return a populated patient
         Patient patient;
@@ -36,14 +49,14 @@ public class DBReaderWriter {
         return null;
     }
 
-    // TODO: implement a INSERT INTO Visit VALUE(S) using this method. Return 1 if delete successful, else 0
-    public int createVisit(){
-        return 0;
+    // TODO: implement a INSERT INTO Visit VALUE(S) using this method. Return true if create successful, else false
+    public boolean createVisit(int THC, String visitComments){
+        return false;
     }
 
-    // TODO: implement a DELETE FROM Visit VALUE(S) using this method. Return 1 if delete successful, else 0
-    public int deleteVisit(){
-        return 0;
+    // TODO: implement a DELETE FROM Visit VALUE(S) using this method. Return true if delete successful, else false
+    public boolean deleteVisit(){
+        return false;
     }
 
     // TODO: implement a SELECT FROM Visit WHERE visitID (parameter) = visitID (database value) using this method and return a Visit object
@@ -56,28 +69,28 @@ public class DBReaderWriter {
     }
 
     // TODO: implement an SQL call using the SQL visitorsCount function and return a visit count
-    public int getAllPatientVisitsOnDate(String date){
+    public boolean getAllPatientVisitsOnDate(String date){
         // return visit count
-        return 0;
+        return false;
     }
 
-    // TODO: implement a INSERT INTO THI VALUE(S) using this method. Return 1 if create successful, else 0
-    public int createPatientTHI(){
-        return 0;
+    // TODO: implement a INSERT INTO THI VALUE(S) using this method. Return true if create successful, else false
+    public boolean createPatientTHI(THI thi){
+        return false;
     }
 
-    // TODO: implement a UPDATE THI SET WHERE using this method. Return 1 if update successful, else 0
-    public int updatePatientTHI(){
-        return 0;
+    // TODO: implement a UPDATE THI SET WHERE using this method. Return true if update successful, else false
+    public boolean updatePatientTHI(int VisitID){
+        return false;
     }
 
-    // TODO: implement a DELETE FROM THI VALUE(S) using this method. Return 1 if delete successful, else 0
-    public int deletePatientTHI(){
-        return 0;
+    // TODO: implement a DELETE FROM THI VALUE(S) using this method. Return true if delete successful, else false
+    public boolean deletePatientTHI(int VisitID){
+        return false;
     }
 
-    // TODO: implement a SELECT FROM THI WHERE THC (parameter) = THC (database value) using this method and return a THI object
-    public THI getTHI(int THC){
+    // TODO: implement a SELECT FROM THI WHERE visitID (parameter) = visitID (database value) using this method and return a THI object
+    public THI getTHI(int visitID){
 
         // return a populated visit
         THI THI;
@@ -101,7 +114,7 @@ public class DBReaderWriter {
     *         > (int) patient visit count
      * */
 
-    public ArrayList<Object> getPatientFullInformation(){
+    public ArrayList<Object> getPatientFullInformation(int THC){
         return null;
     }
 }

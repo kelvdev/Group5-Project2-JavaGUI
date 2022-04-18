@@ -1,5 +1,6 @@
 package UserInterface;
 
+import DataObjects.Patient;
 import Main.Application;
 
 import javax.swing.*;
@@ -10,13 +11,11 @@ import java.awt.event.MouseListener;
 public class AddPatientScreen extends JPanel {
 
     private JButton createPatientButton, cancelButton, addDemographicsButton, backButton;
-    private JTextField firstNameTF, middleNameTF, lastNameTF,
-            dobTF, genderTF, phoneTF, emailTF, addressTF, cityTF,
-            stateTF, zipTF, countryTF, ssnTF, insuranceTF;
+    private JTextField firstNameTF, lastNameTF,
+            dobTF, stateTF, zipTF, countryTF, ssnTF, insuranceTF;
 
-    private JLabel firstNameLabel, middleNameLabel, lastNameLabel,
-            dobLabel, genderLabel, phoneLabel, emailLabel, addressLabel, cityLabel,
-            stateLabel, zipLabel, countryLabel, ssnLabel, insuranceLabel;
+    private JLabel firstNameLabel, lastNameLabel,
+            dobLabel, stateLabel, zipLabel, countryLabel, ssnLabel, insuranceLabel;
     private int buttonWidth = GUI.DEFAULT_WIDTH/4;
     private int buttonHeight = GUI.DEFAULT_HEIGHT/10;
     private ComponentDesign componentDesign = new ComponentDesign();
@@ -92,50 +91,42 @@ public class AddPatientScreen extends JPanel {
         // set textfield labels
 
         firstNameLabel = new JLabel("First Name");
-        middleNameLabel = new JLabel("Middle Name");
         lastNameLabel = new JLabel("Last Name");
-        dobLabel = new JLabel("Date of Birth");
-        genderLabel = new JLabel("Gender");
-        phoneLabel = new JLabel("Phone");
-        emailLabel = new JLabel("Email");
-        addressLabel = new JLabel("Address");
-        cityLabel = new JLabel("City");
+        dobLabel = new JLabel("Date of Birth (YYYY/MM/DD)");
         stateLabel = new JLabel("State");
         zipLabel = new JLabel("Zip");
         countryLabel = new JLabel("Country");
         ssnLabel = new JLabel("SSN");
         insuranceLabel = new JLabel("Insurance");
 
+        firstNameLabel.setForeground(Color.WHITE);
+        lastNameLabel.setForeground(Color.WHITE);
+        dobLabel.setForeground(Color.WHITE);
+        stateLabel.setForeground(Color.WHITE);
+        zipLabel.setForeground(Color.WHITE);
+        countryLabel.setForeground(Color.WHITE);
+        ssnLabel.setForeground(Color.WHITE);
+        insuranceLabel.setForeground(Color.WHITE);
+
         int width = GUI.DEFAULT_WIDTH/6;
         int height = GUI.DEFAULT_HEIGHT/20;
 
-        int x1 = 40;
+        int x1 = 70;
         int x2 = x1+400;
+        int y = 40;
 
-        firstNameLabel.setBounds(x1, 80, width, height);
-        middleNameLabel.setBounds(x1, 160, width, height);
-        lastNameLabel.setBounds(x1, 240, width, height);
-        dobLabel.setBounds(x1, 320, width, height);
-        genderLabel.setBounds(x1, 400, width, height);
-        phoneLabel.setBounds(x1, 480, width, height);
-        emailLabel.setBounds(x1, 560, width, height);
-        addressLabel.setBounds(x2, 80, width, height);
-        cityLabel.setBounds(x2, 160, width, height);
-        stateLabel.setBounds(x2, 240, width, height);
-        zipLabel.setBounds(x2, 320, width, height);
-        countryLabel.setBounds(x2, 400, width, height);
-        ssnLabel.setBounds(x2, 480, width, height);
-        insuranceLabel.setBounds(x2, 560, width, height);
+        firstNameLabel.setBounds(x1, y + 80, width, height);
+        lastNameLabel.setBounds(x1, y + 160, width, height);
+        dobLabel.setBounds(x2-50, y + 80, width, height);
+        stateLabel.setBounds(x2, y + 160, width, height);
+        zipLabel.setBounds(x1, y + 240, width, height);
+        countryLabel.setBounds(x1, y + 320, width, height);
+        ssnLabel.setBounds(x2, y + 240, width, height);
+        insuranceLabel.setBounds(x2, y + 320, width, height);
 
         this.add(firstNameLabel);
-        this.add(middleNameLabel);
         this.add(lastNameLabel);
-        this.add(genderLabel);
         this.add(dobLabel);
-        this.add(phoneLabel);
-        this.add(emailLabel);
-        this.add(addressLabel);
-        this.add(cityLabel);
         this.add(stateLabel);
         this.add(zipLabel);
         this.add(countryLabel);
@@ -148,14 +139,8 @@ public class AddPatientScreen extends JPanel {
 
     private void initTextFields(){
         firstNameTF = new JTextField();
-        middleNameTF = new JTextField();
         lastNameTF = new JTextField();
         dobTF = new JTextField();
-        genderTF = new JTextField();
-        phoneTF = new JTextField();
-        emailTF = new JTextField();
-        addressTF = new JTextField();
-        cityTF = new JTextField();
         stateTF = new JTextField();
         zipTF = new JTextField();
         countryTF = new JTextField();
@@ -165,33 +150,22 @@ public class AddPatientScreen extends JPanel {
         int width = GUI.DEFAULT_WIDTH/6;
         int height = GUI.DEFAULT_HEIGHT/20;
 
-        int x1 = 150;
+        int x1 = 180;
         int x2 = x1 + 400;
+        int y = 40;
 
-        firstNameTF.setBounds(x1, 80, width, height);
-        middleNameTF.setBounds(x1, 160, width, height);
-        lastNameTF.setBounds(x1, 240, width, height);
-        dobTF.setBounds(x1, 320, width, height);
-        genderTF.setBounds(x1, 400, width, height);
-        phoneTF.setBounds(x1, 480, width, height);
-        emailTF.setBounds(x1, 560, width, height);
-        addressTF.setBounds(x2, 80, width, height);
-        cityTF.setBounds(x2, 160, width, height);
-        stateTF.setBounds(x2, 240, width, height);
-        zipTF.setBounds(x2, 320, width, height);
-        countryTF.setBounds(x2, 400, width, height);
-        ssnTF.setBounds(x2, 480, width, height);
-        insuranceTF.setBounds(x2, 560, width, height);
+        firstNameTF.setBounds(x1, y + 80, width, height);
+        lastNameTF.setBounds(x1, y + 160, width, height);
+        dobTF.setBounds(x2, y + 80, width, height);
+        stateTF.setBounds(x2, y + 160, width, height);
+        zipTF.setBounds(x1, y + 240, width, height);
+        countryTF.setBounds(x1, y + 320, width, height);
+        ssnTF.setBounds(x2, y + 240, width, height);
+        insuranceTF.setBounds(x2, y + 320, width, height);
 
         this.add(firstNameTF);
-        this.add(middleNameTF);
         this.add(lastNameTF);
-        this.add(genderTF);
         this.add(dobTF);
-        this.add(phoneTF);
-        this.add(emailTF);
-        this.add(addressTF);
-        this.add(cityTF);
         this.add(stateTF);
         this.add(zipTF);
         this.add(countryTF);
@@ -199,7 +173,36 @@ public class AddPatientScreen extends JPanel {
         this.add(insuranceTF);
     }
 
+    private void submitInformation(){
+        Patient patient = new Patient(
+                -1, -1, -1,
+                -1, -1, "",
+                "", "", "", "",
+                "", "",
+                "", "",
+                ""
+        );
 
+        if(Application.dbReaderWriter.createPatient(patient)){
+            System.out.println("Patient " + patient.getTHC() + " created");
+            clearScreen();
+            Application.setCurrentScreen(Application.PATIENTS_SCREEN);
+        } else {
+            System.out.println("Patient " + patient.getTHC() + " create FAILED");
+        }
+    }
+
+    private void clearScreen(){
+        for(Component component : getComponents()){
+            try{
+                JTextField textField = (JTextField) component;
+                System.out.println(textField.getText());
+                textField.setText("");
+            } catch (Exception e){
+
+            }
+        }
+    }
 
     // initializes all action listeners for the buttons
     private void initActionListeners(){
@@ -234,7 +237,7 @@ public class AddPatientScreen extends JPanel {
         createPatientButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                System.out.println("CREATE PATIENT INFO TO DATABASE");
+                submitInformation();
             }
 
             @Override
@@ -261,6 +264,7 @@ public class AddPatientScreen extends JPanel {
         cancelButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
+                clearScreen();
                 Application.setCurrentScreen(Application.PATIENTS_SCREEN);
             }
 
@@ -288,8 +292,8 @@ public class AddPatientScreen extends JPanel {
         addDemographicsButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
+                submitInformation();
                 Application.setCurrentScreen(Application.ADD_DEMOGRAPHICS_SCREEN);
-                System.out.println("addDemographicsButton");
             }
 
             @Override
