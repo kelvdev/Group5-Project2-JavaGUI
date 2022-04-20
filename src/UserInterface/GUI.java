@@ -18,8 +18,8 @@ public class GUI {
 
     private static final String appName = "Awesome Hearing Clinic";
     private static JFrame frame = new JFrame(appName);
-    public static final int DEFAULT_WIDTH = frame.getGraphicsConfiguration().getBounds().width - 100;
-    public static final int DEFAULT_HEIGHT = frame.getGraphicsConfiguration().getBounds().height - 100;
+    public static final int DEFAULT_WIDTH = 1100; //frame.getGraphicsConfiguration().getBounds().width - 100;
+    public static final int DEFAULT_HEIGHT = 700; //frame.getGraphicsConfiguration().getBounds().height - 100;
     private int width, height;
 
     // dark theme
