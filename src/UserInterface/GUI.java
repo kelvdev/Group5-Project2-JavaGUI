@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class GUI {
 
     private static final String appName = "Awesome Hearing Clinic";
-    private static JFrame frame = new JFrame(appName);
+    private JFrame frame = new JFrame(appName);
     public static final int DEFAULT_WIDTH = 1100; //frame.getGraphicsConfiguration().getBounds().width - 100;
     public static final int DEFAULT_HEIGHT = 700; //frame.getGraphicsConfiguration().getBounds().height - 100;
     private int width, height;
@@ -38,7 +38,13 @@ public class GUI {
         frame.setLayout(null);
         frame.setSize(this.width, this.height);
         frame.setResizable(false);
-        frame.setLocation(0,0);
+        try {
+            frame.setLocation(frame.getGraphicsConfiguration().getBounds().width / 2 - (width/2),
+                    frame.getGraphicsConfiguration().getBounds().height / 2 - (height/2));
+        } catch (Exception e){
+            System.out.println("Error setting screen middle" + e.getMessage());
+            frame.setLocation(0,0);
+        }
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBackground(bgColor);
 
