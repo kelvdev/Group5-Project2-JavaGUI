@@ -3,23 +3,28 @@ package Database;
 *  Once connected to database, use Database.DBReaderWriter to do specific task read and writes to the database
 * */
 
-    // TODO: IMPLEMENT Database.DBConnector methods to connect to MYSql database and return a connection status
-    public class DBConnector {
 
-        String serverName, user, password;
+import java.sql.*;
 
-        // TODO: Establish connection in the constructor
+public class DBConnector {
+
+        private Connection databaseConnection;
+
         public DBConnector(String serverName, String user, String password){
-            this.serverName = serverName;
-            this.user = user;
-            this.password = password;
+            try {
+                //DriverManager.registerDriver(new );
+                databaseConnection = DriverManager.getConnection(serverName, user, password);
+                DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+            } catch (SQLException sqlException){
+                System.out.println("Unable to establish a connection!");
+                System.out.println(sqlException.getMessage());
+                databaseConnection = null;
+            }
         }
 
-
-
-        // TODO: create a return method to get the current database that the application is connected to
-        public void getDatabase(){
-
+        // return the connection to the database
+        public Connection getConnection(){
+            return databaseConnection;
         }
 
 }
