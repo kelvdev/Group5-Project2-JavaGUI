@@ -5,7 +5,6 @@ import DataObjects.*;
 import java.sql.*;
 import java.util.ArrayList;
 
-// TODO: implement Database.DBReaderWriter methods to do specific tasks such as addPatient() or updatePatient();
 public class DBReaderWriter {
 
     // USE THIS CONNECTION AS THE DATABASE TO READ/WRITE/DELETE/UPDATE TO
@@ -41,7 +40,7 @@ public class DBReaderWriter {
         return false;
     }
 
-    // TODO: implement a DELETE FROM Patient WHERE using this method. Return true if delete successful, else false
+    // DELETE FROM Patient WHERE using this method. Return true if delete successful, else false
     // Huy
     public boolean deletePatient(int THC)
     {
@@ -80,7 +79,7 @@ public class DBReaderWriter {
         return false;
     }
 
-    // TODO: implement a SELECT FROM Patient WHERE using this method and return a Patient object
+    // SELECT FROM Patient WHERE using this method and return a Patient object
     // Huy
     public Patient getPatient(int THC)
     {
@@ -142,7 +141,7 @@ public class DBReaderWriter {
         return 0;
     }
 
-    // TODO: implement a DELETE FROM Visit VALUE(S) using this method. Return true if delete successful, else false
+    // DELETE FROM Visit VALUE(S) using this method. Return true if delete successful, else false
     // Huy
     public boolean deleteVisit(int id)
     {
@@ -209,7 +208,7 @@ public class DBReaderWriter {
         return false;
     }
 
-    // TODO: implement a DELETE FROM THI VALUE(S) using this method. Return true if delete successful, else false
+    // DELETE FROM THI VALUE(S) using this method. Return true if delete successful, else false
     // Huy
     public boolean deletePatientTHI(int VisitID)
     {
@@ -245,7 +244,7 @@ public class DBReaderWriter {
         return false;
     }
 
-    // TODO: implement a SELECT FROM THI WHERE visitID (parameter) = visitID (database value) using this method and return a THI object
+    // SELECT FROM THI WHERE visitID (parameter) = visitID (database value) using this method and return a THI object
     // Huy
     public THI getTHI(int visitIDKey){
 
@@ -323,18 +322,14 @@ public class DBReaderWriter {
         return null;
     }
 
-    // TODO: implement an SQL call using the SQL THIScore procedure and return a THI determination result string
+    // SQL call using the SQL THIScore procedure and return a THI determination result string
     // Huy
     public String getResultTHI(int visitorID)
     {
-        String serverName = "jdbc:mysql://localhost:3306/test";
-        String user = "root";
-        String password = "myawesomepassword";
 
         try
         {
-            Connection con = this.connection;
-            CallableStatement statement = con.prepareCall("{call team5.THIScore(?, ?, ?)}");
+            CallableStatement statement = this.connection.prepareCall("{call team5.THIScore(?, ?, ?)}");
 
             statement.registerOutParameter(1, Types.INTEGER);
             statement.registerOutParameter(2, Types.INTEGER);
