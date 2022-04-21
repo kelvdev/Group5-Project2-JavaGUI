@@ -14,24 +14,41 @@ public class Application {
     private static PatientScreen patientsScreen = new PatientScreen();
     private static AddPatientScreen addPatientScreen = new AddPatientScreen();
     private static AddDemographicsScreen addDemographicsScreen = new AddDemographicsScreen();
+    private static VisitScreen visitScreen = new VisitScreen();
+    private static AddVisitScreen addVisitScreen = new AddVisitScreen();
+    private static THIScreen thiScreen = new THIScreen();
+    private static ViewDeleteVisitsScreen viewDeleteVisitsScreen = new ViewDeleteVisitsScreen();
+    private static ViewEditPatientsScreen viewEditPatientsScreen = new ViewEditPatientsScreen();
+    private static AnalyticsScreen analyticsScreen = new AnalyticsScreen();
 
     public static final int HOME_SCREEN = 0;
     public static final int PATIENTS_SCREEN = 1;
     public static final int ADD_PATIENTS_SCREEN = 2;
     public static final int ADD_DEMOGRAPHICS_SCREEN = 3;
-    public static final int VIEW_EDIT_PATIENT_SCREEN = 4;
-    public static final int VISITS_SCREEN = 5;
-    public static final int ADD_VISITS_SCREEN = 6;
-    public static final int VIEW_EDIT_VISITS_SCREEN = 7;
-    public static final int PREDICT_DIAGNOSIS_SCREEN = 8;
-    public static final int RECOMMEND_TREATMENT_SCREEN = 9;
-    public static final int KNOWLEDGE_BASE = 10;
+    public static final int VISIT_SCREEN = 4;
+    public static final int ADD_VISIT_SCREEN = 5;
+    public static final int THI_SCREEN = 6;
+    public static final int VIEW_DELETE_VISITS_SCREEN = 7;
+    public static final int VIEW_EDIT_PATIENTS_SCREEN = 8;
+    public static final int ANALYTICS_SCREEN = 9;
+
+    private static int currentPatientTHC = -1;
+    private static int currentVisitID = -1;
 
     private static int currentScreenId;
 
     private static JPanel[] allScreens = {
-            homeScreen, patientsScreen, addPatientScreen,
-            addDemographicsScreen};
+            homeScreen,
+            patientsScreen,
+            addPatientScreen,
+            addDemographicsScreen,
+            visitScreen,
+            addVisitScreen,
+            thiScreen,
+            viewDeleteVisitsScreen,
+            viewEditPatientsScreen,
+            analyticsScreen
+    };
 
     public static DBConnector dbConnector = new DBConnector(
             "jdbc:mysql://localhost/Team5",
@@ -94,7 +111,7 @@ public class Application {
         // remove current screen
         gui.removeScreen(allScreens[currentScreenId]);
 
-        // set current screen id and screen with new screne
+        // set current screen id and screen with new screen
         currentScreenId = applicationScreenId;
         gui.addScreen(allScreens[applicationScreenId]);
         System.out.println("THE NEW CURRENT SCREEN ID AFTER ADDING: " + currentScreenId);
@@ -103,8 +120,25 @@ public class Application {
         gui.getFrame().update(gui.getFrame().getGraphics());
     }
 
+    // set current patient THC as a global variable
+    public static void setCurrentPatientTHC(int THC){
+        Application.currentPatientTHC = THC;
+    }
+
+    public static int getCurrentPatientTHC(){
+        return Application.currentPatientTHC;
+    }
+
+    // set current visitID as a global variable
+    public static void setCurrentVisitID(int visitID){
+        Application.currentVisitID = visitID;
+    }
+
+    public static int getCurrentVisitID(){
+        return Application.currentVisitID;
+    }
+
     /*
-    TODO: CONNECT DATABASE
     try to connect to database, if connects then return true
      and application can start else return false, send error message, and don't open app.
      */
