@@ -2,16 +2,13 @@ package Database;// Helper class to read and write to the database with ease
 
 import DataObjects.*;
 
-<<<<<<< HEAD
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
-=======
-import java.sql.Connection;
->>>>>>> update
 import java.util.ArrayList;
 
+import java.sql.*;
 // TODO: implement Database.DBReaderWriter methods to do specific tasks such as addPatient() or updatePatient();
 public class DBReaderWriter {
 
@@ -59,17 +56,18 @@ public class DBReaderWriter {
         String user = "root";
         String password = "myawesomepassword";
 
+        
         try
         {
-            DBConnector con = new DBConnector(serverName, user, password);
+            Connection con = DriverManager.getConnection(serverName, user, password);
             //Statement stmt = con.createStatement();
-            PreparedStatement prepareDeletePatient = DBConnector.prepareStatement(query);
+            PreparedStatement prepareStmt = con.prepareStatement(query);
 
-            prepareDeletePatient.setInt(1, THC);
+            prepareStmt.setInt(1, THC);
 
-            prepareDeletePatient.execute();
+            prepareStmt.execute();
             
-            int deleted = PreparedStatement.executeUpdate();
+            int deleted = prepareStmt.executeUpdate();
 
             con.close();
 
@@ -108,10 +106,13 @@ public class DBReaderWriter {
 
         try 
         {
-            DBConnector con = new DBConnector(serverName, user, password);
+            Connection con = DriverManager.getConnection(serverName, user, password);
             //Statement stmt = con.createStatement();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+            PreparedStatement prepareStmt = con.prepareStatement(query);
+
+            prepareStmt.setInt(1, THC);
+            
+            ResultSet rs = prepareStmt.executeQuery(query);
 
             System.out.printf("THC|CountryID|StateID|ZipID|WStatusID|Occupation|Surname|FirstName|SSN|DoB|Insurance|TinBackround|HBackground|tIndComments|hIndComments\n");
             
@@ -119,7 +120,7 @@ public class DBReaderWriter {
             {
                 int thc = rs.getInt("thc");
                 int countryID = rs.getInt("countryID");
-                int stateID = rs.getString("stateID");
+                int stateID = rs.getInt("stateID");
                 int zipID = rs.getInt("zipID");
                 int wStatusID = rs.getInt("wStatusID");
                 String surname = rs.getString("surname");
@@ -170,15 +171,15 @@ public class DBReaderWriter {
 
         try
         {
-            DBConnector con = new DBConnector(serverName, user, password);
+            Connection con = DriverManager.getConnection(serverName, user, password);
             //Statement stmt = con.createStatement();
-            PreparedStatement prepareDeletePatient = DBConnector.prepareStatement(query);
+            PreparedStatement prepareStmt = con.prepareStatement(query);
 
-            prepareDeletePatient.setInt(1, id);
+            prepareStmt.setInt(1, id);
 
-            prepareDeletePatient.execute();
+            prepareStmt.execute();
             
-            int deleted = PreparedStatement.executeUpdate();
+            int deleted = prepareStmt.executeUpdate();
 
             con.close();
 
@@ -243,15 +244,15 @@ public class DBReaderWriter {
 
         try
         {
-            DBConnector con = new DBConnector(serverName, user, password);
+            Connection con = DriverManager.getConnection(serverName, user, password);
             //Statement stmt = con.createStatement();
-            PreparedStatement prepareDeletePatient = DBConnector.prepareStatement(query);
+            PreparedStatement prepareStmt = con.prepareStatement(query);
 
-            prepareDeletePatient.setInt(1, VisitID);
+            prepareStmt.setInt(1, VisitID);
 
-            prepareDeletePatient.execute();
+            prepareStmt.execute();
             
-            int deleted = PreparedStatement.executeUpdate();
+            int deleted = prepareStmt.executeUpdate();
 
             con.close();
 
@@ -276,7 +277,7 @@ public class DBReaderWriter {
 
     // TODO: implement a SELECT FROM THI WHERE visitID (parameter) = visitID (database value) using this method and return a THI object
     // Huy
-    public THI getTHI(int visitID){
+    public THI getTHI(int visitIDKey){
 
         // return a populated visit
         
@@ -288,18 +289,20 @@ public class DBReaderWriter {
 
         try 
         {
-            DBConnector con = new DBConnector(serverName, user, password);
+            Connection con = DriverManager.getConnection(serverName, user, password);
             //Statement stmt = con.createStatement();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+            PreparedStatement prepareStmt = con.prepareStatement(query);
 
-            System.out.printf("VisitID, Sc_T, Sc_F, Sc_E, Sc_C, F1, F2, E3, F4,
-                                C5, E6, F7, C8, F9, E10, C11, F12, F13, E14, F15, E16,
-                                E17, F18, C19, F20, E21, E22, C23, F24, E25\n");
+            prepareStmt.setInt(1, visitIDKey);
+
+            ResultSet rs = prepareStmt.executeQuery(query);
+
+            System.out.printf("VisitID, Sc_T, Sc_F, Sc_E, Sc_C, F1, F2, E3, F4," +
+                                " C5, E6, F7, C8, F9, E10, C11, F12, F13, E14, F15, E16," +
+                                " E17, F18, C19, F20, E21, E22, C23, F24, E25\n");
             
             while (rs.next()) 
             {
-                int thc = rs.getInt("thc");
                 int visitID = rs.getInt("visitID");
                 int Sc_T = rs.getInt("Sc_T");
                 int Sc_F = rs.getInt("Sc_F");
@@ -344,7 +347,7 @@ public class DBReaderWriter {
         } 
         catch(Exception e) 
         {
-        System.out.println("SQL exception occured" + e);
+            System.out.println("SQL exception occured" + e);
         }
 
         return null;
@@ -360,7 +363,7 @@ public class DBReaderWriter {
 
         try 
         {
-            DBConnector con = new DBConnector(serverName, user, password);
+            Connection con = DriverManager.getConnection(serverName, user, password);
             CallableStatement statement = con.prepareCall("{call team5.THIScore(?, ?, ?)}");
 
             statement.registerOutParameter(1, Types.INTEGER);
