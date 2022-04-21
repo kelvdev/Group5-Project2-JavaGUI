@@ -27,4 +27,12 @@ public class DBConnector {
             return databaseConnection;
         }
 
+        public void closeConnection() {
+            try {
+                databaseConnection.close();
+            } catch (SQLException sqlE){
+                System.out.println(sqlE.getMessage());
+            }
+        }
+
 }

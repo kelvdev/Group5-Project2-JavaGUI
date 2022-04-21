@@ -151,4 +151,9 @@ public class Application {
         }
     }
 
+    // close DBConnection
+    public static void stop(){
+        dbConnector.closeConnection();
+    }
+
 }
