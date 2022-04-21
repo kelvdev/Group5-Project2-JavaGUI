@@ -2,15 +2,17 @@ package Database;// Helper class to read and write to the database with ease
 
 import DataObjects.*;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 
 // TODO: implement Database.DBReaderWriter methods to do specific tasks such as addPatient() or updatePatient();
 public class DBReaderWriter {
 
-    // TODO: ensure that DBReaderWriter is connected to the database using DBConnector
-    // Kelvin
-    public DBReaderWriter(DBConnector dbConnector){
+    // USE THIS CONNECTION AS THE DATABASE TO READ/WRITE/DELETE/UPDATE TO
+    private Connection connection;
 
+    public DBReaderWriter(DBConnector dbConnector){
+        connection = dbConnector.getConnection();
     }
 
     // TODO: implement a INSERT INTO Patient VALUE(S) using this method. Return true if create successful, else false

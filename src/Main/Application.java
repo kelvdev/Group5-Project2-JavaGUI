@@ -5,6 +5,7 @@ import Database.DBReaderWriter;
 import UserInterface.*;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Application {
 
@@ -33,9 +34,10 @@ public class Application {
             addDemographicsScreen};
 
     public static DBConnector dbConnector = new DBConnector(
-            "INSERT SERVER NAME",
-            "USERNAME",
-            "PASSWORD");
+            "jdbc:mysql://localhost/Team5",
+            "root",
+            "myawesomepassword");
+
     public static DBReaderWriter dbReaderWriter = new DBReaderWriter(dbConnector);
 
     // instantiates the application and both the main frame and error frame
@@ -45,7 +47,7 @@ public class Application {
 
     // starts the Hearing Clinic Main.Main.Application
     public void start(){
-        if(initDatabaseConnection() == true){
+        if(testDatabaseConnection()){
             gui.show();
         } else {
             errorGUI.show();
@@ -69,6 +71,20 @@ public class Application {
     private void initErrorFrame(){
         // instantiate error UserInterface.GUI
         errorGUI = new GUI();
+        JLabel errorLabel = new JLabel("Error connecting to database! Please try again later");
+        errorLabel.setSize(400, 400);
+        errorLabel.setLocation(0, 0);
+        errorLabel.setForeground(Color.WHITE);
+
+        JPanel errorPanel = new JPanel();
+        errorPanel.setSize(400, 400);
+        errorPanel.setLocation(0,0);
+        errorPanel.setBackground(GUI.bgColor);
+
+        errorPanel.add(errorLabel);
+
+        errorGUI.getFrame().setSize(400, 400);
+        errorGUI.addScreen(errorPanel);
     }
 
     // set screen
@@ -93,8 +109,12 @@ public class Application {
      and application can start else return false, send error message, and don't open app.
      */
 
-    private boolean initDatabaseConnection(){
-        return true;
+    private boolean testDatabaseConnection() {
+        if(dbConnector.getConnection() != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
