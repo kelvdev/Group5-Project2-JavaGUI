@@ -2,14 +2,11 @@ package Database;// Helper class to read and write to the database with ease
 
 import DataObjects.*;
 
-<<<<<<< HEAD
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
-=======
 import java.sql.Connection;
->>>>>>> update
 import java.util.ArrayList;
 
 // TODO: implement Database.DBReaderWriter methods to do specific tasks such as addPatient() or updatePatient();
