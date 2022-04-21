@@ -194,7 +194,6 @@ public class AddDemographicsScreen extends JPanel {
         if(Application.dbReaderWriter.addDemographicsInformation(patient)){
             System.out.println("Patient " + patient.getTHC() + " demographics added");
             clearScreen();
-            Application.setCurrentScreen(Application.PATIENTS_SCREEN);
         } else {
             System.out.println("Patient " + patient.getTHC() + " demographics added FAILED");
         }
@@ -279,7 +278,7 @@ public class AddDemographicsScreen extends JPanel {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 submitInformation();
-                Application.setCurrentScreen(Application.ADD_VISITS_SCREEN);
+                Application.setCurrentScreen(Application.ADD_VISIT_SCREEN);
             }
 
             @Override
@@ -294,12 +293,12 @@ public class AddDemographicsScreen extends JPanel {
 
             @Override
             public void mouseEntered(MouseEvent mouseEvent) {
-                addDemographicsButton.setBackground(GUI.BUTTON_HOVER_COLOR);
+                addVisitButton.setBackground(GUI.BUTTON_HOVER_COLOR);
             }
 
             @Override
             public void mouseExited(MouseEvent mouseEvent) {
-                addDemographicsButton.setBackground(GUI.bgColor);
+                addVisitButton.setBackground(GUI.bgColor);
             }
         });
 

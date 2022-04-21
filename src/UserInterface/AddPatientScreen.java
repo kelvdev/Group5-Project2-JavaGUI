@@ -183,7 +183,8 @@ public class AddPatientScreen extends JPanel {
                 ""
         );
 
-        if(Application.dbReaderWriter.createPatient(patient)){
+        //Application.dbReaderWriter.createPatient(patient)
+        if(true){
             System.out.println("Patient " + patient.getTHC() + " created");
             clearScreen();
             Application.setCurrentScreen(Application.PATIENTS_SCREEN);
