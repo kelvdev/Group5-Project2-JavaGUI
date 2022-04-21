@@ -1,22 +1,20 @@
 package UserInterface;
 
-import Database.DBReaderWriter;
 import Main.Application;
-
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class HomeScreen extends JPanel{
+public class VisitScreen extends JPanel {
 
-    private JButton patientsButton, visitsButton, analyticsButton;
-    private int buttonWidth = GUI.DEFAULT_WIDTH/2;
-    private int buttonHeight = GUI.DEFAULT_HEIGHT/2;
-    private Font mainFont;
+    private JButton addVisitButton, viewDeleteVisitsButton, backButton;
+    private int buttonWidth = GUI.DEFAULT_WIDTH/4;
+    private int buttonHeight = GUI.DEFAULT_HEIGHT/5;
+    private Font buttonFont;
 
-    public HomeScreen(){
+    public VisitScreen(){
         this.setBackground(GUI.bgColor);
 
         initLayout();
@@ -34,50 +32,52 @@ public class HomeScreen extends JPanel{
 
         // set panel layouts
 
-            // main panel
+        // main panel
         this.setBounds(0,0, GUI.DEFAULT_WIDTH, GUI.DEFAULT_HEIGHT);
         this.setBackground(Color.BLACK);
     }
 
     // initializes all buttons for home screen
     private void initButtons(){
-        patientsButton = new JButton("Patients");
-        visitsButton = new JButton("Visits");
-        analyticsButton = new JButton("Analytics");
+        addVisitButton = new JButton("Add Visit");
+        viewDeleteVisitsButton = new JButton("View/Delete Visit");
+        backButton = new JButton("⬅");
 
-        patientsButton.setBounds(0, 0, buttonWidth, buttonHeight);
-        visitsButton.setBounds(GUI.DEFAULT_WIDTH/2,0, buttonWidth, buttonHeight);
-        analyticsButton.setBounds(0, GUI.DEFAULT_HEIGHT/2, GUI.DEFAULT_WIDTH, buttonHeight);
+        int xpos = (GUI.DEFAULT_WIDTH/2)-(buttonWidth/2);
 
-        patientsButton.setFont(mainFont);
-        visitsButton.setFont(mainFont);
-        analyticsButton.setFont(mainFont);
+        addVisitButton.setBounds(xpos, (GUI.DEFAULT_HEIGHT/2)-(buttonHeight + 10), buttonWidth, buttonHeight);
+        viewDeleteVisitsButton.setBounds(xpos, (GUI.DEFAULT_HEIGHT/2) + 10, buttonWidth, buttonHeight);
+        backButton.setBounds(0, 0, 80, 80);
 
-        patientsButton.setForeground(Color.WHITE);
-        visitsButton.setForeground(Color.WHITE);
-        analyticsButton.setForeground(Color.WHITE);
+        addVisitButton.setFont(buttonFont);
+        viewDeleteVisitsButton.setFont(buttonFont);
+        backButton.setFont(buttonFont);
 
-        patientsButton.setBackground(GUI.bgColor);
-        visitsButton.setBackground(GUI.bgColor);
-        analyticsButton.setBackground(GUI.bgColor);
+        addVisitButton.setForeground(Color.WHITE);
+        viewDeleteVisitsButton.setForeground(Color.WHITE);
+        backButton.setForeground(Color.YELLOW);
 
-        this.add(patientsButton);
-        this.add(visitsButton);
-        this.add(analyticsButton);
+        addVisitButton.setBackground(GUI.bgColor);
+        viewDeleteVisitsButton.setBackground(GUI.bgColor);
+        backButton.setBackground(GUI.bgColor);
+
+        this.add(addVisitButton);
+        this.add(viewDeleteVisitsButton);
+        this.add(backButton);
     }
 
     // init fonts
 
     private void initFonts(){
-        mainFont = new Font("name", Font.BOLD, 28);
+        buttonFont = new Font("name", Font.BOLD, 28);
     }
 
     // initializes all action listeners for the buttons
     private void initActionListeners(){
-        patientsButton.addMouseListener(new MouseListener() {
+        addVisitButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                Application.setCurrentScreen(Application.PATIENTS_SCREEN);
+                Application.setCurrentScreen(Application.ADD_VISIT_SCREEN);
             }
 
             @Override
@@ -92,19 +92,19 @@ public class HomeScreen extends JPanel{
 
             @Override
             public void mouseEntered(MouseEvent mouseEvent) {
-                patientsButton.setBackground(GUI.BUTTON_HOVER_COLOR);
+                addVisitButton.setBackground(GUI.BUTTON_HOVER_COLOR);
             }
 
             @Override
             public void mouseExited(MouseEvent mouseEvent) {
-                patientsButton.setBackground(GUI.bgColor);
+                addVisitButton.setBackground(GUI.bgColor);
             }
         });
 
-        visitsButton.addMouseListener(new MouseListener() {
+        viewDeleteVisitsButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                Application.setCurrentScreen(Application.VISIT_SCREEN);
+                Application.setCurrentScreen(Application.VIEW_DELETE_VISITS_SCREEN);
             }
 
             @Override
@@ -119,19 +119,19 @@ public class HomeScreen extends JPanel{
 
             @Override
             public void mouseEntered(MouseEvent mouseEvent) {
-                visitsButton.setBackground(GUI.BUTTON_HOVER_COLOR);
+                viewDeleteVisitsButton.setBackground(GUI.BUTTON_HOVER_COLOR);
             }
 
             @Override
             public void mouseExited(MouseEvent mouseEvent) {
-                visitsButton.setBackground(GUI.bgColor);
+                viewDeleteVisitsButton.setBackground(GUI.bgColor);
             }
         });
 
-        analyticsButton.addMouseListener(new MouseListener() {
+        backButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                Application.setCurrentScreen(Application.ANALYTICS_SCREEN);
+                Application.setCurrentScreen(Application.HOME_SCREEN);
             }
 
             @Override
@@ -146,15 +146,14 @@ public class HomeScreen extends JPanel{
 
             @Override
             public void mouseEntered(MouseEvent mouseEvent) {
-                analyticsButton.setBackground(GUI.BUTTON_HOVER_COLOR);
+                backButton.setBackground(GUI.BUTTON_HOVER_COLOR);
             }
 
             @Override
             public void mouseExited(MouseEvent mouseEvent) {
-                analyticsButton.setBackground(GUI.bgColor);
+                backButton.setBackground(GUI.bgColor);
             }
         });
 
     }
-
 }
