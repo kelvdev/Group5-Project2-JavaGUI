@@ -175,7 +175,7 @@ public class AddPatientScreen extends JPanel {
 
     private void submitInformation(){
         Patient patient = new Patient(
-                -1, -1, -1,
+                -1, "", "",
                 -1, -1, "",
                 "", "", "", "",
                 "", "",
@@ -183,8 +183,7 @@ public class AddPatientScreen extends JPanel {
                 ""
         );
 
-        //Application.dbReaderWriter.createPatient(patient)
-        if(true){
+        if(Application.dbReaderWriter.createPatient(patient) > 0){
             System.out.println("Patient " + patient.getTHC() + " created");
             clearScreen();
             Application.setCurrentScreen(Application.PATIENTS_SCREEN);

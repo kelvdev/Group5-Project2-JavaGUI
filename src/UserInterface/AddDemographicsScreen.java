@@ -10,7 +10,7 @@ import java.awt.event.MouseListener;
 
 public class AddDemographicsScreen extends JPanel {
 
-    private JButton addDemographicsButton, addVisitButton, cancelButton, backButton;
+    private JButton addDemographicsButton, cancelButton, backButton;
     private JTextField occupationTF, workStatusTF,
             tinOnsetTF, tinEtiologyTF, hyperacOnsetTF, hyperacEtiologyTF;
     private JTextArea tinCommentsTA, hCommentsTA;
@@ -47,35 +47,29 @@ public class AddDemographicsScreen extends JPanel {
     // initializes all buttons for home screen
     private void initButtons(){
         addDemographicsButton = new JButton("Save");
-        addVisitButton = new JButton("Add Visit");
         cancelButton = new JButton("Cancel");
         backButton = new JButton("⬅");
 
         int buttonX = GUI.DEFAULT_WIDTH - (buttonWidth + 20);
 
         addDemographicsButton.setBounds(buttonX, 80, buttonWidth, buttonHeight);
-        addVisitButton.setBounds(buttonX, 160, buttonWidth, buttonHeight);
-        cancelButton.setBounds(buttonX, 240, buttonWidth, buttonHeight);
+        cancelButton.setBounds(buttonX, 160, buttonWidth, buttonHeight);
         backButton.setBounds(0, 0, 80, 80);
 
         addDemographicsButton.setFont(componentDesign.buttonFont);
         cancelButton.setFont(componentDesign.buttonFont);
-        addVisitButton.setFont(componentDesign.buttonFont);
         backButton.setFont(componentDesign.buttonFont);
 
         addDemographicsButton.setForeground(Color.GREEN);
         cancelButton.setForeground(Color.RED);
-        addVisitButton.setForeground(Color.WHITE);
         backButton.setForeground(Color.YELLOW);
 
         addDemographicsButton.setBackground(GUI.bgColor);
         cancelButton.setBackground(GUI.bgColor);
-        addVisitButton.setBackground(GUI.bgColor);
         backButton.setBackground(GUI.bgColor);
 
         this.add(addDemographicsButton);
         this.add(cancelButton);
-        this.add(addVisitButton);
         this.add(backButton);
     }
 
@@ -183,7 +177,7 @@ public class AddDemographicsScreen extends JPanel {
 
     private void submitInformation(){
         Patient patient = new Patient(
-                -1, -1, -1,
+                -1, "", "",
                 -1, -1, "",
                 "", "", "", "",
                 "", tinEtiologyTF.getText(),
@@ -274,33 +268,6 @@ public class AddDemographicsScreen extends JPanel {
             }
         });
 
-        addVisitButton.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent mouseEvent) {
-                submitInformation();
-                Application.setCurrentScreen(Application.ADD_VISIT_SCREEN);
-            }
-
-            @Override
-            public void mousePressed(MouseEvent mouseEvent) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent mouseEvent) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent mouseEvent) {
-                addVisitButton.setBackground(GUI.BUTTON_HOVER_COLOR);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent mouseEvent) {
-                addVisitButton.setBackground(GUI.bgColor);
-            }
-        });
 
         cancelButton.addMouseListener(new MouseListener() {
             @Override

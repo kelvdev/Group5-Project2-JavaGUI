@@ -77,7 +77,11 @@ public class VisitScreen extends JPanel {
         addVisitButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                Application.setCurrentScreen(Application.ADD_VISIT_SCREEN);
+                if (Application.getCurrentPatientTHC() == Application.PATIENT_THC_EMPTY) {
+                    Application.setCurrentScreen(Application.SELECT_CURRENT_PATIENT_SCREEN);
+                } else {
+                    Application.setCurrentScreen(Application.ADD_VISIT_SCREEN);
+                }
             }
 
             @Override

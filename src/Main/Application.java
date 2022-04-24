@@ -20,6 +20,7 @@ public class Application {
     private static ViewDeleteVisitsScreen viewDeleteVisitsScreen = new ViewDeleteVisitsScreen();
     private static ViewEditPatientsScreen viewEditPatientsScreen = new ViewEditPatientsScreen();
     private static AnalyticsScreen analyticsScreen = new AnalyticsScreen();
+    private static SelectCurrentPatientScreen selectCurrentPatientScreen = new SelectCurrentPatientScreen();
 
     public static final int HOME_SCREEN = 0;
     public static final int PATIENTS_SCREEN = 1;
@@ -31,6 +32,10 @@ public class Application {
     public static final int VIEW_DELETE_VISITS_SCREEN = 7;
     public static final int VIEW_EDIT_PATIENTS_SCREEN = 8;
     public static final int ANALYTICS_SCREEN = 9;
+    public static final int SELECT_CURRENT_PATIENT_SCREEN = 10;
+
+    public static final int PATIENT_THC_EMPTY = -1;
+    public static final int PATIENT_VISIT_ID_EMPTY = -1;
 
     private static int currentPatientTHC = -1;
     private static int currentVisitID = -1;
@@ -47,7 +52,8 @@ public class Application {
             thiScreen,
             viewDeleteVisitsScreen,
             viewEditPatientsScreen,
-            analyticsScreen
+            analyticsScreen,
+            selectCurrentPatientScreen
     };
 
     public static DBConnector dbConnector = new DBConnector(
@@ -55,7 +61,7 @@ public class Application {
             "root",
             "myawesomepassword");
 
-    public static DBReaderWriter dbReaderWriter = new DBReaderWriter(dbConnector);
+    public static DBReaderWriter dbReaderWriter;
 
     // instantiates the application and both the main frame and error frame
     public Application(){
@@ -107,14 +113,12 @@ public class Application {
     // set screen
     public static void setCurrentScreen(int applicationScreenId){
 
-        System.out.println("THE CURRENT SCREEN ID: " + currentScreenId);
         // remove current screen
         gui.removeScreen(allScreens[currentScreenId]);
 
         // set current screen id and screen with new screen
         currentScreenId = applicationScreenId;
         gui.addScreen(allScreens[applicationScreenId]);
-        System.out.println("THE NEW CURRENT SCREEN ID AFTER ADDING: " + currentScreenId);
 
         // update GUI
         gui.getFrame().update(gui.getFrame().getGraphics());
@@ -145,8 +149,9 @@ public class Application {
 
     private boolean testDatabaseConnection() {
         if(dbConnector.getConnection() != null) {
+            dbReaderWriter = new DBReaderWriter(dbConnector);
             return true;
-        } else {
+        }else {
             return false;
         }
     }

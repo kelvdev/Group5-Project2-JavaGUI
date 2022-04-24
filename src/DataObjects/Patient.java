@@ -3,15 +3,15 @@ package DataObjects;
 // Class to be used for representing an individual patient information from the database
 public class Patient {
 
-    private int thc, countryID, stateID, zipID, wStatusID;
-    private String surname, firstName, ssn, dob, insurance, occupation, tinBackground,
+    private int thc, zipID, wStatusID;
+    private String surname, firstName, countryID, stateID, ssn, dob, insurance, occupation, tinBackground,
     hBackground, tIndComments, hIndComments;
 
     public Patient(){
 
     }
 
-    public Patient(int thc, int countryID, int stateID, int zipID, int wStatusID,
+    public Patient(int thc, String countryID, String stateID, int zipID, int wStatusID,
                    String surname, String firstName, String ssn, String dob, String insurance, String occupation,
                    String tinBackground, String hBackground, String tIndComments, String hIndComments){
 
@@ -37,11 +37,11 @@ public class Patient {
         return thc;
     }
 
-    public int getCountryID(){
+    public String getCountryID(){
         return countryID;
     }
 
-    public int getStateID(){
+    public String getStateID(){
         return stateID;
     }
 

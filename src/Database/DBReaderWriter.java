@@ -14,6 +14,10 @@ public class DBReaderWriter {
         connection = dbConnector.getConnection();
     }
 
+    public Connection getConnection(){
+        return connection;
+    }
+
     // TODO: implement a INSERT INTO Patient VALUE(S) using this method. Return THC of newly created patient
     // Patient THC should be NULL as database will allocate a THC for the patient
     // Enrique
@@ -94,27 +98,27 @@ public class DBReaderWriter {
 
             prepareStmt.setInt(1, THC);
 
-            ResultSet rs = prepareStmt.executeQuery(query);
+            ResultSet rs = prepareStmt.executeQuery();
 
             System.out.printf("THC|CountryID|StateID|ZipID|WStatusID|Occupation|Surname|FirstName|SSN|DoB|Insurance|TinBackround|HBackground|tIndComments|hIndComments\n");
 
             while (rs.next())
             {
                 int thc = rs.getInt("thc");
-                int countryID = rs.getInt("countryID");
-                int stateID = rs.getInt("stateID");
-                int zipID = rs.getInt("zipID");
-                int wStatusID = rs.getInt("wStatusID");
+                String countryID = rs.getString("country");
+                String stateID = rs.getString("state");
+                int zipID = rs.getInt("zip");
+                int wStatusID = rs.getInt("wStatus");
                 String surname = rs.getString("surname");
-                String firstName = rs.getString("firstName");
+                String firstName = rs.getString("first_Name");
                 String ssn = rs.getString("ssn");
                 String dob = rs.getString("dob");
                 String insurance = rs.getString("insurance");
-                String occupation = rs.getString("occupation");
-                String tinBackground = rs.getString("tinBackground");
-                String hBackground = rs.getString("hBackground");
-                String tIndComments = rs.getString("tIndComments");
-                String hIndComments = rs.getString("hIndComments");
+                String occupation = rs.getString("occup");
+                String tinBackground = rs.getString("tin_background");
+                String hBackground = rs.getString("h_background");
+                String tIndComments = rs.getString("t_ind_comments");
+                String hIndComments = rs.getString("h_ind_comments");
 
                 System.out.printf(thc + "|" + countryID + "|" + stateID + "|" + zipID + "|" + wStatusID + "|" + surname
                         + "|" + firstName + "|" + ssn + "|" + dob + "|" + insurance + "|" + occupation
@@ -127,9 +131,11 @@ public class DBReaderWriter {
                 return patient;
             }
         }
-        catch(Exception e)
+        catch(SQLException e)
         {
-            System.out.println("SQL exception occured" + e);
+            System.out.println("SQL exception occured" + e.getSQLState());
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
         }
 
         return null;
@@ -157,8 +163,6 @@ public class DBReaderWriter {
             prepareStmt.execute();
 
             int deleted = prepareStmt.executeUpdate();
-
-
 
             if (deleted == 0)
             {
@@ -252,10 +256,6 @@ public class DBReaderWriter {
 
         String query = "SELECT * FROM THI WHERE visitID = ?";
 
-        String serverName = "jdbc:mysql://localhost:3306/test";
-        String user = "root";
-        String password = "myawesomepassword";
-
         try
         {
             Connection con = this.connection;
@@ -264,7 +264,7 @@ public class DBReaderWriter {
 
             prepareStmt.setInt(1, visitIDKey);
 
-            ResultSet rs = prepareStmt.executeQuery(query);
+            ResultSet rs = prepareStmt.executeQuery();
 
             System.out.printf("VisitID, Sc_T, Sc_F, Sc_E, Sc_C, F1, F2, E3, F4," +
                     " C5, E6, F7, C8, F9, E10, C11, F12, F13, E14, F15, E16," +
@@ -357,13 +357,13 @@ public class DBReaderWriter {
     }
 
     /* TODO: implement a 3 table join which will return the following values in order in an ArrayList
-    *         > (int) patientTHC
-    *         > (String) patient full name
-    *         > (String) patient dob
-    *         > (String) patient insurance
-    *         > (String) patient address
-    *         > (int) patient THI score (set this value to -1 if THI has not been completed)
-    *         > (int) patient visit count
+     *         > (int) patientTHC
+     *         > (String) patient full name
+     *         > (String) patient dob
+     *         > (String) patient insurance
+     *         > (String) patient address
+     *         > (int) patient THI score (set this value to -1 if THI has not been completed)
+     *         > (int) patient visit count
      * */
 
     // Kelvin
