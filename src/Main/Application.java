@@ -6,6 +6,8 @@ import UserInterface.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class Application {
 
@@ -35,7 +37,7 @@ public class Application {
     public static final int SELECT_CURRENT_PATIENT_SCREEN = 10;
 
     public static final int PATIENT_THC_EMPTY = -1;
-    public static final int PATIENT_VISIT_ID_EMPTY = -1;
+    public static final int VISIT_ID_EMPTY = -1;
 
     private static int currentPatientTHC = -1;
     private static int currentVisitID = -1;
@@ -88,6 +90,8 @@ public class Application {
         // instantiating the UserInterface.GUI automatically shows the window
         gui = new GUI();
         gui.addScreen(homeScreen);
+
+        updateTitle();
     }
 
     // creates the error frame that pops up if there is a database error
@@ -140,6 +144,42 @@ public class Application {
 
     public static int getCurrentVisitID(){
         return Application.currentVisitID;
+    }
+
+    public static GUI getApplicationGUI(){
+        return gui;
+    }
+
+    public static void updateTitle() {
+
+        StringBuilder titleString = new StringBuilder(GUI.appName);
+
+        String patientString = " | Current Patient THC: ";
+        titleString.append(patientString);
+
+        if (currentPatientTHC == -1) {
+
+            titleString.append("NONE");
+
+        } else {
+
+            titleString.append(currentPatientTHC);
+
+        }
+
+        titleString.append(" | Current Visit ID: ");
+
+        if(currentVisitID == -1) {
+
+            titleString.append("NONE");
+
+        } else {
+
+            titleString.append(currentVisitID);
+
+        }
+
+        gui.getFrame().setTitle(titleString.toString());
     }
 
     /*

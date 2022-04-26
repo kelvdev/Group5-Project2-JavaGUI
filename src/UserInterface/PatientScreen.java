@@ -78,7 +78,8 @@ public class PatientScreen extends JPanel {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 Application.setCurrentScreen(Application.ADD_PATIENTS_SCREEN);
-                System.out.println("add Patients Button");
+                Application.setCurrentPatientTHC(Application.PATIENT_THC_EMPTY);
+                Application.updateTitle();
             }
 
             @Override

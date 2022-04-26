@@ -5,6 +5,8 @@ import Main.Application;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -173,7 +175,7 @@ public class AddPatientScreen extends JPanel {
         this.add(insuranceTF);
     }
 
-    private void submitInformation(){
+    private boolean submitInformation(){
         Patient patient = new Patient(
                 -1, "", "",
                 -1, -1, "",
@@ -183,12 +185,20 @@ public class AddPatientScreen extends JPanel {
                 ""
         );
 
-        if(Application.dbReaderWriter.createPatient(patient) > 0){
+        int newPatientTHC = Application.dbReaderWriter.createPatient(patient);
+
+        if(newPatientTHC > 0){
             System.out.println("Patient " + patient.getTHC() + " created");
+
+            Application.setCurrentPatientTHC(newPatientTHC);
+            Application.updateTitle();
+
             clearScreen();
             Application.setCurrentScreen(Application.PATIENTS_SCREEN);
+            return true;
         } else {
             System.out.println("Patient " + patient.getTHC() + " create FAILED");
+            return false;
         }
     }
 
@@ -292,8 +302,9 @@ public class AddPatientScreen extends JPanel {
         addDemographicsButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                submitInformation();
-                Application.setCurrentScreen(Application.ADD_DEMOGRAPHICS_SCREEN);
+                if (submitInformation()) {
+                    Application.setCurrentScreen(Application.ADD_DEMOGRAPHICS_SCREEN);
+                }
             }
 
             @Override

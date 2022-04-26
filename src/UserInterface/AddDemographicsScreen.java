@@ -12,11 +12,11 @@ public class AddDemographicsScreen extends JPanel {
 
     private JButton addDemographicsButton, cancelButton, backButton;
     private JTextField occupationTF, workStatusTF,
-            tinOnsetTF, tinEtiologyTF, hyperacOnsetTF, hyperacEtiologyTF;
+            tinBackgroundTF, hyperacBackgroundTF;
     private JTextArea tinCommentsTA, hCommentsTA;
 
     private JLabel occupationLabel, workStatusLabel,
-            tinOnsetLabel, tinEtiologyLabel, hyperacOnsetLabel, hyperacEtiologyLabel, tinCommentsLabel, hCommentsLabel;
+            tinBackgroundLabel, hyperacBackgroundLabel, tinCommentsLabel, hCommentsLabel;
     private int buttonWidth = GUI.DEFAULT_WIDTH/4;
     private int buttonHeight = GUI.DEFAULT_HEIGHT/10;
     private ComponentDesign componentDesign = new ComponentDesign();
@@ -87,20 +87,16 @@ public class AddDemographicsScreen extends JPanel {
 
         occupationLabel = new JLabel("Occupation");
         workStatusLabel = new JLabel("Work Status");
-        tinOnsetLabel = new JLabel("Tinnitus Onset");
-        tinEtiologyLabel = new JLabel("Tinnitus Etiology");
-        hyperacOnsetLabel = new JLabel("Hyperacusis Onset");
-        hyperacEtiologyLabel = new JLabel("Hyperacusis Etiology");
+        tinBackgroundLabel = new JLabel("Tinnitus Background");
+        hyperacBackgroundLabel = new JLabel("Tinnitus Background");
 
         tinCommentsLabel = new JLabel("Tinnitus Additional Comments");
         hCommentsLabel = new JLabel("Hyperacusis Additional Comments");
 
         occupationLabel.setForeground(Color.WHITE);
         workStatusLabel.setForeground(Color.WHITE);
-        tinOnsetLabel.setForeground(Color.WHITE);
-        tinEtiologyLabel.setForeground(Color.WHITE);
-        hyperacOnsetLabel.setForeground(Color.WHITE);
-        hyperacEtiologyLabel.setForeground(Color.WHITE);
+        tinBackgroundLabel.setForeground(Color.WHITE);
+        hyperacBackgroundLabel.setForeground(Color.WHITE);
 
         tinCommentsLabel.setForeground(Color.WHITE);
         hCommentsLabel.setForeground(Color.WHITE);
@@ -113,20 +109,16 @@ public class AddDemographicsScreen extends JPanel {
 
         occupationLabel.setBounds(x1, 80, width, height);
         workStatusLabel.setBounds(x1, 160, width, height);
-        tinOnsetLabel.setBounds(x1, 240, width, height);
-        tinEtiologyLabel.setBounds(x1, 320, width, height);
-        hyperacOnsetLabel.setBounds(x1, 400, width, height);
-        hyperacEtiologyLabel.setBounds(x1, 480, width, height);
+        tinBackgroundLabel.setBounds(x1, 240, width, height);
+        hyperacBackgroundLabel.setBounds(x1, 320, width, height);
 
         tinCommentsLabel.setBounds(x2, 80, width, height);
         hCommentsLabel.setBounds(x2, 240, width, height);
 
         this.add(occupationLabel);
         this.add(workStatusLabel);
-        this.add(tinEtiologyLabel);
-        this.add(tinOnsetLabel);
-        this.add(hyperacOnsetLabel);
-        this.add(hyperacEtiologyLabel);
+        this.add(hyperacBackgroundLabel);
+        this.add(tinBackgroundLabel);
         this.add(tinCommentsLabel);
         this.add(hCommentsLabel);
 
@@ -137,10 +129,8 @@ public class AddDemographicsScreen extends JPanel {
     private void initTextFields(){
         occupationTF = new JTextField();
         workStatusTF = new JTextField();
-        tinOnsetTF = new JTextField();
-        tinEtiologyTF = new JTextField();
-        hyperacOnsetTF = new JTextField();
-        hyperacEtiologyTF = new JTextField();
+        tinBackgroundTF = new JTextField();
+        hyperacBackgroundTF = new JTextField();
 
         tinCommentsTA = new JTextArea();
         hCommentsTA = new JTextArea();
@@ -153,10 +143,8 @@ public class AddDemographicsScreen extends JPanel {
 
         occupationTF.setBounds(x1, 80, width, height);
         workStatusTF.setBounds(x1, 160, width, height);
-        tinOnsetTF.setBounds(x1, 240, width, height);
-        tinEtiologyTF.setBounds(x1, 320, width, height);
-        hyperacOnsetTF.setBounds(x1, 400, width, height);
-        hyperacEtiologyTF.setBounds(x1, 480, width, height);
+        tinBackgroundTF.setBounds(x1, 240, width, height);
+        hyperacBackgroundTF.setBounds(x1, 320, width, height);
 
         tinCommentsTA.setBounds(x2 - 150, 120, width + 50, height + 50);
         hCommentsTA.setBounds(x2 - 150, 280, width + 50, height + 50);
@@ -166,30 +154,30 @@ public class AddDemographicsScreen extends JPanel {
 
         this.add(occupationTF);
         this.add(workStatusTF);
-        this.add(tinOnsetTF);
-        this.add(tinEtiologyTF);
-        this.add(hyperacOnsetTF);
-        this.add(hyperacEtiologyTF);
+        this.add(tinBackgroundTF);
+        this.add(hyperacBackgroundTF);
         this.add(tinCommentsTA);
         this.add(hCommentsTA);
     }
 
 
-    private void submitInformation(){
+    private boolean submitInformation(){
         Patient patient = new Patient(
                 -1, "", "",
                 -1, -1, "",
                 "", "", "", "",
-                "", tinEtiologyTF.getText(),
-                hyperacEtiologyTF.getText(), tinCommentsTA.getText(),
+                "", tinBackgroundTF.getText(),
+                hyperacBackgroundTF.getText(), tinCommentsTA.getText(),
                 hCommentsTA.getText()
         );
 
         if(Application.dbReaderWriter.addDemographicsInformation(patient)){
             System.out.println("Patient " + patient.getTHC() + " demographics added");
             clearScreen();
+            return true;
         } else {
             System.out.println("Patient " + patient.getTHC() + " demographics added FAILED");
+            return false;
         }
     }
 
@@ -243,8 +231,9 @@ public class AddDemographicsScreen extends JPanel {
         addDemographicsButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                submitInformation();
-                Application.setCurrentScreen(Application.PATIENTS_SCREEN);
+                if (submitInformation()) {
+                    Application.setCurrentScreen(Application.PATIENTS_SCREEN);
+                }
             }
 
             @Override

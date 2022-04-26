@@ -115,6 +115,28 @@ public class AddVisitScreen extends JPanel {
         this.add(backButton);
     }
 
+    public boolean createVisit(){
+
+        if(Application.dbReaderWriter.createVisit(Application.getCurrentPatientTHC(),reasonForVisitTA.getText()) > 0){
+            clearScreen();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void clearScreen(){
+        for(Component component : getComponents()){
+            try{
+                JTextField textField = (JTextField) component;
+                System.out.println(textField.getText());
+                textField.setText("");
+            } catch (Exception e){
+
+            }
+        }
+    }
+
     // initializes all action listeners for the buttons
     private void initActionListeners() {
 
@@ -148,7 +170,11 @@ public class AddVisitScreen extends JPanel {
         createVisitButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                Application.setCurrentScreen(Application.HOME_SCREEN);
+                if (createVisit()) {
+                    Application.setCurrentScreen(Application.HOME_SCREEN);
+                } else {
+
+                }
             }
 
             @Override
