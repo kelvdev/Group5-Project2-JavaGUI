@@ -52,7 +52,7 @@ public class DBReaderWriter {
     {
         String query = "DELETE FROM Patient WHERE THC = ?";
         
-        String serverName = "jdbc:mysql://localhost:3306/test";
+        String serverName = "jdbc:mysql://localhost:3306/team5";
         String user = "root";
         String password = "myawesomepassword";
 
@@ -100,7 +100,7 @@ public class DBReaderWriter {
 
         String query = "SELECT * FROM Patient WHERE THC = ?";
 
-        String serverName = "jdbc:mysql://localhost:3306/test";
+        String serverName = "jdbc:mysql://localhost:3306/team5";
         String user = "root";
         String password = "myawesomepassword";
 
@@ -114,25 +114,25 @@ public class DBReaderWriter {
             
             ResultSet rs = prepareStmt.executeQuery(query);
 
-            System.out.printf("THC|CountryID|StateID|ZipID|WStatusID|Occupation|Surname|FirstName|SSN|DoB|Insurance|TinBackround|HBackground|tIndComments|hIndComments\n");
+            System.out.printf("THC|Country|State|Zip|WStatus|Occupation|Surname|FirstName|SSN|DoB|Insurance|TinBackround|HBackground|tIndComments|hIndComments\n");
             
             while (rs.next()) 
             {
-                int thc = rs.getInt("thc");
-                int countryID = rs.getInt("countryID");
-                int stateID = rs.getInt("stateID");
-                int zipID = rs.getInt("zipID");
-                int wStatusID = rs.getInt("wStatusID");
-                String surname = rs.getString("surname");
-                String firstName = rs.getString("firstName");
-                String ssn = rs.getString("ssn");
-                String dob = rs.getString("dob");
-                String insurance = rs.getString("insurance");
-                String occupation = rs.getString("occupation");
-                String tinBackground = rs.getString("tinBackground");
-                String hBackground = rs.getString("hBackground");
-                String tIndComments = rs.getString("tIndComments");
-                String hIndComments = rs.getString("hIndComments");
+                int thc = rs.getInt("THC");
+                int countryID = rs.getInt("Country");
+                int stateID = rs.getInt("State");
+                int zipID = rs.getInt("ZIP");
+                int wStatusID = rs.getInt("WStatus");
+                String occupation = rs.getString("Occup");
+                String surname = rs.getString("Surname");
+                String firstName = rs.getString("First_name");
+                String ssn = rs.getString("SSN");
+                String dob = rs.getString("DOB");
+                String insurance = rs.getString("Insurance");
+                String tinBackground = rs.getString("Tin_background");
+                String hBackground = rs.getString("H_background");
+                String tIndComments = rs.getString("T_Ind_comments");
+                String hIndComments = rs.getString("H_Ind_comments");
                
                 System.out.printf(thc + "|" + countryID + "|" + stateID + "|" + zipID + "|" + wStatusID + "|" + surname
                                 + "|" + firstName + "|" + ssn + "|" + dob + "|" + insurance + "|" + occupation
@@ -165,7 +165,7 @@ public class DBReaderWriter {
     {
         String query = "DELETE FROM Patient WHERE visitID = ?";
         
-        String serverName = "jdbc:mysql://localhost:3306/test";
+        String serverName = "jdbc:mysql://localhost:3306/team5";
         String user = "root";
         String password = "myawesomepassword";
 
@@ -217,6 +217,29 @@ public class DBReaderWriter {
     public boolean getAllPatientVisitsOnDate(String date)
     {
         // return visit count
+        String query = "DELETE FROM Patient WHERE visitID = ?";
+        
+        String serverName = "jdbc:mysql://localhost:3306/team5";
+        String user = "root";
+        String password = "myawesomepassword";
+
+
+        try 
+        {
+            Connection con = DriverManager.getConnection(serverName, user, password);
+
+            CallableStatement statement = con.prepareCall("{? = call team5.VisitorsCount(?)}");
+
+            statement.registerOutParameter(1, Types.INTEGER);
+            statement.setString(2, date);
+            statement.execute();
+
+            System.out.print("Number of visitors on " + date + ": " + statement.getInt(1));
+        }
+        catch(Exception e) 
+        {
+            System.out.println("SQL exception occured" + e);
+        }
         return false;
     }
 
@@ -238,7 +261,7 @@ public class DBReaderWriter {
     {
         String query = "DELETE FROM Patient WHERE visitID = ?";
         
-        String serverName = "jdbc:mysql://localhost:3306/test";
+        String serverName = "jdbc:mysql://localhost:3306/team5";
         String user = "root";
         String password = "myawesomepassword";
 
@@ -303,7 +326,7 @@ public class DBReaderWriter {
             
             while (rs.next()) 
             {
-                int visitID = rs.getInt("visitID");
+                int visitID = rs.getInt("Visit_ID");
                 int Sc_T = rs.getInt("Sc_T");
                 int Sc_F = rs.getInt("Sc_F");
                 int Sc_E = rs.getInt("Sc_E");
@@ -357,7 +380,7 @@ public class DBReaderWriter {
     // Huy
     public String getResultTHI(int visitorID)
     {
-        String serverName = "jdbc:mysql://localhost:3306/test";
+        String serverName = "jdbc:mysql://localhost:3306/team5";
         String user = "root";
         String password = "myawesomepassword";
 
