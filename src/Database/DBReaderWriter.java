@@ -300,7 +300,8 @@ public class DBReaderWriter {
 
     // TODO: implement a SELECT FROM THI WHERE visitID (parameter) = visitID (database value) using this method and return a THI object
     // Huy
-    public THI getTHI(int visitIDKey){
+    public THI getTHI(int visitIDKey)
+    {
 
         // return a populated visit
         
