@@ -9,7 +9,7 @@ import java.awt.event.MouseListener;
 
 public class VisitScreen extends JPanel {
 
-    private JButton addVisitButton, viewDeleteVisitsButton, backButton;
+    private JButton addVisitButton, viewVisitsButton, deleteVisitButton, backButton;
     private int buttonWidth = GUI.DEFAULT_WIDTH/4;
     private int buttonHeight = GUI.DEFAULT_HEIGHT/5;
     private Font buttonFont;
@@ -40,29 +40,35 @@ public class VisitScreen extends JPanel {
     // initializes all buttons for home screen
     private void initButtons(){
         addVisitButton = new JButton("Add Visit");
-        viewDeleteVisitsButton = new JButton("View/Delete Visit");
-        backButton = new JButton("⬅");
+        viewVisitsButton = new JButton("View Visits");
+        deleteVisitButton = new JButton("Delete Visit");
+        backButton = new JButton("<");
 
         int xpos = (GUI.DEFAULT_WIDTH/2)-(buttonWidth/2);
 
-        addVisitButton.setBounds(xpos, (GUI.DEFAULT_HEIGHT/2)-(buttonHeight + 10), buttonWidth, buttonHeight);
-        viewDeleteVisitsButton.setBounds(xpos, (GUI.DEFAULT_HEIGHT/2) + 10, buttonWidth, buttonHeight);
+        addVisitButton.setBounds(xpos, (GUI.DEFAULT_HEIGHT/3)-(buttonHeight + 10), buttonWidth, buttonHeight);
+        viewVisitsButton.setBounds(xpos, (GUI.DEFAULT_HEIGHT/3) + 10, buttonWidth, buttonHeight);
+        deleteVisitButton.setBounds(xpos, (GUI.DEFAULT_HEIGHT/3) + buttonHeight + 30, buttonWidth, buttonHeight);
         backButton.setBounds(0, 0, 80, 80);
 
         addVisitButton.setFont(buttonFont);
-        viewDeleteVisitsButton.setFont(buttonFont);
+        viewVisitsButton.setFont(buttonFont);
+        deleteVisitButton.setFont(buttonFont);
         backButton.setFont(buttonFont);
 
         addVisitButton.setForeground(Color.WHITE);
-        viewDeleteVisitsButton.setForeground(Color.WHITE);
+        viewVisitsButton.setForeground(Color.WHITE);
+        deleteVisitButton.setForeground(Color.WHITE);
         backButton.setForeground(Color.YELLOW);
 
         addVisitButton.setBackground(GUI.bgColor);
-        viewDeleteVisitsButton.setBackground(GUI.bgColor);
+        viewVisitsButton.setBackground(GUI.bgColor);
+        deleteVisitButton.setBackground(GUI.bgColor);
         backButton.setBackground(GUI.bgColor);
 
         this.add(addVisitButton);
-        this.add(viewDeleteVisitsButton);
+        this.add(viewVisitsButton);
+        this.add(deleteVisitButton);
         this.add(backButton);
     }
 
@@ -105,10 +111,10 @@ public class VisitScreen extends JPanel {
             }
         });
 
-        viewDeleteVisitsButton.addMouseListener(new MouseListener() {
+        viewVisitsButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                Application.setCurrentScreen(Application.VIEW_DELETE_VISITS_SCREEN);
+                Application.setCurrentScreen(Application.VIEW_VISITS_SCREEN);
             }
 
             @Override
@@ -123,12 +129,12 @@ public class VisitScreen extends JPanel {
 
             @Override
             public void mouseEntered(MouseEvent mouseEvent) {
-                viewDeleteVisitsButton.setBackground(GUI.BUTTON_HOVER_COLOR);
+                viewVisitsButton.setBackground(GUI.BUTTON_HOVER_COLOR);
             }
 
             @Override
             public void mouseExited(MouseEvent mouseEvent) {
-                viewDeleteVisitsButton.setBackground(GUI.bgColor);
+                viewVisitsButton.setBackground(GUI.bgColor);
             }
         });
 

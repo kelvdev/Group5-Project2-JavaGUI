@@ -6,8 +6,6 @@ import UserInterface.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class Application {
 
@@ -19,8 +17,8 @@ public class Application {
     private static VisitScreen visitScreen = new VisitScreen();
     private static AddVisitScreen addVisitScreen = new AddVisitScreen();
     private static THIScreen thiScreen = new THIScreen();
-    private static ViewDeleteVisitsScreen viewDeleteVisitsScreen = new ViewDeleteVisitsScreen();
-    private static ViewEditPatientsScreen viewEditPatientsScreen = new ViewEditPatientsScreen();
+    private static ViewVisitsScreen viewVisitsScreen = new ViewVisitsScreen();
+    private static ViewPatientsScreen viewPatientsScreen = new ViewPatientsScreen();
     private static AnalyticsScreen analyticsScreen = new AnalyticsScreen();
     private static SelectCurrentPatientScreen selectCurrentPatientScreen = new SelectCurrentPatientScreen();
 
@@ -31,8 +29,8 @@ public class Application {
     public static final int VISIT_SCREEN = 4;
     public static final int ADD_VISIT_SCREEN = 5;
     public static final int THI_SCREEN = 6;
-    public static final int VIEW_DELETE_VISITS_SCREEN = 7;
-    public static final int VIEW_EDIT_PATIENTS_SCREEN = 8;
+    public static final int VIEW_VISITS_SCREEN = 7;
+    public static final int VIEW_PATIENTS_SCREEN = 8;
     public static final int ANALYTICS_SCREEN = 9;
     public static final int SELECT_CURRENT_PATIENT_SCREEN = 10;
 
@@ -52,8 +50,8 @@ public class Application {
             visitScreen,
             addVisitScreen,
             thiScreen,
-            viewDeleteVisitsScreen,
-            viewEditPatientsScreen,
+            viewVisitsScreen,
+            viewPatientsScreen,
             analyticsScreen,
             selectCurrentPatientScreen
     };
@@ -74,7 +72,7 @@ public class Application {
     public void start(){
         if(testDatabaseConnection()){
             gui.show();
-            viewEditPatientsScreen.updateTable();
+            viewPatientsScreen.initTable();
         } else {
             errorGUI.show();
         }
@@ -152,7 +150,7 @@ public class Application {
     }
 
     public static void updateTables(){
-        viewEditPatientsScreen.updateTable();
+        viewPatientsScreen.updateTable();
     }
 
     public static void updateTitle() {

@@ -196,7 +196,6 @@ public class AddPatientScreen extends JPanel {
 
                 Application.setCurrentPatientTHC(newPatientTHC);
                 Application.updateTitle();
-
                 clearScreen();
                 Application.setCurrentScreen(Application.PATIENTS_SCREEN);
                 Application.updateTables();
