@@ -59,7 +59,7 @@ public class Application {
     };
 
     public static DBConnector dbConnector = new DBConnector(
-            "jdbc:mysql://localhost/Team5",
+            "jdbc:mysql://localhost/team5",
             "root",
             "myawesomepassword");
 
@@ -74,6 +74,7 @@ public class Application {
     public void start(){
         if(testDatabaseConnection()){
             gui.show();
+            viewEditPatientsScreen.updateTable();
         } else {
             errorGUI.show();
         }
@@ -148,6 +149,10 @@ public class Application {
 
     public static GUI getApplicationGUI(){
         return gui;
+    }
+
+    public static void updateTables(){
+        viewEditPatientsScreen.updateTable();
     }
 
     public static void updateTitle() {

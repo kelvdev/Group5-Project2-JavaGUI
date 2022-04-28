@@ -12,9 +12,8 @@ public class DBConnector {
 
         public DBConnector(String serverName, String user, String password){
             try {
-                //DriverManager.registerDriver(new );
-                databaseConnection = DriverManager.getConnection(serverName, user, password);
                 DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+                databaseConnection = DriverManager.getConnection(serverName, user, password);
             } catch (SQLException sqlException){
                 System.out.println("Unable to establish a connection!");
                 System.out.println(sqlException.getMessage());

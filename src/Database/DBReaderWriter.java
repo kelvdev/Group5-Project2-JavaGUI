@@ -23,7 +23,41 @@ public class DBReaderWriter {
     // Enrique
     public int createPatient(Patient patient)
     {
+        String query = "INSERT INTO" +
+                " Patient (Country, State, ZIP, WStatus, Occup, Surname, First_name, SSN, DOB," +
+                " Insurance, Tin_background, H_background, T_Ind_comments, H_Ind_comments)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            PreparedStatement prepareStmt = this.connection.prepareStatement(query);
+
+            prepareStmt.setString(1, patient.getCountryID());
+            prepareStmt.setString(2, patient.getStateID());
+            prepareStmt.setInt(3, patient.getZipID());
+            prepareStmt.setInt(4, patient.getWStatusID());
+            prepareStmt.setString(5, patient.getOccupation());
+            prepareStmt.setString(6, patient.getSurname());
+            prepareStmt.setString(7, patient.getFirstName());
+            prepareStmt.setString(8, patient.getSSN());
+            prepareStmt.setString(9, patient.getDob());
+            prepareStmt.setString(10, patient.getInsurance());
+            prepareStmt.setString(11, patient.getTinBackground());
+            prepareStmt.setString(12, patient.getHBackground());
+            prepareStmt.setString(13, patient.getTIndComments());
+            prepareStmt.setString(14, patient.getHIndComments());
+
+            prepareStmt.executeUpdate();
+
+            return getMaxTHC();
+        }
+        catch(SQLException e)
+        {
+            System.out.println("SQL exception occured" + e.getSQLState());
+            System.out.println(e.getMessage());
+        }
+
         return -1;
+
     }
 
     // TODO: implement a UPDATE Patient to add demographics information using this method. Return true if update successful, else false
@@ -358,17 +392,69 @@ public class DBReaderWriter {
 
     /* TODO: implement a 3 table join which will return the following values in order in an ArrayList
      *         > (int) patientTHC
-     *         > (String) patient full name
+     *         > (String) patient name
      *         > (String) patient dob
      *         > (String) patient insurance
-     *         > (String) patient address
      *         > (int) patient THI score (set this value to -1 if THI has not been completed)
      *         > (int) patient visit count
      * */
 
     // Kelvin
-    public ArrayList<Object> getPatientFullInformation(int THC){
-        return null;
+    public Object[][] getAllPatientsFullInformation(){
+
+        ArrayList<Object[]> patientFullInfoList = new ArrayList<>();
+
+        try {
+            PreparedStatement fullInformationStatement = this.connection.prepareStatement("SELECT" +
+                            " THC, Patient.first_Name, Patient.surname, Patient.dob, Patient.insurance\n" +
+                            "FROM Patient;");
+
+            ResultSet rs = fullInformationStatement.executeQuery();
+
+            while(rs.next()){
+
+                System.out.println(rs.getInt("THC") + " " +
+                        rs.getString("first_Name") + " " +
+                        rs.getString("surname") + " " +
+                        rs.getString("dob") + " " +
+                        rs.getString("insurance"));
+
+                patientFullInfoList.add(new Object[]{
+                        rs.getInt("THC"),
+                        rs.getString("first_Name") + " " + rs.getString("surname"),
+                        rs.getString("dob"),
+                        rs.getString("insurance")
+                });
+            }
+
+            Object[][] patientFinalArray = new Object[patientFullInfoList.size()][4];
+
+            for(int i = 0; i < patientFinalArray.length; i++){
+                patientFinalArray[i] = patientFullInfoList.get(i);
+            }
+
+            return patientFinalArray;
+        } catch (SQLException sqlE){
+            return null;
+        }
+    }
+
+    // Kelvin
+
+    public int getMaxTHC(){
+
+        try{
+            PreparedStatement getMaxTHCStatement = connection.prepareStatement("SELECT MAX(THC) FROM Patient");
+            ResultSet resultSet = getMaxTHCStatement.executeQuery();
+
+            resultSet.next();
+            return resultSet.getInt("MAX(THC)");
+        }catch (SQLException sqlE){
+            System.out.println("GET MAX THC FAILED " + sqlE.getMessage());
+            sqlE.printStackTrace();
+        }
+
+        return -1;
     }
 
 

@@ -9,6 +9,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class AddPatientScreen extends JPanel {
 
@@ -176,28 +178,35 @@ public class AddPatientScreen extends JPanel {
     }
 
     private boolean submitInformation(){
-        Patient patient = new Patient(
-                -1, "", "",
-                -1, -1, "",
-                "", "", "", "",
-                "", "",
-                "", "",
-                ""
-        );
 
-        int newPatientTHC = Application.dbReaderWriter.createPatient(patient);
+        try {
+            Patient patient = new Patient(
+                    -1, countryTF.getText(), stateTF.getText(),
+                    Integer.parseInt(zipTF.getText()), 0, lastNameTF.getText(),
+                    firstNameTF.getText(), ssnTF.getText(), dobTF.getText(), insuranceTF.getText(),
+                    "", "",
+                    "", "",
+                    ""
+            );
 
-        if(newPatientTHC > 0){
-            System.out.println("Patient " + patient.getTHC() + " created");
+            int newPatientTHC = Application.dbReaderWriter.createPatient(patient);
 
-            Application.setCurrentPatientTHC(newPatientTHC);
-            Application.updateTitle();
+            if (newPatientTHC > 0) {
+                System.out.println("Patient " + newPatientTHC + " created");
 
-            clearScreen();
-            Application.setCurrentScreen(Application.PATIENTS_SCREEN);
-            return true;
-        } else {
-            System.out.println("Patient " + patient.getTHC() + " create FAILED");
+                Application.setCurrentPatientTHC(newPatientTHC);
+                Application.updateTitle();
+
+                clearScreen();
+                Application.setCurrentScreen(Application.PATIENTS_SCREEN);
+                Application.updateTables();
+                return true;
+            } else {
+                System.out.println("Patient " + patient.getTHC() + " create FAILED");
+                return false;
+            }
+        } catch (Exception e){
+
             return false;
         }
     }

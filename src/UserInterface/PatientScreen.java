@@ -106,7 +106,7 @@ public class PatientScreen extends JPanel {
         viewEditPatientsButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                System.out.println("Visits Button");
+                Application.setCurrentScreen(Application.VIEW_EDIT_PATIENTS_SCREEN);
             }
 
             @Override
