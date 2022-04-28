@@ -95,7 +95,7 @@ public class DBReaderWriter {
 
             int deleted = prepareStmt.executeUpdate();
 
-            this.connection.close();
+            //this.connection.close(); Don't know if we need to
 
             if (deleted == 0)
             {
@@ -132,27 +132,28 @@ public class DBReaderWriter {
 
             prepareStmt.setInt(1, THC);
 
-            ResultSet rs = prepareStmt.executeQuery();
+            ResultSet rs = prepareStmt.executeQuery(query);
 
-            System.out.printf("THC|CountryID|StateID|ZipID|WStatusID|Occupation|Surname|FirstName|SSN|DoB|Insurance|TinBackround|HBackground|tIndComments|hIndComments\n");
+            System.out.printf("THC|Country|State|Zip|WStatus|Occupation|Surname|FirstName|SSN|DoB|Insurance|TinBackround|HBackground|tIndComments|hIndComments\n");
 
             while (rs.next())
             {
-                int thc = rs.getInt("thc");
-                String countryID = rs.getString("country");
-                String stateID = rs.getString("state");
-                int zipID = rs.getInt("zip");
-                int wStatusID = rs.getInt("wStatus");
-                String surname = rs.getString("surname");
-                String firstName = rs.getString("first_Name");
-                String ssn = rs.getString("ssn");
-                String dob = rs.getString("dob");
-                String insurance = rs.getString("insurance");
-                String occupation = rs.getString("occup");
-                String tinBackground = rs.getString("tin_background");
-                String hBackground = rs.getString("h_background");
-                String tIndComments = rs.getString("t_ind_comments");
-                String hIndComments = rs.getString("h_ind_comments");
+                int thc = rs.getInt("THC");
+                String countryID = rs.getString("Country");
+                String stateID = rs.getString("State");
+                int zipID = rs.getInt("ZIP");
+                int wStatusID = rs.getInt("WStatus");
+                String occupation = rs.getString("Occup");
+                String surname = rs.getString("Surname");
+                String firstName = rs.getString("First_name");
+                String ssn = rs.getString("SSN");
+                String dob = rs.getString("DOB");
+                String insurance = rs.getString("Insurance");
+                String tinBackground = rs.getString("Tin_background");
+                String hBackground = rs.getString("H_background");
+                String tIndComments = rs.getString("T_Ind_comments");
+                String hIndComments = rs.getString("H_Ind_comments");
+               
 
                 System.out.printf(thc + "|" + countryID + "|" + stateID + "|" + zipID + "|" + wStatusID + "|" + surname
                         + "|" + firstName + "|" + ssn + "|" + dob + "|" + insurance + "|" + occupation
@@ -160,10 +161,11 @@ public class DBReaderWriter {
 
 
                 Patient patient = new Patient(thc, countryID, stateID, zipID, wStatusID, surname, firstName, ssn, dob, insurance, occupation,
-                        tinBackground, hBackground, tIndComments, hIndComments);
+                tinBackground, hBackground, tIndComments, hIndComments);
 
                 return patient;
             }
+            //this.connection.close(); Don't know if we need to
         }
         catch(SQLException e)
         {
@@ -208,6 +210,8 @@ public class DBReaderWriter {
                 System.out.printf("%d row(s) deleted", deleted);
                 return true;
             }
+            //this.connection.close(); Don't know if we need to
+
         }
         catch (Exception e)
         {
@@ -231,6 +235,23 @@ public class DBReaderWriter {
     // Huy
     public boolean getAllPatientVisitsOnDate(String date){
         // return visit count
+        String query = "DELETE FROM Patient WHERE visitID = ?";
+        try 
+        {
+            CallableStatement statement = this.connection.prepareCall("{? = call team5.VisitorsCount(?)}");
+
+            statement.registerOutParameter(1, Types.INTEGER);
+            statement.setString(2, date);
+            statement.execute();
+
+            System.out.print("Number of visitors on " + date + ": " + statement.getInt(1));
+            //this.connection.close(); Don't know if we need to
+
+        }
+        catch(Exception e) 
+        {
+            System.out.println("SQL exception occured" + e);
+        }
         return false;
     }
 
@@ -273,6 +294,8 @@ public class DBReaderWriter {
                 System.out.printf("%d row(s) deleted", deleted);
                 return true;
             }
+            //this.connection.close(); Don't know if we need to
+
         }
         catch (Exception e)
         {
@@ -298,7 +321,7 @@ public class DBReaderWriter {
 
             prepareStmt.setInt(1, visitIDKey);
 
-            ResultSet rs = prepareStmt.executeQuery();
+            ResultSet rs = prepareStmt.executeQuery(query);
 
             System.out.printf("VisitID, Sc_T, Sc_F, Sc_E, Sc_C, F1, F2, E3, F4," +
                     " C5, E6, F7, C8, F9, E10, C11, F12, F13, E14, F15, E16," +
@@ -306,7 +329,7 @@ public class DBReaderWriter {
 
             while (rs.next())
             {
-                int visitID = rs.getInt("visitID");
+                int visitID = rs.getInt("Visit_ID");
                 int Sc_T = rs.getInt("Sc_T");
                 int Sc_F = rs.getInt("Sc_F");
                 int Sc_E = rs.getInt("Sc_E");
@@ -345,6 +368,8 @@ public class DBReaderWriter {
                         C5, E6, F7, C8, F9, E10, C11, F12, F13, E14, F15, E16,
                         E17, F18, C19, F20, E21, E22, C23, F24, E25);
 
+                //this.connection.close(); Don't know if we need to
+
                 return _THI;
             }
         }
@@ -379,6 +404,7 @@ public class DBReaderWriter {
 
             System.out.printf("VisitorID|Score|ScoreDesc\n");
             System.out.printf(id + "|" + score + "|" + desc + "\n");
+            //this.connection.close(); Don't know if we need to
 
             return desc;
         }
