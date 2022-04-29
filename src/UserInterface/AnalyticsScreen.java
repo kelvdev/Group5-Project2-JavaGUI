@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -80,7 +81,7 @@ public class AnalyticsScreen extends JPanel {
 
         visitCountLabel = new JLabel(dateString);
         patientsRegisteredLabel = new JLabel("# of patients registered");
-        thiCollectedCountLabel = new JLabel("# of THI collected");
+        thiCollectedCountLabel = new JLabel("# of THIs collected");
 
         visitCountDataLabel = new JLabel("0");
         patientsRegisteredDataLabel = new JLabel("0");
@@ -110,9 +111,17 @@ public class AnalyticsScreen extends JPanel {
         patientsRegisteredLabel.setHorizontalAlignment(JLabel.CENTER);
         thiCollectedCountLabel.setHorizontalAlignment(JLabel.CENTER);
 
+        visitCountLabel.setFont(componentDesign.textFont);
+        patientsRegisteredLabel.setFont(componentDesign.textFont);
+        thiCollectedCountLabel.setFont(componentDesign.textFont);
+
         visitCountDataLabel.setHorizontalAlignment(JLabel.CENTER);
         patientsRegisteredDataLabel.setHorizontalAlignment(JLabel.CENTER);
         thiCollectedCountDataLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        visitCountDataLabel.setFont(componentDesign.textFont);
+        patientsRegisteredDataLabel.setFont(componentDesign.textFont);
+        thiCollectedCountDataLabel.setFont(componentDesign.textFont);
 
         this.add(visitCountLabel);
         this.add(patientsRegisteredLabel);
@@ -121,6 +130,15 @@ public class AnalyticsScreen extends JPanel {
         this.add(patientsRegisteredDataLabel);
         this.add(thiCollectedCountDataLabel);
 
+    }
+
+    public void updateAnalytics(){
+        LocalDateTime dateTime = LocalDateTime.now();
+        String dateString = dateTime.getYear() + "-" + dateTime.getMonthValue() + "-" + dateTime.getDayOfMonth();
+
+        visitCountDataLabel.setText(String.valueOf(Application.dbReaderWriter.getAllPatientVisitsOnDate(dateString)));
+        patientsRegisteredDataLabel.setText(String.valueOf(Application.dbReaderWriter.getRegisteredPatientCount()));
+        thiCollectedCountDataLabel.setText(String.valueOf(Application.dbReaderWriter.getAllTHICollected()));
     }
 
     // initializes all action listeners for the buttons

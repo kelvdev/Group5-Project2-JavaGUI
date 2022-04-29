@@ -172,11 +172,13 @@ public class AddDemographicsScreen extends JPanel {
         );
 
         if(Application.dbReaderWriter.addDemographicsInformation(patient)){
-            System.out.println("Patient " + patient.getTHC() + " demographics added");
+            Application.displayMessage("Demographics added", "Patient "
+                    + Application.getCurrentPatientTHC() + " demographics added");
             clearScreen();
             return true;
         } else {
-            System.out.println("Patient " + patient.getTHC() + " demographics added FAILED");
+            Application.displayMessage("Demographics fail", "Patient "
+                    + Application.getCurrentPatientTHC() + " demographics failed to be added");
             return false;
         }
     }

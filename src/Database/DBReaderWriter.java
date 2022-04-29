@@ -153,7 +153,7 @@ public class DBReaderWriter {
                 String hBackground = rs.getString("H_background");
                 String tIndComments = rs.getString("T_Ind_comments");
                 String hIndComments = rs.getString("H_Ind_comments");
-               
+
 
                 System.out.printf(thc + "|" + countryID + "|" + stateID + "|" + zipID + "|" + wStatusID + "|" + surname
                         + "|" + firstName + "|" + ssn + "|" + dob + "|" + insurance + "|" + occupation
@@ -161,7 +161,7 @@ public class DBReaderWriter {
 
 
                 Patient patient = new Patient(thc, countryID, stateID, zipID, wStatusID, surname, firstName, ssn, dob, insurance, occupation,
-                tinBackground, hBackground, tIndComments, hIndComments);
+                        tinBackground, hBackground, tIndComments, hIndComments);
 
                 return patient;
             }
@@ -180,7 +180,7 @@ public class DBReaderWriter {
     // TODO: implement a INSERT INTO Visit VALUE(S) using this method. Return visit ID of the newly created visit
     // Enrique
     public int createVisit(int THC, String visitComments){
-        return 0;
+        return 1;
     }
 
     // DELETE FROM Visit VALUE(S) using this method. Return true if delete successful, else false
@@ -233,26 +233,9 @@ public class DBReaderWriter {
 
     // TODO: implement an SQL call using the SQL visitorsCount function and return a visit count
     // Huy
-    public boolean getAllPatientVisitsOnDate(String date){
+    public int getAllPatientVisitsOnDate(String date){
         // return visit count
-        String query = "DELETE FROM Patient WHERE visitID = ?";
-        try 
-        {
-            CallableStatement statement = this.connection.prepareCall("{? = call team5.VisitorsCount(?)}");
-
-            statement.registerOutParameter(1, Types.INTEGER);
-            statement.setString(2, date);
-            statement.execute();
-
-            System.out.print("Number of visitors on " + date + ": " + statement.getInt(1));
-            //this.connection.close(); Don't know if we need to
-
-        }
-        catch(Exception e) 
-        {
-            System.out.println("SQL exception occured" + e);
-        }
-        return false;
+        return 0;
     }
 
     // TODO: implement a INSERT INTO THI VALUE(S) using this method. Return true if create successful, else false
@@ -432,8 +415,9 @@ public class DBReaderWriter {
 
         try {
             PreparedStatement fullInformationStatement = this.connection.prepareStatement("SELECT" +
-                            " THC, Patient.first_Name, Patient.surname, Patient.dob, Patient.insurance\n" +
-                            "FROM Patient;");
+                            " THC, Patient.first_Name, Patient.surname, Patient.dob, Patient.insurance" +
+                            " FROM Patient" +
+                            " ORDER BY Patient.surname;");
 
             ResultSet rs = fullInformationStatement.executeQuery();
 
@@ -483,5 +467,36 @@ public class DBReaderWriter {
         return -1;
     }
 
+    public int getAllTHICollected() {
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT COUNT(*) FROM THI");
+            ResultSet rs = preparedStatement.executeQuery();
+
+            rs.next();
+
+            return rs.getInt("COUNT(*)");
+
+        } catch (SQLException sqle){
+
+        }
+
+        return 0;
+    }
+
+    public int getRegisteredPatientCount(){
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT COUNT(*) FROM Patient");
+            ResultSet rs = preparedStatement.executeQuery();
+
+            rs.next();
+
+            return rs.getInt("COUNT(*)");
+
+        } catch (SQLException sqle){
+
+        }
+
+        return 0;
+    }
 
 }

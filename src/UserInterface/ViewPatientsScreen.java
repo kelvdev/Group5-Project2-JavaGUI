@@ -56,7 +56,7 @@ public class ViewPatientsScreen extends JPanel {
 
     private void initLabels(){
         // set main label
-        JLabel title = new JLabel("View/Edit Patients");
+        JLabel title = new JLabel("View Patients");
         title.setBounds(0, 2, GUI.DEFAULT_WIDTH, 70);
         title.setForeground(Color.WHITE);
         title.setFont(componentDesign.labelFont);
@@ -90,7 +90,7 @@ public class ViewPatientsScreen extends JPanel {
 
         //scroll pane
         scrollPane = new JScrollPane(patientsTable);
-        scrollPane.setBounds(0, yOffSet, GUI.DEFAULT_WIDTH, GUI.DEFAULT_HEIGHT - yOffSet);
+        scrollPane.setBounds(0, yOffSet, GUI.DEFAULT_WIDTH, GUI.DEFAULT_HEIGHT - 200);
         scrollPane.createVerticalScrollBar();
         scrollPane.setBackground(GUI.bgColor);
 

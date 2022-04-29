@@ -194,8 +194,8 @@ public class PatientScreen extends JPanel {
 
     private void openDeletePopup(){
         JFrame jFrame = new JFrame("Enter Patient THC to Delete Patient");
-        jFrame.setLocation(Application.getApplicationGUI().getFrame().getX()/2,
-                Application.getApplicationGUI().getFrame().getY()/2);
+        jFrame.setLocation(Application.getApplicationGUI().getFrame().getX(),
+                Application.getApplicationGUI().getFrame().getY());
         jFrame.setSize(500,300);
         jFrame.setResizable(false);
         jFrame.setVisible(true);
@@ -220,6 +220,41 @@ public class PatientScreen extends JPanel {
         jButton.setHorizontalAlignment(JButton.CENTER);
         jButton.setBackground(GUI.bgColor);
         jButton.setForeground(Color.RED);
+
+        jButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if (Application.dbReaderWriter.deletePatient(Integer.parseInt(thcTextField.getText()))){
+                    Application.displayMessage("Delete Confirmation",
+                            "Patient " + thcTextField.getText() + " successfully deleted");
+                } else {
+                    Application.displayMessage("Delete Failed",
+                            "Patient " + thcTextField.getText() + " failed to delete");
+                }
+
+                jFrame.setVisible(false);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+
+            }
+        });
 
         jPanel.add(thcTextField);
         jPanel.add(jButton);

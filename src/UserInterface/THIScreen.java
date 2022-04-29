@@ -164,6 +164,74 @@ public class THIScreen extends JPanel {
                 answers[20],answers[21],answers[22],answers[23],answers[24]);
 
         Application.dbReaderWriter.createPatientTHI(thi);
+        getResult();
+        Application.setCurrentScreen(Application.HOME_SCREEN);
+        Application.setCurrentPatientTHC(Application.PATIENT_THC_EMPTY);
+        Application.setCurrentVisitID(Application.VISIT_ID_EMPTY);
+    }
+
+    private void getResult(){
+        JFrame jFrame = new JFrame("Patient " + Application.getCurrentPatientTHC() + " THI Result");
+        jFrame.setLocation(Application.getApplicationGUI().getFrame().getX()/2,
+                Application.getApplicationGUI().getFrame().getY()/2);
+        jFrame.setSize(500,300);
+        jFrame.setResizable(false);
+        jFrame.setVisible(true);
+        jFrame.setLayout(null);
+
+        JPanel jPanel = new JPanel();
+        jPanel.setBackground(GUI.bgColor);
+        jPanel.setSize(500, 300);
+        jPanel.setLocation(0,0);
+        jPanel.setLayout(null);
+
+        JLabel thcLabel = new JLabel("THI DETERMINATION: " +
+                Application.dbReaderWriter.getResultTHI(Application.getCurrentVisitID()));
+        thcLabel.setSize(500, 50);
+        thcLabel.setLocation(0,0);
+        thcLabel.setFont(componentDesign.labelFont);
+        thcLabel.setHorizontalAlignment(JTextField.CENTER);
+        thcLabel.setBackground(GUI.bgColor);
+        thcLabel.setForeground(Color.WHITE);
+
+        JButton jButton = new JButton("OK");
+        jButton.setSize(500, 60);
+        jButton.setLocation(0,150);
+        jButton.setHorizontalAlignment(JButton.CENTER);
+        jButton.setBackground(GUI.bgColor);
+        jButton.setForeground(Color.GREEN);
+
+        jButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                jFrame.setVisible(false);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+
+            }
+        });
+
+        jPanel.add(thcLabel);
+        jPanel.add(jButton);
+
+        jFrame.add(jPanel);
     }
 
     private boolean showNextQuestion(){
@@ -176,10 +244,6 @@ public class THIScreen extends JPanel {
         }
 
         return false;
-    }
-
-    public void setPatientTHC(int thc){
-        this.patientTHC = thc;
     }
 
     // initializes all action listeners for the buttons

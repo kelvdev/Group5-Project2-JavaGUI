@@ -163,6 +163,7 @@ public class HomeScreen extends JPanel{
         analyticsButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
+                Application.updateAnalytics();
                 Application.setCurrentScreen(Application.ANALYTICS_SCREEN);
             }
 

@@ -96,7 +96,7 @@ public class AddPatientScreen extends JPanel {
 
         firstNameLabel = new JLabel("First Name");
         lastNameLabel = new JLabel("Last Name");
-        dobLabel = new JLabel("Date of Birth (YYYY/MM/DD)");
+        dobLabel = new JLabel("Date of Birth (YYYY-MM-DD)");
         stateLabel = new JLabel("State");
         zipLabel = new JLabel("Zip");
         countryLabel = new JLabel("Country");
@@ -195,13 +195,16 @@ public class AddPatientScreen extends JPanel {
                 System.out.println("Patient " + newPatientTHC + " created");
 
                 Application.setCurrentPatientTHC(newPatientTHC);
-                Application.updateTitle();
                 clearScreen();
+                Application.displayMessage("Patient Created", "Patient " + newPatientTHC + " successfully created");
                 Application.setCurrentScreen(Application.PATIENTS_SCREEN);
+
+                Application.updateTitle();
                 Application.updateTables();
+                Application.updateAnalytics();
                 return true;
             } else {
-                System.out.println("Patient " + patient.getTHC() + " create FAILED");
+                Application.displayMessage("Create Error", "Patient " + newPatientTHC + " failed to create");
                 return false;
             }
         } catch (Exception e){

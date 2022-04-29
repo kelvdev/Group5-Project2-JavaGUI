@@ -117,10 +117,18 @@ public class AddVisitScreen extends JPanel {
 
     public boolean createVisit(){
 
-        if(Application.dbReaderWriter.createVisit(Application.getCurrentPatientTHC(),reasonForVisitTA.getText()) > 0){
+        int visitId = Application.dbReaderWriter.createVisit(-1, reasonForVisitTA.getText());
+
+        if(visitId > 0){
+            Application.setCurrentVisitID(visitId);
+            Application.updateTables();
+            Application.updateAnalytics();
+            Application.displayMessage("Visit created", "Visit "
+                    + visitId + " successfully created");
             clearScreen();
             return true;
         } else {
+            Application.displayMessage("Visit create failed", "Visit failed to create");
             return false;
         }
     }
@@ -172,6 +180,7 @@ public class AddVisitScreen extends JPanel {
             public void mouseClicked(MouseEvent mouseEvent) {
                 if (createVisit()) {
                     Application.setCurrentScreen(Application.HOME_SCREEN);
+                    Application.setCurrentVisitID(Application.VISIT_ID_EMPTY);
                 } else {
 
                 }

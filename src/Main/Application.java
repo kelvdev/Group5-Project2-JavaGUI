@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Application {
-
     private static GUI gui, errorGUI;
     private static HomeScreen homeScreen = new HomeScreen();
     private static PatientScreen patientsScreen = new PatientScreen();
@@ -21,6 +20,8 @@ public class Application {
     private static ViewPatientsScreen viewPatientsScreen = new ViewPatientsScreen();
     private static AnalyticsScreen analyticsScreen = new AnalyticsScreen();
     private static SelectCurrentPatientScreen selectCurrentPatientScreen = new SelectCurrentPatientScreen();
+
+    private static JFrame dialogFrame = new JFrame();
 
     public static final int HOME_SCREEN = 0;
     public static final int PATIENTS_SCREEN = 1;
@@ -62,6 +63,8 @@ public class Application {
             "myawesomepassword");
 
     public static DBReaderWriter dbReaderWriter;
+
+    private static ComponentDesign componentDesign = new ComponentDesign();
 
     // instantiates the application and both the main frame and error frame
     public Application(){
@@ -151,6 +154,11 @@ public class Application {
 
     public static void updateTables(){
         viewPatientsScreen.updateTable();
+        viewVisitsScreen.updateTable();
+    }
+
+    public static void updateAnalytics(){
+        analyticsScreen.updateAnalytics();
     }
 
     public static void updateTitle() {
@@ -183,6 +191,36 @@ public class Application {
         }
 
         gui.getFrame().setTitle(titleString.toString());
+    }
+
+    public static void displayMessage(String title, String message){
+        dialogFrame.setTitle(title);
+        dialogFrame.setLocation(Application.getApplicationGUI().getFrame().getX(),
+                Application.getApplicationGUI().getFrame().getY());
+        dialogFrame.setSize(500,300);
+        dialogFrame.setResizable(false);
+        dialogFrame.setVisible(true);
+        dialogFrame.setLayout(null);
+        dialogFrame.setBackground(GUI.bgColor);
+
+        JLabel dialogLabel = new JLabel(message);
+        dialogLabel.setSize(500, 50);
+        dialogLabel.setLocation(0,0);
+        dialogLabel.setFont(componentDesign.textFont);
+        dialogLabel.setHorizontalAlignment(JTextField.CENTER);
+        dialogLabel.setBackground(GUI.bgColor);
+        dialogLabel.setForeground(Color.WHITE);
+
+        JPanel jPanel = new JPanel();
+        jPanel.setBackground(GUI.bgColor);
+        jPanel.setSize(500, 300);
+        jPanel.setLocation(0,0);
+        jPanel.setLayout(null);
+
+       jPanel.add(dialogLabel);
+       dialogFrame.add(jPanel);
+
+        dialogFrame.setVisible(true);
     }
 
     /*
