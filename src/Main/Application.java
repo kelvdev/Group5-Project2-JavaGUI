@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Application {
-
     private static GUI gui, errorGUI;
     private static HomeScreen homeScreen = new HomeScreen();
     private static PatientScreen patientsScreen = new PatientScreen();
@@ -17,9 +16,12 @@ public class Application {
     private static VisitScreen visitScreen = new VisitScreen();
     private static AddVisitScreen addVisitScreen = new AddVisitScreen();
     private static THIScreen thiScreen = new THIScreen();
-    private static ViewDeleteVisitsScreen viewDeleteVisitsScreen = new ViewDeleteVisitsScreen();
-    private static ViewEditPatientsScreen viewEditPatientsScreen = new ViewEditPatientsScreen();
+    private static ViewVisitsScreen viewVisitsScreen = new ViewVisitsScreen();
+    private static ViewPatientsScreen viewPatientsScreen = new ViewPatientsScreen();
     private static AnalyticsScreen analyticsScreen = new AnalyticsScreen();
+    private static SelectCurrentPatientScreen selectCurrentPatientScreen = new SelectCurrentPatientScreen();
+
+    private static JFrame dialogFrame = new JFrame();
 
     public static final int HOME_SCREEN = 0;
     public static final int PATIENTS_SCREEN = 1;
@@ -28,9 +30,13 @@ public class Application {
     public static final int VISIT_SCREEN = 4;
     public static final int ADD_VISIT_SCREEN = 5;
     public static final int THI_SCREEN = 6;
-    public static final int VIEW_DELETE_VISITS_SCREEN = 7;
-    public static final int VIEW_EDIT_PATIENTS_SCREEN = 8;
+    public static final int VIEW_VISITS_SCREEN = 7;
+    public static final int VIEW_PATIENTS_SCREEN = 8;
     public static final int ANALYTICS_SCREEN = 9;
+    public static final int SELECT_CURRENT_PATIENT_SCREEN = 10;
+
+    public static final int PATIENT_THC_EMPTY = -1;
+    public static final int VISIT_ID_EMPTY = -1;
 
     private static int currentPatientTHC = -1;
     private static int currentVisitID = -1;
@@ -45,17 +51,20 @@ public class Application {
             visitScreen,
             addVisitScreen,
             thiScreen,
-            viewDeleteVisitsScreen,
-            viewEditPatientsScreen,
-            analyticsScreen
+            viewVisitsScreen,
+            viewPatientsScreen,
+            analyticsScreen,
+            selectCurrentPatientScreen
     };
 
     public static DBConnector dbConnector = new DBConnector(
-            "jdbc:mysql://localhost/Team5",
+            "jdbc:mysql://localhost/team5",
             "root",
             "myawesomepassword");
 
-    public static DBReaderWriter dbReaderWriter = new DBReaderWriter(dbConnector);
+    public static DBReaderWriter dbReaderWriter;
+
+    private static ComponentDesign componentDesign = new ComponentDesign();
 
     // instantiates the application and both the main frame and error frame
     public Application(){
@@ -66,6 +75,7 @@ public class Application {
     public void start(){
         if(testDatabaseConnection()){
             gui.show();
+            viewPatientsScreen.initTable();
         } else {
             errorGUI.show();
         }
@@ -82,6 +92,8 @@ public class Application {
         // instantiating the UserInterface.GUI automatically shows the window
         gui = new GUI();
         gui.addScreen(homeScreen);
+
+        updateTitle();
     }
 
     // creates the error frame that pops up if there is a database error
@@ -107,14 +119,12 @@ public class Application {
     // set screen
     public static void setCurrentScreen(int applicationScreenId){
 
-        System.out.println("THE CURRENT SCREEN ID: " + currentScreenId);
         // remove current screen
         gui.removeScreen(allScreens[currentScreenId]);
 
         // set current screen id and screen with new screen
         currentScreenId = applicationScreenId;
         gui.addScreen(allScreens[applicationScreenId]);
-        System.out.println("THE NEW CURRENT SCREEN ID AFTER ADDING: " + currentScreenId);
 
         // update GUI
         gui.getFrame().update(gui.getFrame().getGraphics());
@@ -138,6 +148,81 @@ public class Application {
         return Application.currentVisitID;
     }
 
+    public static GUI getApplicationGUI(){
+        return gui;
+    }
+
+    public static void updateTables(){
+        viewPatientsScreen.updateTable();
+        viewVisitsScreen.updateTable();
+    }
+
+    public static void updateAnalytics(){
+        analyticsScreen.updateAnalytics();
+    }
+
+    public static void updateTitle() {
+
+        StringBuilder titleString = new StringBuilder(GUI.appName);
+
+        String patientString = " | Current Patient THC: ";
+        titleString.append(patientString);
+
+        if (currentPatientTHC == -1) {
+
+            titleString.append("NONE");
+
+        } else {
+
+            titleString.append(currentPatientTHC);
+
+        }
+
+        titleString.append(" | Current Visit ID: ");
+
+        if(currentVisitID == -1) {
+
+            titleString.append("NONE");
+
+        } else {
+
+            titleString.append(currentVisitID);
+
+        }
+
+        gui.getFrame().setTitle(titleString.toString());
+    }
+
+    public static void displayMessage(String title, String message){
+        dialogFrame.setTitle(title);
+        dialogFrame.setLocation(Application.getApplicationGUI().getFrame().getX(),
+                Application.getApplicationGUI().getFrame().getY());
+        dialogFrame.setSize(500,300);
+        dialogFrame.setResizable(false);
+        dialogFrame.setVisible(true);
+        dialogFrame.setLayout(null);
+        dialogFrame.setBackground(GUI.bgColor);
+
+        JLabel dialogLabel = new JLabel(message);
+        dialogLabel.setSize(500, 50);
+        dialogLabel.setLocation(0,0);
+        dialogLabel.setFont(componentDesign.textFont);
+        dialogLabel.setHorizontalAlignment(JTextField.CENTER);
+        dialogLabel.setBackground(GUI.bgColor);
+        dialogLabel.setForeground(Color.WHITE);
+
+        JPanel jPanel = new JPanel();
+        jPanel.setBackground(GUI.bgColor);
+        jPanel.setSize(500, 300);
+        jPanel.setLocation(0,0);
+        jPanel.setLayout(null);
+
+       jPanel.add(dialogLabel);
+       dialogFrame.add(jPanel);
+
+        dialogFrame.setVisible(true);
+    }
+
     /*
     try to connect to database, if connects then return true
      and application can start else return false, send error message, and don't open app.
@@ -145,10 +230,16 @@ public class Application {
 
     private boolean testDatabaseConnection() {
         if(dbConnector.getConnection() != null) {
+            dbReaderWriter = new DBReaderWriter(dbConnector);
             return true;
-        } else {
+        }else {
             return false;
         }
+    }
+
+    // close DBConnection
+    public static void stop(){
+        dbConnector.closeConnection();
     }
 
 }

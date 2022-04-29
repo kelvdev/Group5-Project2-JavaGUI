@@ -5,8 +5,12 @@ import Main.Application;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class AddPatientScreen extends JPanel {
 
@@ -92,7 +96,7 @@ public class AddPatientScreen extends JPanel {
 
         firstNameLabel = new JLabel("First Name");
         lastNameLabel = new JLabel("Last Name");
-        dobLabel = new JLabel("Date of Birth (YYYY/MM/DD)");
+        dobLabel = new JLabel("Date of Birth (YYYY-MM-DD)");
         stateLabel = new JLabel("State");
         zipLabel = new JLabel("Zip");
         countryLabel = new JLabel("Country");
@@ -173,23 +177,39 @@ public class AddPatientScreen extends JPanel {
         this.add(insuranceTF);
     }
 
-    private void submitInformation(){
-        Patient patient = new Patient(
-                -1, -1, -1,
-                -1, -1, "",
-                "", "", "", "",
-                "", "",
-                "", "",
-                ""
-        );
+    private boolean submitInformation(){
 
-        //Application.dbReaderWriter.createPatient(patient)
-        if(true){
-            System.out.println("Patient " + patient.getTHC() + " created");
-            clearScreen();
-            Application.setCurrentScreen(Application.PATIENTS_SCREEN);
-        } else {
-            System.out.println("Patient " + patient.getTHC() + " create FAILED");
+        try {
+            Patient patient = new Patient(
+                    -1, countryTF.getText(), stateTF.getText(),
+                    Integer.parseInt(zipTF.getText()), 0, lastNameTF.getText(),
+                    firstNameTF.getText(), ssnTF.getText(), dobTF.getText(), insuranceTF.getText(),
+                    "", "",
+                    "", "",
+                    ""
+            );
+
+            int newPatientTHC = Application.dbReaderWriter.createPatient(patient);
+
+            if (newPatientTHC > 0) {
+                System.out.println("Patient " + newPatientTHC + " created");
+
+                Application.setCurrentPatientTHC(newPatientTHC);
+                clearScreen();
+                Application.displayMessage("Patient Created", "Patient " + newPatientTHC + " successfully created");
+                Application.setCurrentScreen(Application.PATIENTS_SCREEN);
+
+                Application.updateTitle();
+                Application.updateTables();
+                Application.updateAnalytics();
+                return true;
+            } else {
+                Application.displayMessage("Create Error", "Patient " + newPatientTHC + " failed to create");
+                return false;
+            }
+        } catch (Exception e){
+
+            return false;
         }
     }
 
@@ -293,8 +313,9 @@ public class AddPatientScreen extends JPanel {
         addDemographicsButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                submitInformation();
-                Application.setCurrentScreen(Application.ADD_DEMOGRAPHICS_SCREEN);
+                if (submitInformation()) {
+                    Application.setCurrentScreen(Application.ADD_DEMOGRAPHICS_SCREEN);
+                }
             }
 
             @Override

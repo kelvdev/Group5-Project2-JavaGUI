@@ -115,6 +115,36 @@ public class AddVisitScreen extends JPanel {
         this.add(backButton);
     }
 
+    public boolean createVisit(){
+
+        int visitId = Application.dbReaderWriter.createVisit(-1, reasonForVisitTA.getText());
+
+        if(visitId > 0){
+            Application.setCurrentVisitID(visitId);
+            Application.updateTables();
+            Application.updateAnalytics();
+            Application.displayMessage("Visit created", "Visit "
+                    + visitId + " successfully created");
+            clearScreen();
+            return true;
+        } else {
+            Application.displayMessage("Visit create failed", "Visit failed to create");
+            return false;
+        }
+    }
+
+    private void clearScreen(){
+        for(Component component : getComponents()){
+            try{
+                JTextField textField = (JTextField) component;
+                System.out.println(textField.getText());
+                textField.setText("");
+            } catch (Exception e){
+
+            }
+        }
+    }
+
     // initializes all action listeners for the buttons
     private void initActionListeners() {
 
@@ -148,7 +178,12 @@ public class AddVisitScreen extends JPanel {
         createVisitButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                Application.setCurrentScreen(Application.HOME_SCREEN);
+                if (createVisit()) {
+                    Application.setCurrentScreen(Application.HOME_SCREEN);
+                    Application.setCurrentVisitID(Application.VISIT_ID_EMPTY);
+                } else {
+
+                }
             }
 
             @Override

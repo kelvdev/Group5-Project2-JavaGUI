@@ -1,5 +1,7 @@
 package UserInterface;
 
+import Main.Application;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -16,11 +18,12 @@ import java.util.ArrayList;
 
 public class GUI {
 
-    private static final String appName = "Awesome Hearing Clinic";
+    public static final String appName = "Tinnitus Hearing Clinic";
     private JFrame frame = new JFrame(appName);
     public static final int DEFAULT_WIDTH = 1100; //frame.getGraphicsConfiguration().getBounds().width - 100;
     public static final int DEFAULT_HEIGHT = 700; //frame.getGraphicsConfiguration().getBounds().height - 100;
     private int width, height;
+    ComponentDesign componentDesign = new ComponentDesign();
 
     // dark theme
     public static final Color bgColor = Color.BLACK;
@@ -45,8 +48,46 @@ public class GUI {
             System.out.println("Error setting screen middle" + e.getMessage());
             frame.setLocation(0,0);
         }
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBackground(bgColor);
+
+        frame.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent windowEvent) {
+                System.out.println("Window open");
+            }
+
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent windowEvent) {
+                Application.stop();
+            }
+
+            @Override
+            public void windowIconified(WindowEvent windowEvent) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent windowEvent) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent windowEvent) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent windowEvent) {
+
+            }
+        });
 
     }
 

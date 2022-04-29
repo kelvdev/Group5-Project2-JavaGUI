@@ -6,14 +6,21 @@ import Main.Application;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import static UserInterface.GUI.DEFAULT_HEIGHT;
+import static UserInterface.GUI.DEFAULT_WIDTH;
+
 public class HomeScreen extends JPanel{
 
-    private JButton patientsButton, visitsButton, analyticsButton;
-    private int buttonWidth = GUI.DEFAULT_WIDTH/2;
-    private int buttonHeight = GUI.DEFAULT_HEIGHT/2;
+    private JButton patientsButton, visitsButton, analyticsButton, clearPatientButton, endVisitButton;
+    public static final int SPARE_HEIGHT = 100;
+    private int buttonWidth = DEFAULT_WIDTH/2;
+    private int buttonHeight = (DEFAULT_HEIGHT/2) - SPARE_HEIGHT;
+    private ComponentDesign componentDesign = new ComponentDesign();
     private Font mainFont;
 
     public HomeScreen(){
@@ -34,9 +41,33 @@ public class HomeScreen extends JPanel{
 
         // set panel layouts
 
+        JPanel controlPanel = new JPanel();
+        controlPanel.setBounds(0, 550, DEFAULT_WIDTH, SPARE_HEIGHT);
+        controlPanel.setBackground(GUI.bgColor);
+        controlPanel.setLayout(null);
+
+        clearPatientButton = new JButton("Clear Current Patient");
+        clearPatientButton.setBounds(0, 0, DEFAULT_WIDTH/2, SPARE_HEIGHT);
+        clearPatientButton.setFont(componentDesign.textFont);
+        clearPatientButton.setBackground(GUI.bgColor);
+        clearPatientButton.setForeground(Color.WHITE);
+
+        endVisitButton = new JButton("End Current Visit");
+        endVisitButton.setBounds(DEFAULT_WIDTH/2, 0, DEFAULT_WIDTH/2, SPARE_HEIGHT);
+        endVisitButton.setFont(componentDesign.textFont);
+        endVisitButton.setBackground(GUI.bgColor);
+        endVisitButton.setForeground(Color.WHITE);
+
+        controlPanel.add(clearPatientButton);
+        controlPanel.add(endVisitButton);
+
+        System.out.println(controlPanel.getY());
+
             // main panel
-        this.setBounds(0,0, GUI.DEFAULT_WIDTH, GUI.DEFAULT_HEIGHT);
+        this.setBounds(0,0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this.setBackground(Color.BLACK);
+
+        this.add(controlPanel);
     }
 
     // initializes all buttons for home screen
@@ -46,8 +77,8 @@ public class HomeScreen extends JPanel{
         analyticsButton = new JButton("Analytics");
 
         patientsButton.setBounds(0, 0, buttonWidth, buttonHeight);
-        visitsButton.setBounds(GUI.DEFAULT_WIDTH/2,0, buttonWidth, buttonHeight);
-        analyticsButton.setBounds(0, GUI.DEFAULT_HEIGHT/2, GUI.DEFAULT_WIDTH, buttonHeight);
+        visitsButton.setBounds(DEFAULT_WIDTH/2,0, buttonWidth, buttonHeight);
+        analyticsButton.setBounds(0, (DEFAULT_HEIGHT/2)-SPARE_HEIGHT, DEFAULT_WIDTH, buttonHeight);
 
         patientsButton.setFont(mainFont);
         visitsButton.setFont(mainFont);
@@ -74,6 +105,7 @@ public class HomeScreen extends JPanel{
 
     // initializes all action listeners for the buttons
     private void initActionListeners(){
+
         patientsButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
@@ -131,6 +163,7 @@ public class HomeScreen extends JPanel{
         analyticsButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
+                Application.updateAnalytics();
                 Application.setCurrentScreen(Application.ANALYTICS_SCREEN);
             }
 
@@ -152,6 +185,60 @@ public class HomeScreen extends JPanel{
             @Override
             public void mouseExited(MouseEvent mouseEvent) {
                 analyticsButton.setBackground(GUI.bgColor);
+            }
+        });
+
+        clearPatientButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                Application.setCurrentPatientTHC(Application.PATIENT_THC_EMPTY);
+                Application.updateTitle();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+            }
+        });
+
+        endVisitButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                Application.setCurrentVisitID(Application.VISIT_ID_EMPTY);
+                Application.updateTitle();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+
             }
         });
 
