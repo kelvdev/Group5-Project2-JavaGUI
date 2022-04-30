@@ -22,6 +22,8 @@ public class Application {
     private static SelectCurrentPatientScreen selectCurrentPatientScreen = new SelectCurrentPatientScreen();
 
     private static JFrame dialogFrame = new JFrame();
+    private static JLabel dialogLabel = new JLabel();
+    private static JPanel dialogPanel = new JPanel();
 
     public static final int HOME_SCREEN = 0;
     public static final int PATIENTS_SCREEN = 1;
@@ -93,6 +95,7 @@ public class Application {
         gui = new GUI();
         gui.addScreen(homeScreen);
 
+        initMessageDialog();
         updateTitle();
     }
 
@@ -126,6 +129,7 @@ public class Application {
         currentScreenId = applicationScreenId;
         gui.addScreen(allScreens[applicationScreenId]);
 
+        System.out.println("current screen ID " + currentScreenId);
         // update GUI
         gui.getFrame().update(gui.getFrame().getGraphics());
     }
@@ -193,17 +197,15 @@ public class Application {
         gui.getFrame().setTitle(titleString.toString());
     }
 
-    public static void displayMessage(String title, String message){
-        dialogFrame.setTitle(title);
+    private static void initMessageDialog(){
         dialogFrame.setLocation(Application.getApplicationGUI().getFrame().getX(),
                 Application.getApplicationGUI().getFrame().getY());
-        dialogFrame.setSize(500,300);
-        dialogFrame.setResizable(false);
+        dialogFrame.setSize(500,200);
+        dialogFrame.setResizable(true);
         dialogFrame.setVisible(true);
         dialogFrame.setLayout(null);
         dialogFrame.setBackground(GUI.bgColor);
 
-        JLabel dialogLabel = new JLabel(message);
         dialogLabel.setSize(500, 50);
         dialogLabel.setLocation(0,0);
         dialogLabel.setFont(componentDesign.textFont);
@@ -211,15 +213,19 @@ public class Application {
         dialogLabel.setBackground(GUI.bgColor);
         dialogLabel.setForeground(Color.WHITE);
 
-        JPanel jPanel = new JPanel();
-        jPanel.setBackground(GUI.bgColor);
-        jPanel.setSize(500, 300);
-        jPanel.setLocation(0,0);
-        jPanel.setLayout(null);
+        dialogPanel.setBackground(GUI.bgColor);
+        dialogPanel.setSize(500, 300);
+        dialogPanel.setLocation(0,0);
+        dialogPanel.setLayout(null);
 
-       jPanel.add(dialogLabel);
-       dialogFrame.add(jPanel);
+        dialogPanel.add(dialogLabel);
+        dialogFrame.add(dialogPanel);
+        dialogFrame.setVisible(false);
+    }
 
+    public static void displayMessage(String title, String message){
+        dialogFrame.setTitle(title);
+        dialogLabel.setText(message);
         dialogFrame.setVisible(true);
     }
 

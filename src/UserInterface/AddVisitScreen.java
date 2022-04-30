@@ -117,14 +117,18 @@ public class AddVisitScreen extends JPanel {
 
     public boolean createVisit(){
 
-        int visitId = Application.dbReaderWriter.createVisit(-1, reasonForVisitTA.getText());
+        int visitId = Application.dbReaderWriter.createVisit(Application.getCurrentPatientTHC(), reasonForVisitTA.getText());
 
         if(visitId > 0){
             Application.setCurrentVisitID(visitId);
-            Application.updateTables();
-            Application.updateAnalytics();
-            Application.displayMessage("Visit created", "Visit "
-                    + visitId + " successfully created");
+            Application.updateTitle();
+            try {
+                Application.updateTables();
+                Application.updateAnalytics();
+            } catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+            Application.displayMessage("Visit created", "Visit successfully created");
             clearScreen();
             return true;
         } else {
@@ -137,7 +141,6 @@ public class AddVisitScreen extends JPanel {
         for(Component component : getComponents()){
             try{
                 JTextField textField = (JTextField) component;
-                System.out.println(textField.getText());
                 textField.setText("");
             } catch (Exception e){
 
@@ -210,7 +213,9 @@ public class AddVisitScreen extends JPanel {
         startTHIButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                Application.setCurrentScreen(Application.THI_SCREEN);
+                if (createVisit()) {
+                    Application.setCurrentScreen(Application.THI_SCREEN);
+                }
             }
 
             @Override

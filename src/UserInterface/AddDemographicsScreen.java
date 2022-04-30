@@ -11,12 +11,10 @@ import java.awt.event.MouseListener;
 public class AddDemographicsScreen extends JPanel {
 
     private JButton addDemographicsButton, cancelButton, backButton;
-    private JTextField occupationTF, workStatusTF,
-            tinBackgroundTF, hyperacBackgroundTF;
+    private JTextField occupationTF, workStatusTF;
     private JTextArea tinCommentsTA, hCommentsTA;
 
-    private JLabel occupationLabel, workStatusLabel,
-            tinBackgroundLabel, hyperacBackgroundLabel, tinCommentsLabel, hCommentsLabel;
+    private JLabel occupationLabel, workStatusLabel, tinCommentsLabel, hCommentsLabel;
     private int buttonWidth = GUI.DEFAULT_WIDTH/4;
     private int buttonHeight = GUI.DEFAULT_HEIGHT/10;
     private ComponentDesign componentDesign = new ComponentDesign();
@@ -86,17 +84,13 @@ public class AddDemographicsScreen extends JPanel {
         // set textfield labels
 
         occupationLabel = new JLabel("Occupation");
-        workStatusLabel = new JLabel("Work Status");
-        tinBackgroundLabel = new JLabel("Tinnitus Background");
-        hyperacBackgroundLabel = new JLabel("Tinnitus Background");
+        workStatusLabel = new JLabel("Work Status (E/U)");
 
         tinCommentsLabel = new JLabel("Tinnitus Additional Comments");
         hCommentsLabel = new JLabel("Hyperacusis Additional Comments");
 
         occupationLabel.setForeground(Color.WHITE);
         workStatusLabel.setForeground(Color.WHITE);
-        tinBackgroundLabel.setForeground(Color.WHITE);
-        hyperacBackgroundLabel.setForeground(Color.WHITE);
 
         tinCommentsLabel.setForeground(Color.WHITE);
         hCommentsLabel.setForeground(Color.WHITE);
@@ -109,16 +103,13 @@ public class AddDemographicsScreen extends JPanel {
 
         occupationLabel.setBounds(x1, 80, width, height);
         workStatusLabel.setBounds(x1, 160, width, height);
-        tinBackgroundLabel.setBounds(x1, 240, width, height);
-        hyperacBackgroundLabel.setBounds(x1, 320, width, height);
 
         tinCommentsLabel.setBounds(x2, 80, width, height);
         hCommentsLabel.setBounds(x2, 240, width, height);
 
         this.add(occupationLabel);
         this.add(workStatusLabel);
-        this.add(hyperacBackgroundLabel);
-        this.add(tinBackgroundLabel);
+
         this.add(tinCommentsLabel);
         this.add(hCommentsLabel);
 
@@ -129,8 +120,6 @@ public class AddDemographicsScreen extends JPanel {
     private void initTextFields(){
         occupationTF = new JTextField();
         workStatusTF = new JTextField();
-        tinBackgroundTF = new JTextField();
-        hyperacBackgroundTF = new JTextField();
 
         tinCommentsTA = new JTextArea();
         hCommentsTA = new JTextArea();
@@ -143,8 +132,6 @@ public class AddDemographicsScreen extends JPanel {
 
         occupationTF.setBounds(x1, 80, width, height);
         workStatusTF.setBounds(x1, 160, width, height);
-        tinBackgroundTF.setBounds(x1, 240, width, height);
-        hyperacBackgroundTF.setBounds(x1, 320, width, height);
 
         tinCommentsTA.setBounds(x2 - 150, 120, width + 50, height + 50);
         hCommentsTA.setBounds(x2 - 150, 280, width + 50, height + 50);
@@ -154,31 +141,36 @@ public class AddDemographicsScreen extends JPanel {
 
         this.add(occupationTF);
         this.add(workStatusTF);
-        this.add(tinBackgroundTF);
-        this.add(hyperacBackgroundTF);
         this.add(tinCommentsTA);
         this.add(hCommentsTA);
     }
 
 
     private boolean submitInformation(){
+
+        // unemployed
+        int workStatusInt = 0;
+
+        // employed
+        if(workStatusTF.getText().toUpperCase().compareTo("E") == 0){
+            workStatusInt = 1;
+        }
+
         Patient patient = new Patient(
-                -1, "", "",
-                -1, -1, "",
+                Application.getCurrentPatientTHC(), "", "",
+                -1, workStatusInt, "",
                 "", "", "", "",
-                "", tinBackgroundTF.getText(),
-                hyperacBackgroundTF.getText(), tinCommentsTA.getText(),
+                occupationTF.getText(), "",
+                "", tinCommentsTA.getText(),
                 hCommentsTA.getText()
         );
 
         if(Application.dbReaderWriter.addDemographicsInformation(patient)){
-            Application.displayMessage("Demographics added", "Patient "
-                    + Application.getCurrentPatientTHC() + " demographics added");
+            Application.displayMessage("Demographics added", "Patient demographics added");
             clearScreen();
             return true;
         } else {
-            Application.displayMessage("Demographics fail", "Patient "
-                    + Application.getCurrentPatientTHC() + " demographics failed to be added");
+            Application.displayMessage("Demographics fail", "Patient demographics failed to be added");
             return false;
         }
     }
@@ -234,7 +226,7 @@ public class AddDemographicsScreen extends JPanel {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 if (submitInformation()) {
-                    Application.setCurrentScreen(Application.PATIENTS_SCREEN);
+                    Application.setCurrentScreen(Application.HOME_SCREEN);
                 }
             }
 

@@ -121,6 +121,7 @@ public class SelectCurrentPatientScreen extends JPanel {
             if (Application.dbReaderWriter.getPatient(thc) != null) {
                 searchResultLabel.setVisible(false);
                 Application.setCurrentPatientTHC(thc);
+                Application.setCurrentVisitID(Application.VISIT_ID_EMPTY);
                 Application.updateTitle();
                 return true;
             } else {

@@ -55,7 +55,7 @@ public class GUI {
         frame.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent windowEvent) {
-                System.out.println("Window open");
+
             }
 
             @Override

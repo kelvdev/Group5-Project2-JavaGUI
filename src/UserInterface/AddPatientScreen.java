@@ -196,19 +196,22 @@ public class AddPatientScreen extends JPanel {
 
                 Application.setCurrentPatientTHC(newPatientTHC);
                 clearScreen();
-                Application.displayMessage("Patient Created", "Patient " + newPatientTHC + " successfully created");
-                Application.setCurrentScreen(Application.PATIENTS_SCREEN);
-
-                Application.updateTitle();
-                Application.updateTables();
-                Application.updateAnalytics();
+                Application.displayMessage("Patient Created", "Patient successfully created");
+                try {
+                    Application.updateTitle();
+                    Application.updateTables();
+                    Application.updateAnalytics();
+                } catch (Exception e){
+                    System.out.println(e.getMessage());
+                }
                 return true;
             } else {
-                Application.displayMessage("Create Error", "Patient " + newPatientTHC + " failed to create");
+                Application.displayMessage("Create Error", "Patient failed to create");
                 return false;
             }
         } catch (Exception e){
 
+            Application.displayMessage("Create Error", "Patient failed to create");
             return false;
         }
     }
@@ -217,7 +220,6 @@ public class AddPatientScreen extends JPanel {
         for(Component component : getComponents()){
             try{
                 JTextField textField = (JTextField) component;
-                System.out.println(textField.getText());
                 textField.setText("");
             } catch (Exception e){
 
@@ -259,6 +261,7 @@ public class AddPatientScreen extends JPanel {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 submitInformation();
+                Application.setCurrentScreen(Application.HOME_SCREEN);
             }
 
             @Override
@@ -313,6 +316,7 @@ public class AddPatientScreen extends JPanel {
         addDemographicsButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
+                System.out.println("Clicking demographics button");
                 if (submitInformation()) {
                     Application.setCurrentScreen(Application.ADD_DEMOGRAPHICS_SCREEN);
                 }

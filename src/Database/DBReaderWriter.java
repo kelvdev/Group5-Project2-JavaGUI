@@ -3,6 +3,7 @@ package Database;// Helper class to read and write to the database with ease
 import DataObjects.*;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class DBReaderWriter {
@@ -18,15 +19,15 @@ public class DBReaderWriter {
         return connection;
     }
 
-    // TODO: implement a INSERT INTO Patient VALUE(S) using this method. Return THC of newly created patient
+    // INSERT INTO Patient VALUE(S) using this method. Return THC of newly created patient
     // Patient THC should be NULL as database will allocate a THC for the patient
     // Enrique
     public int createPatient(Patient patient)
     {
         String query = "INSERT INTO" +
                 " Patient (Country, State, ZIP, WStatus, Occup, Surname, First_name, SSN, DOB," +
-                " Insurance, Tin_background, H_background, T_Ind_comments, H_Ind_comments)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                " Insurance, T_Ind_comments, H_Ind_comments)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement prepareStmt = this.connection.prepareStatement(query);
@@ -41,10 +42,8 @@ public class DBReaderWriter {
             prepareStmt.setString(8, patient.getSSN());
             prepareStmt.setString(9, patient.getDob());
             prepareStmt.setString(10, patient.getInsurance());
-            prepareStmt.setString(11, patient.getTinBackground());
-            prepareStmt.setString(12, patient.getHBackground());
-            prepareStmt.setString(13, patient.getTIndComments());
-            prepareStmt.setString(14, patient.getHIndComments());
+            prepareStmt.setString(11, patient.getTIndComments());
+            prepareStmt.setString(12, patient.getHIndComments());
 
             prepareStmt.executeUpdate();
 
@@ -60,7 +59,7 @@ public class DBReaderWriter {
 
     }
 
-    // TODO: implement a UPDATE Patient to add demographics information using this method. Return true if update successful, else false
+    // UPDATE Patient to add demographics information using this method. Return true if update successful, else false
     /* NOTE: Only update the sections that correspond to demographics for a patient.
      DO NOT OVERRIDE THE ENTIRE PATIENT INFO IN THE DATABASE
      only select these attributes from the patient to update:
@@ -68,10 +67,41 @@ public class DBReaderWriter {
     // Enrique
     public boolean addDemographicsInformation(Patient patient){
         int thc = patient.getTHC();
-        return true;
+
+        String query = "UPDATE Patient" +
+                " SET occup = ?, WStatus = ?, T_Ind_comments = ?, H_Ind_comments = ?" +
+                " WHERE THC = ?";
+
+            try {
+                PreparedStatement prepareStmt = this.connection.prepareStatement(query);
+
+                System.out.println(patient.getOccupation() +
+                        patient.getWStatusID() +
+                        patient.getTIndComments() +
+                        patient.getHIndComments() +
+                        patient.getTHC());
+
+                prepareStmt.setString(1, patient.getOccupation());
+                prepareStmt.setInt(2, patient.getWStatusID());
+                prepareStmt.setString(3, patient.getTIndComments());
+                prepareStmt.setString(4, patient.getHIndComments());
+                prepareStmt.setInt(5, thc);
+
+                prepareStmt.executeUpdate();
+
+                return true;
+            }
+            catch(SQLException e)
+            {
+                System.out.println("SQL exception occured" + e.getSQLState());
+                System.out.println(e.getMessage());
+            }
+
+        return false;
+
     }
 
-    // TODO: implement a UPDATE Patient using this method. Return true if update successful, else false
+    // UPDATE Patient using this method. Return true if update successful, else false
     // Robert
     public boolean updatePatient(Patient patient){
         int thc = patient.getTHC();
@@ -122,9 +152,7 @@ public class DBReaderWriter {
     public Patient getPatient(int THC)
     {
         // return a populated patient
-
         String query = "SELECT * FROM Patient WHERE THC = ?";
-
         try
         {
             //Statement stmt = con.createStatement();
@@ -132,40 +160,35 @@ public class DBReaderWriter {
 
             prepareStmt.setInt(1, THC);
 
-            ResultSet rs = prepareStmt.executeQuery(query);
+            ResultSet rs = prepareStmt.executeQuery();
 
-            System.out.printf("THC|Country|State|Zip|WStatus|Occupation|Surname|FirstName|SSN|DoB|Insurance|TinBackround|HBackground|tIndComments|hIndComments\n");
+            System.out.printf("THC|CountryID|StateID|ZipID|WStatusID|Occupation|Surname|FirstName|SSN|DoB|Insurance|TinBackround|HBackground|tIndComments|hIndComments\n");
 
             while (rs.next())
             {
-                int thc = rs.getInt("THC");
-                String countryID = rs.getString("Country");
-                String stateID = rs.getString("State");
-                int zipID = rs.getInt("ZIP");
-                int wStatusID = rs.getInt("WStatus");
-                String occupation = rs.getString("Occup");
-                String surname = rs.getString("Surname");
-                String firstName = rs.getString("First_name");
-                String ssn = rs.getString("SSN");
-                String dob = rs.getString("DOB");
-                String insurance = rs.getString("Insurance");
-                String tinBackground = rs.getString("Tin_background");
-                String hBackground = rs.getString("H_background");
-                String tIndComments = rs.getString("T_Ind_comments");
-                String hIndComments = rs.getString("H_Ind_comments");
-
+                int thc = rs.getInt("thc");
+                String countryID = rs.getString("country");
+                String stateID = rs.getString("state");
+                int zipID = rs.getInt("zip");
+                int wStatusID = rs.getInt("wStatus");
+                String surname = rs.getString("surname");
+                String firstName = rs.getString("first_Name");
+                String ssn = rs.getString("ssn");
+                String dob = rs.getString("dob");
+                String insurance = rs.getString("insurance");
+                String occupation = rs.getString("occup");
+                String tinBackground = "";
+                String hBackground = "";
+                String tIndComments = rs.getString("t_ind_comments");
+                String hIndComments = rs.getString("h_ind_comments");
 
                 System.out.printf(thc + "|" + countryID + "|" + stateID + "|" + zipID + "|" + wStatusID + "|" + surname
                         + "|" + firstName + "|" + ssn + "|" + dob + "|" + insurance + "|" + occupation
                         + "|" + tinBackground + "|" + hBackground + "|" + tIndComments + "|" + hIndComments + "\n");
-
-
                 Patient patient = new Patient(thc, countryID, stateID, zipID, wStatusID, surname, firstName, ssn, dob, insurance, occupation,
                         tinBackground, hBackground, tIndComments, hIndComments);
-
                 return patient;
             }
-            //this.connection.close(); Don't know if we need to
         }
         catch(SQLException e)
         {
@@ -173,13 +196,36 @@ public class DBReaderWriter {
             System.out.println(e.getMessage());
             System.out.println(e.getStackTrace());
         }
-
         return null;
     }
 
-    // TODO: implement a INSERT INTO Visit VALUE(S) using this method. Return visit ID of the newly created visit
+    // INSERT INTO Visit VALUE(S) using this method. Return visit ID of the newly created visit
     // Enrique
     public int createVisit(int THC, String visitComments){
+
+        LocalDateTime dateTime = LocalDateTime.now();
+        String dateString = dateTime.getYear() + "-" + dateTime.getMonthValue() + "-" + dateTime.getDayOfMonth();
+        String query = "INSERT INTO" + " Visit (THC, Visit_nr, Date, Comments)" + " VALUES (?, 0, ?, ?)";
+
+        try {
+            PreparedStatement prepareStmt = this.connection.prepareStatement(query);
+
+            prepareStmt.setInt(1, THC);
+            prepareStmt.setString(2, dateString);
+            prepareStmt.setString(3, visitComments);
+
+            prepareStmt.executeUpdate();
+
+            System.out.println("Create visit passed execUpdate");
+
+            return getMaxVisitID();
+        }
+        catch(SQLException e)
+        {
+            System.out.println("SQL exception occured" + e.getSQLState());
+            System.out.println(e.getMessage());
+        }
+
         return 1;
     }
 
@@ -231,20 +277,71 @@ public class DBReaderWriter {
         return null;
     }
 
-    // TODO: implement an SQL call using the SQL visitorsCount function and return a visit count
+    // SQL call using the SQL visitorsCount function and return a visit count
     // Huy
     public int getAllPatientVisitsOnDate(String date){
         // return visit count
         return 0;
     }
 
-    // TODO: implement a INSERT INTO THI VALUE(S) using this method. Return true if create successful, else false
+    // INSERT INTO THI VALUE(S) using this method. Return true if create successful, else false
     // Enrique
     public boolean createPatientTHI(THI thi){
+
+        String query = "INSERT INTO" +
+                " THI (Visit_ID, SC_T, Sc_F, Sc_E, Sc_C, F1, F2, E3, F4, C5, E6, F7, C8, F9, E10," +
+                " C11, F12, F13, E14, F15, E16, E17, F18, C19, F20, E21, E22, C23, F24, E25)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            PreparedStatement prepareStmt = this.connection.prepareStatement(query);
+
+            prepareStmt.setInt(1, thi.getVisitID());
+            prepareStmt.setInt(2, thi.getSc_T());
+            prepareStmt.setInt(3, thi.getSc_F());
+            prepareStmt.setInt(4, thi.getSc_E());
+            prepareStmt.setInt(5, thi.getSc_C());
+            prepareStmt.setInt(6, thi.getF1());
+            prepareStmt.setInt(7, thi.getF2());
+            prepareStmt.setInt(8, thi.getE3());
+            prepareStmt.setInt(9, thi.getF4());
+            prepareStmt.setInt(10, thi.getC5());
+            prepareStmt.setInt(11, thi.getE6());
+            prepareStmt.setInt(12, thi.getF7());
+            prepareStmt.setInt(13, thi.getC8());
+            prepareStmt.setInt(14, thi.getF9());
+            prepareStmt.setInt(15, thi.getE10());
+            prepareStmt.setInt(16, thi.getC11());
+            prepareStmt.setInt(17, thi.getF12());
+            prepareStmt.setInt(18, thi.getF13());
+            prepareStmt.setInt(19, thi.getE14());
+            prepareStmt.setInt(20, thi.getF15());
+            prepareStmt.setInt(21, thi.getE16());
+            prepareStmt.setInt(22, thi.getE17());
+            prepareStmt.setInt(23, thi.getF18());
+            prepareStmt.setInt(24, thi.getC19());
+            prepareStmt.setInt(25, thi.getF20());
+            prepareStmt.setInt(26, thi.getE21());
+            prepareStmt.setInt(27, thi.getE22());
+            prepareStmt.setInt(28, thi.getC23());
+            prepareStmt.setInt(29, thi.getF24());
+            prepareStmt.setInt(30, thi.getE25());
+
+            prepareStmt.executeUpdate();
+
+            return true;
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Error creating THI");
+            System.out.println("SQL exception occured" + e.getSQLState());
+            System.out.println(e.getMessage());
+        }
+
         return false;
     }
 
-    // TODO: implement a UPDATE THI SET WHERE using this method. Return true if update successful, else false
+    // TODO: UPDATE THI SET WHERE using this method. Return true if update successful, else false
     // Rob
     public boolean updatePatientTHI(int VisitID){
         return false;
@@ -450,7 +547,6 @@ public class DBReaderWriter {
     }
 
     // Kelvin
-
     public int getMaxTHC(){
 
         try{
@@ -467,6 +563,24 @@ public class DBReaderWriter {
         return -1;
     }
 
+    //Enrique
+    public int getMaxVisitID(){
+
+        try{
+            PreparedStatement getMaxVisitIDStatement = connection.prepareStatement("SELECT MAX(Visit_ID) FROM Visit");
+            ResultSet resultSet = getMaxVisitIDStatement.executeQuery();
+
+            resultSet.next();
+            return resultSet.getInt("MAX(Visit_ID)");
+        }catch (SQLException sqlE){
+            System.out.println("GET MAX Visit_ID FAILED " + sqlE.getMessage());
+            sqlE.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    //Kelvin
     public int getAllTHICollected() {
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT COUNT(*) FROM THI");
@@ -483,6 +597,7 @@ public class DBReaderWriter {
         return 0;
     }
 
+    //Kelvin
     public int getRegisteredPatientCount(){
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT COUNT(*) FROM Patient");

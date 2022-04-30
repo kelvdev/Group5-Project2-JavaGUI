@@ -61,8 +61,6 @@ public class HomeScreen extends JPanel{
         controlPanel.add(clearPatientButton);
         controlPanel.add(endVisitButton);
 
-        System.out.println(controlPanel.getY());
-
             // main panel
         this.setBounds(0,0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this.setBackground(Color.BLACK);
