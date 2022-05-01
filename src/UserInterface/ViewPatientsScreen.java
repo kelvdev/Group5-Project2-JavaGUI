@@ -66,7 +66,11 @@ public class ViewPatientsScreen extends JPanel {
     }
 
     public void updateTable(){
-        this.remove(scrollPane);
+        try {
+            this.remove(scrollPane);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         scrollPane = null;
         patientsTable = null;
         initTable();
@@ -102,7 +106,7 @@ public class ViewPatientsScreen extends JPanel {
         backButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                Application.setCurrentScreen(Application.HOME_SCREEN);
+                Application.setCurrentScreen(Application.PATIENTS_SCREEN);
             }
 
             @Override

@@ -162,6 +162,7 @@ public class HomeScreen extends JPanel{
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 Application.updateAnalytics();
+                Application.updateTables();
                 Application.setCurrentScreen(Application.ANALYTICS_SCREEN);
             }
 

@@ -11,19 +11,18 @@ public class DBReaderWriter {
     // USE THIS CONNECTION AS THE DATABASE TO READ/WRITE/DELETE/UPDATE TO
     private Connection connection;
 
-    public DBReaderWriter(DBConnector dbConnector){
+    public DBReaderWriter(DBConnector dbConnector) {
         connection = dbConnector.getConnection();
     }
 
-    public Connection getConnection(){
+    public Connection getConnection() {
         return connection;
     }
 
     // INSERT INTO Patient VALUE(S) using this method. Return THC of newly created patient
     // Patient THC should be NULL as database will allocate a THC for the patient
     // Enrique
-    public int createPatient(Patient patient)
-    {
+    public int createPatient(Patient patient) {
         String query = "INSERT INTO" +
                 " Patient (Country, State, ZIP, WStatus, Occup, Surname, First_name, SSN, DOB," +
                 " Insurance, T_Ind_comments, H_Ind_comments)" +
@@ -48,9 +47,7 @@ public class DBReaderWriter {
             prepareStmt.executeUpdate();
 
             return getMaxTHC();
-        }
-        catch(SQLException e)
-        {
+        } catch (SQLException e) {
             System.out.println("SQL exception occured" + e.getSQLState());
             System.out.println(e.getMessage());
         }
@@ -65,37 +62,35 @@ public class DBReaderWriter {
      only select these attributes from the patient to update:
      */
     // Enrique
-    public boolean addDemographicsInformation(Patient patient){
+    public boolean addDemographicsInformation(Patient patient) {
         int thc = patient.getTHC();
 
         String query = "UPDATE Patient" +
                 " SET occup = ?, WStatus = ?, T_Ind_comments = ?, H_Ind_comments = ?" +
                 " WHERE THC = ?";
 
-            try {
-                PreparedStatement prepareStmt = this.connection.prepareStatement(query);
+        try {
+            PreparedStatement prepareStmt = this.connection.prepareStatement(query);
 
-                System.out.println(patient.getOccupation() +
-                        patient.getWStatusID() +
-                        patient.getTIndComments() +
-                        patient.getHIndComments() +
-                        patient.getTHC());
+            System.out.println(patient.getOccupation() +
+                    patient.getWStatusID() +
+                    patient.getTIndComments() +
+                    patient.getHIndComments() +
+                    patient.getTHC());
 
-                prepareStmt.setString(1, patient.getOccupation());
-                prepareStmt.setInt(2, patient.getWStatusID());
-                prepareStmt.setString(3, patient.getTIndComments());
-                prepareStmt.setString(4, patient.getHIndComments());
-                prepareStmt.setInt(5, thc);
+            prepareStmt.setString(1, patient.getOccupation());
+            prepareStmt.setInt(2, patient.getWStatusID());
+            prepareStmt.setString(3, patient.getTIndComments());
+            prepareStmt.setString(4, patient.getHIndComments());
+            prepareStmt.setInt(5, thc);
 
-                prepareStmt.executeUpdate();
+            prepareStmt.executeUpdate();
 
-                return true;
-            }
-            catch(SQLException e)
-            {
-                System.out.println("SQL exception occured" + e.getSQLState());
-                System.out.println(e.getMessage());
-            }
+            return true;
+        } catch (SQLException e) {
+            System.out.println("SQL exception occured" + e.getSQLState());
+            System.out.println(e.getMessage());
+        }
 
         return false;
 
@@ -103,43 +98,34 @@ public class DBReaderWriter {
 
     // UPDATE Patient using this method. Return true if update successful, else false
     // Robert
-    public boolean updatePatient(Patient patient){
+    public boolean updatePatient(Patient patient) {
         int thc = patient.getTHC();
         return false;
     }
 
     // DELETE FROM Patient WHERE using this method. Return true if delete successful, else false
     // Huy
-    public boolean deletePatient(int THC)
-    {
+    public boolean deletePatient(int THC) {
         String query = "DELETE FROM Patient WHERE THC = ?";
 
-        try
-        {
+        try {
             //Statement stmt = con.createStatement();
             PreparedStatement prepareStmt = this.connection.prepareStatement(query);
 
             prepareStmt.setInt(1, THC);
 
-            prepareStmt.execute();
-
             int deleted = prepareStmt.executeUpdate();
 
             //this.connection.close(); Don't know if we need to
 
-            if (deleted == 0)
-            {
+            if (deleted == 0) {
                 System.out.printf("Nothing to delete!\n");
                 return false;
-            }
-            else
-            {
+            } else {
                 System.out.printf("%d row(s) deleted", deleted);
                 return true;
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("Got an exception! ");
             System.err.println(e.getMessage());
         }
@@ -149,12 +135,10 @@ public class DBReaderWriter {
 
     // SELECT FROM Patient WHERE using this method and return a Patient object
     // Huy
-    public Patient getPatient(int THC)
-    {
+    public Patient getPatient(int THC) {
         // return a populated patient
         String query = "SELECT * FROM Patient WHERE THC = ?";
-        try
-        {
+        try {
             //Statement stmt = con.createStatement();
             PreparedStatement prepareStmt = this.connection.prepareStatement(query);
 
@@ -164,8 +148,7 @@ public class DBReaderWriter {
 
             System.out.printf("THC|CountryID|StateID|ZipID|WStatusID|Occupation|Surname|FirstName|SSN|DoB|Insurance|TinBackround|HBackground|tIndComments|hIndComments\n");
 
-            while (rs.next())
-            {
+            while (rs.next()) {
                 int thc = rs.getInt("thc");
                 String countryID = rs.getString("country");
                 String stateID = rs.getString("state");
@@ -189,9 +172,7 @@ public class DBReaderWriter {
                         tinBackground, hBackground, tIndComments, hIndComments);
                 return patient;
             }
-        }
-        catch(SQLException e)
-        {
+        } catch (SQLException e) {
             System.out.println("SQL exception occured" + e.getSQLState());
             System.out.println(e.getMessage());
             System.out.println(e.getStackTrace());
@@ -201,7 +182,7 @@ public class DBReaderWriter {
 
     // INSERT INTO Visit VALUE(S) using this method. Return visit ID of the newly created visit
     // Enrique
-    public int createVisit(int THC, String visitComments){
+    public int createVisit(int THC, String visitComments) {
 
         LocalDateTime dateTime = LocalDateTime.now();
         String dateString = dateTime.getYear() + "-" + dateTime.getMonthValue() + "-" + dateTime.getDayOfMonth();
@@ -219,9 +200,7 @@ public class DBReaderWriter {
             System.out.println("Create visit passed execUpdate");
 
             return getMaxVisitID();
-        }
-        catch(SQLException e)
-        {
+        } catch (SQLException e) {
             System.out.println("SQL exception occured" + e.getSQLState());
             System.out.println(e.getMessage());
         }
@@ -231,12 +210,10 @@ public class DBReaderWriter {
 
     // DELETE FROM Visit VALUE(S) using this method. Return true if delete successful, else false
     // Huy
-    public boolean deleteVisit(int id)
-    {
+    public boolean deleteVisit(int id) {
         String query = "DELETE FROM Patient WHERE visitID = ?";
 
-        try
-        {
+        try {
             //Statement stmt = con.createStatement();
             PreparedStatement prepareStmt = this.connection.prepareStatement(query);
 
@@ -246,21 +223,16 @@ public class DBReaderWriter {
 
             int deleted = prepareStmt.executeUpdate();
 
-            if (deleted == 0)
-            {
+            if (deleted == 0) {
                 System.out.printf("Nothing to delete!\n");
                 return false;
-            }
-            else
-            {
+            } else {
                 System.out.printf("%d row(s) deleted", deleted);
                 return true;
             }
             //this.connection.close(); Don't know if we need to
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("Got an exception! ");
             System.err.println(e.getMessage());
         }
@@ -279,14 +251,28 @@ public class DBReaderWriter {
 
     // SQL call using the SQL visitorsCount function and return a visit count
     // Huy
-    public int getAllPatientVisitsOnDate(String date){
+    public int getAllPatientVisitsOnDate(String date) {
         // return visit count
-        return 0;
+        try {
+            CallableStatement statement = this.connection.prepareCall("{? = call team5.VisitorsCount(?)}");
+
+            statement.registerOutParameter(1, Types.INTEGER);
+            statement.setString(2, date);
+            statement.execute();
+
+            System.out.print("Number of visitors on " + date + ": " + statement.getInt(1));
+            //this.connection.close(); Don't know if we need to
+
+            return statement.getInt(1);
+        } catch (Exception e) {
+            System.out.println("SQL exception occured" + e);
+        }
+        return -1;
     }
 
     // INSERT INTO THI VALUE(S) using this method. Return true if create successful, else false
     // Enrique
-    public boolean createPatientTHI(THI thi){
+    public boolean createPatientTHI(THI thi) {
 
         String query = "INSERT INTO" +
                 " THI (Visit_ID, SC_T, Sc_F, Sc_E, Sc_C, F1, F2, E3, F4, C5, E6, F7, C8, F9, E10," +
@@ -330,9 +316,7 @@ public class DBReaderWriter {
             prepareStmt.executeUpdate();
 
             return true;
-        }
-        catch(SQLException e)
-        {
+        } catch (SQLException e) {
             System.out.println("Error creating THI");
             System.out.println("SQL exception occured" + e.getSQLState());
             System.out.println(e.getMessage());
@@ -341,20 +325,12 @@ public class DBReaderWriter {
         return false;
     }
 
-    // TODO: UPDATE THI SET WHERE using this method. Return true if update successful, else false
-    // Rob
-    public boolean updatePatientTHI(int VisitID){
-        return false;
-    }
-
     // DELETE FROM THI VALUE(S) using this method. Return true if delete successful, else false
     // Huy
-    public boolean deletePatientTHI(int VisitID)
-    {
+    public boolean deletePatientTHI(int VisitID) {
         String query = "DELETE FROM Patient WHERE visitID = ?";
 
-        try
-        {
+        try {
             //Statement stmt = con.createStatement();
             PreparedStatement prepareStmt = this.connection.prepareStatement(query);
 
@@ -364,21 +340,16 @@ public class DBReaderWriter {
 
             int deleted = prepareStmt.executeUpdate();
 
-            if (deleted == 0)
-            {
+            if (deleted == 0) {
                 System.out.printf("Nothing to delete!\n");
                 return false;
-            }
-            else
-            {
+            } else {
                 System.out.printf("%d row(s) deleted", deleted);
                 return true;
             }
             //this.connection.close(); Don't know if we need to
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("Got an exception! ");
             System.err.println(e.getMessage());
         }
@@ -387,14 +358,13 @@ public class DBReaderWriter {
 
     // SELECT FROM THI WHERE visitID (parameter) = visitID (database value) using this method and return a THI object
     // Huy
-    public THI getTHI(int visitIDKey){
+    public THI getTHI(int visitIDKey) {
 
         // return a populated visit
 
         String query = "SELECT * FROM THI WHERE visitID = ?";
 
-        try
-        {
+        try {
             Connection con = this.connection;
             //Statement stmt = con.createStatement();
             PreparedStatement prepareStmt = con.prepareStatement(query);
@@ -407,8 +377,7 @@ public class DBReaderWriter {
                     " C5, E6, F7, C8, F9, E10, C11, F12, F13, E14, F15, E16," +
                     " E17, F18, C19, F20, E21, E22, C23, F24, E25\n");
 
-            while (rs.next())
-            {
+            while (rs.next()) {
                 int visitID = rs.getInt("Visit_ID");
                 int Sc_T = rs.getInt("Sc_T");
                 int Sc_F = rs.getInt("Sc_F");
@@ -452,9 +421,7 @@ public class DBReaderWriter {
 
                 return _THI;
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("SQL exception occured" + e);
         }
 
@@ -463,11 +430,9 @@ public class DBReaderWriter {
 
     // SQL call using the SQL THIScore procedure and return a THI determination result string
     // Huy
-    public String getResultTHI(int visitorID)
-    {
+    public String getResultTHI(int visitorID) {
 
-        try
-        {
+        try {
             CallableStatement statement = this.connection.prepareCall("{call team5.THIScore(?, ?, ?)}");
 
             statement.registerOutParameter(1, Types.INTEGER);
@@ -487,9 +452,7 @@ public class DBReaderWriter {
             //this.connection.close(); Don't know if we need to
 
             return desc;
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("SQL exception occured" + e);
         }
 
@@ -506,19 +469,19 @@ public class DBReaderWriter {
      * */
 
     // Kelvin
-    public Object[][] getAllPatientsFullInformation(){
+    public Object[][] getAllPatientsFullInformation() {
 
         ArrayList<Object[]> patientFullInfoList = new ArrayList<>();
 
         try {
             PreparedStatement fullInformationStatement = this.connection.prepareStatement("SELECT" +
-                            " THC, Patient.first_Name, Patient.surname, Patient.dob, Patient.insurance" +
-                            " FROM Patient" +
-                            " ORDER BY Patient.surname;");
+                    " THC, Patient.first_Name, Patient.surname, Patient.dob, Patient.insurance" +
+                    " FROM Patient" +
+                    " ORDER BY Patient.surname;");
 
             ResultSet rs = fullInformationStatement.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
 
                 System.out.println(rs.getInt("THC") + " " +
                         rs.getString("first_Name") + " " +
@@ -536,26 +499,26 @@ public class DBReaderWriter {
 
             Object[][] patientFinalArray = new Object[patientFullInfoList.size()][4];
 
-            for(int i = 0; i < patientFinalArray.length; i++){
+            for (int i = 0; i < patientFinalArray.length; i++) {
                 patientFinalArray[i] = patientFullInfoList.get(i);
             }
 
             return patientFinalArray;
-        } catch (SQLException sqlE){
+        } catch (SQLException sqlE) {
             return null;
         }
     }
 
     // Kelvin
-    public int getMaxTHC(){
+    public int getMaxTHC() {
 
-        try{
+        try {
             PreparedStatement getMaxTHCStatement = connection.prepareStatement("SELECT MAX(THC) FROM Patient");
             ResultSet resultSet = getMaxTHCStatement.executeQuery();
 
             resultSet.next();
             return resultSet.getInt("MAX(THC)");
-        }catch (SQLException sqlE){
+        } catch (SQLException sqlE) {
             System.out.println("GET MAX THC FAILED " + sqlE.getMessage());
             sqlE.printStackTrace();
         }
@@ -564,15 +527,15 @@ public class DBReaderWriter {
     }
 
     //Enrique
-    public int getMaxVisitID(){
+    public int getMaxVisitID() {
 
-        try{
+        try {
             PreparedStatement getMaxVisitIDStatement = connection.prepareStatement("SELECT MAX(Visit_ID) FROM Visit");
             ResultSet resultSet = getMaxVisitIDStatement.executeQuery();
 
             resultSet.next();
             return resultSet.getInt("MAX(Visit_ID)");
-        }catch (SQLException sqlE){
+        } catch (SQLException sqlE) {
             System.out.println("GET MAX Visit_ID FAILED " + sqlE.getMessage());
             sqlE.printStackTrace();
         }
@@ -590,7 +553,7 @@ public class DBReaderWriter {
 
             return rs.getInt("COUNT(*)");
 
-        } catch (SQLException sqle){
+        } catch (SQLException sqle) {
 
         }
 
@@ -598,7 +561,7 @@ public class DBReaderWriter {
     }
 
     //Kelvin
-    public int getRegisteredPatientCount(){
+    public int getRegisteredPatientCount() {
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT COUNT(*) FROM Patient");
             ResultSet rs = preparedStatement.executeQuery();
@@ -607,11 +570,46 @@ public class DBReaderWriter {
 
             return rs.getInt("COUNT(*)");
 
-        } catch (SQLException sqle){
+        } catch (SQLException sqle) {
 
         }
 
         return 0;
+    }
+
+    //Kelvin
+
+    public Object[][] getInsuranceAnalytics() {
+
+        ArrayList<Object[]> insuranceFullInfoList = new ArrayList<>();
+
+        try {
+            PreparedStatement fullInformationStatement =
+                    this.connection.prepareStatement(
+                            "SELECT Insurance, COUNT(THC) FROM Patient GROUP BY Insurance ORDER BY Insurance"
+                    );
+
+            ResultSet rs = fullInformationStatement.executeQuery();
+
+            while (rs.next()) {
+
+                insuranceFullInfoList.add(new Object[]{
+                        rs.getString("insurance"),
+                        rs.getInt("COUNT(THC)")
+                });
+            }
+
+            Object[][] insuranceFinalArray = new Object[insuranceFullInfoList.size()][2];
+
+            for (int i = 0; i < insuranceFinalArray.length; i++) {
+                insuranceFinalArray[i] = insuranceFullInfoList.get(i);
+            }
+
+            return insuranceFinalArray;
+        } catch (SQLException sqlE) {
+            System.out.println(sqlE.getMessage());
+            return null;
+        }
     }
 
 }

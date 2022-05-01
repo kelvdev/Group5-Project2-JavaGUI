@@ -66,7 +66,11 @@ public class ViewVisitsScreen extends JPanel {
     }
 
     public void updateTable(){
-        this.remove(scrollPane);
+        try {
+            this.remove(scrollPane);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         scrollPane = null;
         visitsTable = null;
         initTable();

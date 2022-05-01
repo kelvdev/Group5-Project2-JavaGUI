@@ -20,8 +20,8 @@ public class GUI {
 
     public static final String appName = "Tinnitus Hearing Clinic";
     private JFrame frame = new JFrame(appName);
-    public static final int DEFAULT_WIDTH = 1100; //frame.getGraphicsConfiguration().getBounds().width - 100;
-    public static final int DEFAULT_HEIGHT = 700; //frame.getGraphicsConfiguration().getBounds().height - 100;
+    public static final int DEFAULT_WIDTH = 1100;
+    public static final int DEFAULT_HEIGHT = 700;
     private int width, height;
     ComponentDesign componentDesign = new ComponentDesign();
 

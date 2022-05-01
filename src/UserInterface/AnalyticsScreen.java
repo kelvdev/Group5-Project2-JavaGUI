@@ -13,12 +13,15 @@ import java.util.Date;
 
 public class AnalyticsScreen extends JPanel {
     private JButton backButton;
-    private JTextField visitCountTF, patientsRegisteredTF,
+    private JTextField visitCountTF, insuranceRegisteredTF,
             thiCollectedCountTF, hyperacBackgroundTF;
     private JTextArea tinCommentsTA, hCommentsTA;
 
-    private JLabel visitCountLabel, patientsRegisteredLabel,
-            thiCollectedCountLabel, visitCountDataLabel, patientsRegisteredDataLabel,
+    private JTable insuranceTable;
+    private JScrollPane scrollPane;
+
+    private JLabel visitCountLabel, insuranceRegisteredLabel,
+            thiCollectedCountLabel, visitCountDataLabel, insuranceRegisteredDataLabel,
             thiCollectedCountDataLabel;
     private int buttonWidth = GUI.DEFAULT_WIDTH/4;
     private int buttonHeight = GUI.DEFAULT_HEIGHT/10;
@@ -80,19 +83,19 @@ public class AnalyticsScreen extends JPanel {
         String dateString = "# of visits today";
 
         visitCountLabel = new JLabel(dateString);
-        patientsRegisteredLabel = new JLabel("# of patients registered");
+        insuranceRegisteredLabel = new JLabel("# of patients registered");
         thiCollectedCountLabel = new JLabel("# of THIs collected");
 
         visitCountDataLabel = new JLabel("0");
-        patientsRegisteredDataLabel = new JLabel("0");
+        insuranceRegisteredDataLabel = new JLabel("0");
         thiCollectedCountDataLabel = new JLabel("0");
 
         visitCountLabel.setForeground(Color.WHITE);
-        patientsRegisteredLabel.setForeground(Color.WHITE);
+        insuranceRegisteredLabel.setForeground(Color.WHITE);
         thiCollectedCountLabel.setForeground(Color.WHITE);
 
         visitCountDataLabel.setForeground(Color.WHITE);
-        patientsRegisteredDataLabel.setForeground(Color.WHITE);
+        insuranceRegisteredDataLabel.setForeground(Color.WHITE);
         thiCollectedCountDataLabel.setForeground(Color.WHITE);
 
 
@@ -100,34 +103,34 @@ public class AnalyticsScreen extends JPanel {
 
         int x1 = 0;
 
-        visitCountLabel.setBounds(x1, 80, GUI.DEFAULT_WIDTH, height);
-        visitCountDataLabel.setBounds(x1, 160, GUI.DEFAULT_WIDTH, height);
-        patientsRegisteredLabel.setBounds(x1, 240, GUI.DEFAULT_WIDTH, height);
-        patientsRegisteredDataLabel.setBounds(x1, 320, GUI.DEFAULT_WIDTH, height);
-        thiCollectedCountLabel.setBounds(x1, 400, GUI.DEFAULT_WIDTH, height);
-        thiCollectedCountDataLabel.setBounds(x1, 480, GUI.DEFAULT_WIDTH, height);
+        visitCountLabel.setBounds(x1, 80, GUI.DEFAULT_WIDTH/2, height);
+        visitCountDataLabel.setBounds(x1, 160, GUI.DEFAULT_WIDTH/2, height);
+        insuranceRegisteredLabel.setBounds(x1, 240, GUI.DEFAULT_WIDTH/2, height);
+        insuranceRegisteredDataLabel.setBounds(x1, 320, GUI.DEFAULT_WIDTH/2, height);
+        thiCollectedCountLabel.setBounds(x1, 400, GUI.DEFAULT_WIDTH/2, height);
+        thiCollectedCountDataLabel.setBounds(x1, 480, GUI.DEFAULT_WIDTH/2, height);
 
         visitCountLabel.setHorizontalAlignment(JLabel.CENTER);
-        patientsRegisteredLabel.setHorizontalAlignment(JLabel.CENTER);
+        insuranceRegisteredLabel.setHorizontalAlignment(JLabel.CENTER);
         thiCollectedCountLabel.setHorizontalAlignment(JLabel.CENTER);
 
         visitCountLabel.setFont(componentDesign.textFont);
-        patientsRegisteredLabel.setFont(componentDesign.textFont);
+        insuranceRegisteredLabel.setFont(componentDesign.textFont);
         thiCollectedCountLabel.setFont(componentDesign.textFont);
 
         visitCountDataLabel.setHorizontalAlignment(JLabel.CENTER);
-        patientsRegisteredDataLabel.setHorizontalAlignment(JLabel.CENTER);
+        insuranceRegisteredDataLabel.setHorizontalAlignment(JLabel.CENTER);
         thiCollectedCountDataLabel.setHorizontalAlignment(JLabel.CENTER);
 
         visitCountDataLabel.setFont(componentDesign.textFont);
-        patientsRegisteredDataLabel.setFont(componentDesign.textFont);
+        insuranceRegisteredDataLabel.setFont(componentDesign.textFont);
         thiCollectedCountDataLabel.setFont(componentDesign.textFont);
 
         this.add(visitCountLabel);
-        this.add(patientsRegisteredLabel);
+        this.add(insuranceRegisteredLabel);
         this.add(thiCollectedCountLabel);
         this.add(visitCountDataLabel);
-        this.add(patientsRegisteredDataLabel);
+        this.add(insuranceRegisteredDataLabel);
         this.add(thiCollectedCountDataLabel);
 
     }
@@ -137,8 +140,53 @@ public class AnalyticsScreen extends JPanel {
         String dateString = dateTime.getYear() + "-" + dateTime.getMonthValue() + "-" + dateTime.getDayOfMonth();
 
         visitCountDataLabel.setText(String.valueOf(Application.dbReaderWriter.getAllPatientVisitsOnDate(dateString)));
-        patientsRegisteredDataLabel.setText(String.valueOf(Application.dbReaderWriter.getRegisteredPatientCount()));
+        insuranceRegisteredDataLabel.setText(String.valueOf(Application.dbReaderWriter.getRegisteredPatientCount()));
         thiCollectedCountDataLabel.setText(String.valueOf(Application.dbReaderWriter.getAllTHICollected()));
+    }
+
+    public void updateTable(){
+        try {
+            this.remove(scrollPane);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        scrollPane = null;
+        insuranceTable = null;
+        initTable();
+    }
+
+    public void initTable(){
+
+        JLabel insuranceLabel = new JLabel("Insurance Analytics");
+        insuranceLabel.setBounds((GUI.DEFAULT_WIDTH/2)-20, 60, GUI.DEFAULT_WIDTH/2, 70);
+        insuranceLabel.setFont(componentDesign.textFont);
+        insuranceLabel.setForeground(Color.WHITE);
+        insuranceLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        int yOffSet = 120;
+
+        String[] columnNames = {"Insurance", "# of Registered Patients"};
+        Object[][] rows = Application.dbReaderWriter.getInsuranceAnalytics();
+
+        System.out.println("Row length" + rows.length);
+
+        //table
+        insuranceTable = new JTable(rows, columnNames);
+        insuranceTable.setLocation(0,0);
+        insuranceTable.setSize((GUI.DEFAULT_WIDTH/2)-50, GUI.DEFAULT_HEIGHT - yOffSet);
+        insuranceTable.setForeground(Color.WHITE);
+        insuranceTable.setBackground(GUI.bgColor);
+        insuranceTable.setFont(componentDesign.textFont);
+        insuranceTable.setRowHeight(70);
+
+        //scroll pane
+        scrollPane = new JScrollPane(insuranceTable);
+        scrollPane.setBounds(GUI.DEFAULT_WIDTH/2, yOffSet, (GUI.DEFAULT_WIDTH/2) - 50, GUI.DEFAULT_HEIGHT - 200);
+        scrollPane.createVerticalScrollBar();
+        scrollPane.setBackground(GUI.bgColor);
+
+        this.add(insuranceLabel);
+        this.add(scrollPane);
     }
 
     // initializes all action listeners for the buttons

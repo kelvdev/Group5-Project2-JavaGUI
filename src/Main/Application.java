@@ -157,6 +157,7 @@ public class Application {
     }
 
     public static void updateTables(){
+        analyticsScreen.updateTable();
         viewPatientsScreen.updateTable();
         viewVisitsScreen.updateTable();
     }
