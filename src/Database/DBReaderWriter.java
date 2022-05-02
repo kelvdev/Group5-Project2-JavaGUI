@@ -186,7 +186,6 @@ public class DBReaderWriter {
 
             prepareStmt.executeUpdate();
 
-            System.out.println("Create visit passed execUpdate");
 
             return getMaxVisitID();
         } catch (SQLException e) {
@@ -345,16 +344,21 @@ public class DBReaderWriter {
         try {
             PreparedStatement fullInformationStatement = this.connection.prepareStatement(
                     "SELECT Patient.THC AS THC, Patient.first_Name AS firstName," +
-                    " Patient.surname AS surName, Patient.dob AS dob, Patient.insurance AS insurance," +
-                    " Visit.Visit_ID AS visitCount" +
+                    " Patient.surname AS surName, Patient.dob AS dob, Patient.insurance AS insurance" +
                     " FROM Patient" +
                     " ORDER BY Patient.surname");
 
             ResultSet rs = fullInformationStatement.executeQuery();
 
-            String date, dateString;
+            String date, dateString, thiNumberString;
 
             while (rs.next()) {
+
+                thiNumberString = String.valueOf(getLatestTHINumber(rs.getInt("THC")));
+
+                if(thiNumberString.compareTo("-1") == 0){
+                    thiNumberString = "N/A";
+                }
 
                 date = rs.getString("dob");
                 dateString = date.substring(5, 7) + "/" + date.substring(8, 10) + "/" + date.substring(0, 4);
@@ -365,7 +369,7 @@ public class DBReaderWriter {
                         dateString,
                         rs.getString("insurance"),
                         getVisitCount(rs.getInt("THC")),
-                        getLatestTHIResult(rs.getInt("THC"))
+                        thiNumberString
                 });
             }
 
@@ -382,9 +386,9 @@ public class DBReaderWriter {
         }
     }
 
-    private int getLatestTHIResult(int THC){
+    private int getLatestTHINumber(int THC){
         try {
-            PreparedStatement getLatestTHCStatement = connection.prepareStatement("SELECT THI.Sc_T," +
+            PreparedStatement getLatestTHCStatement = connection.prepareStatement("SELECT THI.Sc_T" +
                     " FROM Patient" +
                     " JOIN Visit ON Visit.THC = Patient.THC" +
                     " JOIN THI ON THI.Visit_ID = Visit.Visit_ID" +

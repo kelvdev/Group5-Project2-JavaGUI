@@ -134,7 +134,6 @@ public class THIScreen extends JPanel {
             submitTHI();
             reset();
 
-            System.out.println("Submitting THI");
         }
     }
 
@@ -173,8 +172,7 @@ public class THIScreen extends JPanel {
     }
 
     private boolean showNextQuestion(){
-        System.out.println(currentQuestion);
-        System.out.println(questions.length);
+
         if(currentQuestion < questions.length-1) {
             currentQuestion++;
             questionLabel.setText("Question #" + (currentQuestion+1) + " " + questions[currentQuestion]);

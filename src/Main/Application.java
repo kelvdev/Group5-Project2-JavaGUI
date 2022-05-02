@@ -77,7 +77,6 @@ public class Application {
     public void start(){
         if(testDatabaseConnection()){
             gui.show();
-            viewPatientsScreen.initTable();
         } else {
             errorGUI.show();
         }
@@ -129,7 +128,6 @@ public class Application {
         currentScreenId = applicationScreenId;
         gui.addScreen(allScreens[applicationScreenId]);
 
-        System.out.println("current screen ID " + currentScreenId);
         // update GUI
         gui.getFrame().update(gui.getFrame().getGraphics());
     }

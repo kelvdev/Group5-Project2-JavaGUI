@@ -115,6 +115,7 @@ public class PatientScreen extends JPanel {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 Application.setCurrentScreen(Application.VIEW_PATIENTS_SCREEN);
+                Application.updateTables();
             }
 
             @Override

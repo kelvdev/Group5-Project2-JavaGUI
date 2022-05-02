@@ -168,8 +168,6 @@ public class AnalyticsScreen extends JPanel {
         String[] columnNames = {"Insurance", "# of Registered Patients"};
         Object[][] rows = Application.dbReaderWriter.getInsuranceAnalytics();
 
-        System.out.println("Row length" + rows.length);
-
         //table
         insuranceTable = new JTable(rows, columnNames);
         insuranceTable.setLocation(0,0);

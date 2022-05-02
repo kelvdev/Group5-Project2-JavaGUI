@@ -83,8 +83,6 @@ public class ViewVisitsScreen extends JPanel {
         String[] columnNames = {"Visit ID", "THC", "Full Name", "Visit Date", "Comments", "THI Result"};
         Object[][] rows = Application.dbReaderWriter.getAllVisitsFullInformation();
 
-        System.out.println(rows[0][0]);
-
         //table
         visitsTable = new JTable(rows, columnNames);
         visitsTable.setLocation(0,0);

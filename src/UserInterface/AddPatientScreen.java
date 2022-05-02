@@ -316,7 +316,6 @@ public class AddPatientScreen extends JPanel {
         addDemographicsButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                System.out.println("Clicking demographics button");
                 if (submitInformation()) {
                     Application.setCurrentScreen(Application.ADD_DEMOGRAPHICS_SCREEN);
                 }
