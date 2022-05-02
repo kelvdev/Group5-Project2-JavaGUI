@@ -46,7 +46,7 @@ public class AddDemographicsScreen extends JPanel {
     private void initButtons(){
         addDemographicsButton = new JButton("Save");
         cancelButton = new JButton("Cancel");
-        backButton = new JButton("⬅");
+        backButton = new JButton("<");
 
         int buttonX = GUI.DEFAULT_WIDTH - (buttonWidth + 20);
 

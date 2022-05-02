@@ -5,6 +5,7 @@ import DataObjects.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DBReaderWriter {
 
@@ -21,7 +22,6 @@ public class DBReaderWriter {
 
     // INSERT INTO Patient VALUE(S) using this method. Return THC of newly created patient
     // Patient THC should be NULL as database will allocate a THC for the patient
-    // Enrique
     public int createPatient(Patient patient) {
         String query = "INSERT INTO" +
                 " Patient (Country, State, ZIP, WStatus, Occup, Surname, First_name, SSN, DOB," +
@@ -61,7 +61,6 @@ public class DBReaderWriter {
      DO NOT OVERRIDE THE ENTIRE PATIENT INFO IN THE DATABASE
      only select these attributes from the patient to update:
      */
-    // Enrique
     public boolean addDemographicsInformation(Patient patient) {
         int thc = patient.getTHC();
 
@@ -96,15 +95,7 @@ public class DBReaderWriter {
 
     }
 
-    // UPDATE Patient using this method. Return true if update successful, else false
-    // Robert
-    public boolean updatePatient(Patient patient) {
-        int thc = patient.getTHC();
-        return false;
-    }
-
     // DELETE FROM Patient WHERE using this method. Return true if delete successful, else false
-    // Huy
     public boolean deletePatient(int THC) {
         String query = "DELETE FROM Patient WHERE THC = ?";
 
@@ -134,7 +125,6 @@ public class DBReaderWriter {
     }
 
     // SELECT FROM Patient WHERE using this method and return a Patient object
-    // Huy
     public Patient getPatient(int THC) {
         // return a populated patient
         String query = "SELECT * FROM Patient WHERE THC = ?";
@@ -181,7 +171,6 @@ public class DBReaderWriter {
     }
 
     // INSERT INTO Visit VALUE(S) using this method. Return visit ID of the newly created visit
-    // Enrique
     public int createVisit(int THC, String visitComments) {
 
         LocalDateTime dateTime = LocalDateTime.now();
@@ -209,17 +198,14 @@ public class DBReaderWriter {
     }
 
     // DELETE FROM Visit VALUE(S) using this method. Return true if delete successful, else false
-    // Huy
     public boolean deleteVisit(int id) {
-        String query = "DELETE FROM Patient WHERE visitID = ?";
+        String query = "DELETE FROM Visit WHERE visit_ID = ?";
 
         try {
             //Statement stmt = con.createStatement();
             PreparedStatement prepareStmt = this.connection.prepareStatement(query);
 
             prepareStmt.setInt(1, id);
-
-            prepareStmt.execute();
 
             int deleted = prepareStmt.executeUpdate();
 
@@ -239,18 +225,7 @@ public class DBReaderWriter {
         return false;
     }
 
-    // TODO: implement a SELECT FROM Visit WHERE visitID (parameter) = visitID (database value) using this method and return a Visit object
-    // Rob
-    public Visit getVisit(int visitID) {
-
-        // return a populated visit
-        Visit visit;
-
-        return null;
-    }
-
     // SQL call using the SQL visitorsCount function and return a visit count
-    // Huy
     public int getAllPatientVisitsOnDate(String date) {
         // return visit count
         try {
@@ -271,7 +246,6 @@ public class DBReaderWriter {
     }
 
     // INSERT INTO THI VALUE(S) using this method. Return true if create successful, else false
-    // Enrique
     public boolean createPatientTHI(THI thi) {
 
         String query = "INSERT INTO" +
@@ -325,111 +299,7 @@ public class DBReaderWriter {
         return false;
     }
 
-    // DELETE FROM THI VALUE(S) using this method. Return true if delete successful, else false
-    // Huy
-    public boolean deletePatientTHI(int VisitID) {
-        String query = "DELETE FROM Patient WHERE visitID = ?";
-
-        try {
-            //Statement stmt = con.createStatement();
-            PreparedStatement prepareStmt = this.connection.prepareStatement(query);
-
-            prepareStmt.setInt(1, VisitID);
-
-            prepareStmt.execute();
-
-            int deleted = prepareStmt.executeUpdate();
-
-            if (deleted == 0) {
-                System.out.printf("Nothing to delete!\n");
-                return false;
-            } else {
-                System.out.printf("%d row(s) deleted", deleted);
-                return true;
-            }
-            //this.connection.close(); Don't know if we need to
-
-        } catch (Exception e) {
-            System.err.println("Got an exception! ");
-            System.err.println(e.getMessage());
-        }
-        return false;
-    }
-
-    // SELECT FROM THI WHERE visitID (parameter) = visitID (database value) using this method and return a THI object
-    // Huy
-    public THI getTHI(int visitIDKey) {
-
-        // return a populated visit
-
-        String query = "SELECT * FROM THI WHERE visitID = ?";
-
-        try {
-            Connection con = this.connection;
-            //Statement stmt = con.createStatement();
-            PreparedStatement prepareStmt = con.prepareStatement(query);
-
-            prepareStmt.setInt(1, visitIDKey);
-
-            ResultSet rs = prepareStmt.executeQuery(query);
-
-            System.out.printf("VisitID, Sc_T, Sc_F, Sc_E, Sc_C, F1, F2, E3, F4," +
-                    " C5, E6, F7, C8, F9, E10, C11, F12, F13, E14, F15, E16," +
-                    " E17, F18, C19, F20, E21, E22, C23, F24, E25\n");
-
-            while (rs.next()) {
-                int visitID = rs.getInt("Visit_ID");
-                int Sc_T = rs.getInt("Sc_T");
-                int Sc_F = rs.getInt("Sc_F");
-                int Sc_E = rs.getInt("Sc_E");
-                int Sc_C = rs.getInt("Sc_C");
-                int F1 = rs.getInt("F1");
-                int F2 = rs.getInt("F2");
-                int E3 = rs.getInt("E3");
-                int F4 = rs.getInt("F4");
-                int C5 = rs.getInt("C5");
-                int E6 = rs.getInt("E6");
-                int F7 = rs.getInt("F7");
-                int C8 = rs.getInt("C8");
-                int F9 = rs.getInt("F9");
-                int E10 = rs.getInt("E10");
-                int C11 = rs.getInt("C11");
-                int F12 = rs.getInt("F12");
-                int F13 = rs.getInt("F13");
-                int E14 = rs.getInt("E14");
-                int F15 = rs.getInt("F15");
-                int E16 = rs.getInt("E16");
-                int E17 = rs.getInt("E17");
-                int F18 = rs.getInt("F18");
-                int C19 = rs.getInt("C19");
-                int F20 = rs.getInt("F20");
-                int E21 = rs.getInt("E21");
-                int E22 = rs.getInt("E22");
-                int C23 = rs.getInt("C23");
-                int F24 = rs.getInt("F24");
-                int E25 = rs.getInt("E25");
-
-                System.out.printf(visitID + "|" + Sc_T + "|" + Sc_F + "|" + Sc_E + "|" + Sc_C + "|" + F1 + "|" + F2 + "|" + E3 + "|" + F4 + "|" +
-                        C5 + "|" + E6 + "|" + F7 + "|" + C8 + "|" + F9 + "|" + E10 + "|" + C11 + "|" + F12 + "|" + F13 + "|" + E14 + "|" + F15 + "|" + E16 + "|" +
-                        E17 + "|" + F18 + "|" + C19 + "|" + F20 + "|" + E21 + "|" + E22 + "|" + C23 + "|" + F24 + "|" + E25 + "\n");
-
-                THI _THI = new THI(visitID, Sc_T, Sc_F, Sc_E, Sc_C, F1, F2, E3, F4,
-                        C5, E6, F7, C8, F9, E10, C11, F12, F13, E14, F15, E16,
-                        E17, F18, C19, F20, E21, E22, C23, F24, E25);
-
-                //this.connection.close(); Don't know if we need to
-
-                return _THI;
-            }
-        } catch (Exception e) {
-            System.out.println("SQL exception occured" + e);
-        }
-
-        return null;
-    }
-
     // SQL call using the SQL THIScore procedure and return a THI determination result string
-    // Huy
     public String getResultTHI(int visitorID) {
 
         try {
@@ -459,48 +329,51 @@ public class DBReaderWriter {
         return "";
     }
 
-    /* TODO: implement a 3 table join which will return the following values in order in an ArrayList
+    /* query which will return the following values in order in an ArrayList
      *         > (int) patientTHC
      *         > (String) patient name
      *         > (String) patient dob
      *         > (String) patient insurance
-     *         > (int) patient THI score (set this value to -1 if THI has not been completed)
      *         > (int) patient visit count
+     *         > (int) latestTHIResult
      * */
 
-    // Kelvin
     public Object[][] getAllPatientsFullInformation() {
 
         ArrayList<Object[]> patientFullInfoList = new ArrayList<>();
 
         try {
-            PreparedStatement fullInformationStatement = this.connection.prepareStatement("SELECT" +
-                    " THC, Patient.first_Name, Patient.surname, Patient.dob, Patient.insurance" +
+            PreparedStatement fullInformationStatement = this.connection.prepareStatement(
+                    "SELECT Patient.THC AS THC, Patient.first_Name AS firstName," +
+                    " Patient.surname AS surName, Patient.dob AS dob, Patient.insurance AS insurance," +
+                    " Visit.Visit_ID AS visitCount" +
                     " FROM Patient" +
-                    " ORDER BY Patient.surname;");
+                    " ORDER BY Patient.surname");
 
             ResultSet rs = fullInformationStatement.executeQuery();
 
+            String date, dateString;
+
             while (rs.next()) {
 
-                System.out.println(rs.getInt("THC") + " " +
-                        rs.getString("first_Name") + " " +
-                        rs.getString("surname") + " " +
-                        rs.getString("dob") + " " +
-                        rs.getString("insurance"));
+                date = rs.getString("dob");
+                dateString = date.substring(5, 7) + "/" + date.substring(8, 10) + "/" + date.substring(0, 4);
 
                 patientFullInfoList.add(new Object[]{
                         rs.getInt("THC"),
-                        rs.getString("first_Name") + " " + rs.getString("surname"),
-                        rs.getString("dob"),
-                        rs.getString("insurance")
+                        rs.getString("firstName") + " " + rs.getString("surName"),
+                        dateString,
+                        rs.getString("insurance"),
+                        getVisitCount(rs.getInt("THC")),
+                        getLatestTHIResult(rs.getInt("THC"))
                 });
             }
 
-            Object[][] patientFinalArray = new Object[patientFullInfoList.size()][4];
+            Object[][] patientFinalArray = new Object[patientFullInfoList.size()][6];
 
             for (int i = 0; i < patientFinalArray.length; i++) {
                 patientFinalArray[i] = patientFullInfoList.get(i);
+                System.out.println(patientFinalArray[i][0]);
             }
 
             return patientFinalArray;
@@ -509,7 +382,108 @@ public class DBReaderWriter {
         }
     }
 
-    // Kelvin
+    private int getLatestTHIResult(int THC){
+        try {
+            PreparedStatement getLatestTHCStatement = connection.prepareStatement("SELECT THI.Sc_T," +
+                    " FROM Patient" +
+                    " JOIN Visit ON Visit.THC = Patient.THC" +
+                    " JOIN THI ON THI.Visit_ID = Visit.Visit_ID" +
+                    " WHERE Patient.THC = ? AND Visit.Visit_ID = (SELECT MAX(Visit_ID) FROM Visit WHERE Patient.THC = Visit.THC)");
+
+            getLatestTHCStatement.setInt(1, THC);
+
+            ResultSet resultSet = getLatestTHCStatement.executeQuery();
+
+            resultSet.next();
+            return resultSet.getInt("THI.Sc_T");
+        } catch (SQLException sqlE) {
+            System.out.println("GET Latest THI FAILED " + sqlE.getMessage());
+            sqlE.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    private int getVisitCount(int THC){
+        try {
+            PreparedStatement getLatestTHCStatement = connection.prepareStatement("" +
+                    "SELECT COUNT(Visit.Visit_ID)" +
+                    " FROM Patient" +
+                    " LEFT JOIN Visit ON Visit.THC = Patient.THC" +
+                    " WHERE Patient.THC = ?");
+
+            getLatestTHCStatement.setInt(1, THC);
+
+            ResultSet resultSet = getLatestTHCStatement.executeQuery();
+
+            resultSet.next();
+
+            return resultSet.getInt("COUNT(Visit.Visit_ID)");
+        } catch (SQLException sqlE) {
+            System.out.println("GET Visit Count FAILED " + sqlE.getMessage());
+        }
+
+        return -1;
+    }
+
+    /* 2 table join which will return the following values in order in an ArrayList
+     *         > (int) visitID
+     *         > (String) date
+     *         > (String) full name
+     *         > (String) comments
+     *         > (int) thi result
+     * */
+
+    public Object[][] getAllVisitsFullInformation() {
+
+        ArrayList<Object[]> visitFullInfoList = new ArrayList<>();
+
+        try {
+            PreparedStatement fullInformationStatement = this.connection.prepareStatement(
+                    "SELECT Visit.Visit_ID AS Visit_ID, Visit.THC AS THC, Patient.first_Name AS firstName," +
+                            " Patient.surname AS surName, Visit.Date AS visitDate, Visit.Comments AS comments," +
+                            " THI.Sc_T AS THIScore" +
+                    " FROM Visit" +
+                    " JOIN Patient ON Patient.THC = Visit.THC" +
+                    " LEFT JOIN THI ON THI.Visit_ID = Visit.Visit_ID;");
+
+            ResultSet rs = fullInformationStatement.executeQuery();
+
+            String thiResultScore, date, dateString;
+
+            while (rs.next()) {
+
+                thiResultScore = rs.getString("THIScore");
+                date = rs.getString("visitDate").substring(0, 10);
+
+                if(thiResultScore == null){
+                    thiResultScore = "n/a";
+                }
+
+                dateString = date.substring(5, 7) + "/" + date.substring(8, 10) + "/" + date.substring(0, 4);
+
+                visitFullInfoList.add(new Object[]{
+                        rs.getInt("Visit_ID"),
+                        rs.getInt("THC"),
+                        rs.getString("firstName") + " " + rs.getString("surName"),
+                        dateString,
+                        rs.getString("comments"),
+                        thiResultScore
+                });
+            }
+
+            Object[][] patientFinalArray = new Object[visitFullInfoList.size()][6];
+
+            for (int i = 0; i < patientFinalArray.length; i++) {
+                patientFinalArray[i] = visitFullInfoList.get(i);
+            }
+
+            return patientFinalArray;
+        } catch (SQLException sqlE) {
+            return null;
+        }
+    }
+
     public int getMaxTHC() {
 
         try {
@@ -526,7 +500,6 @@ public class DBReaderWriter {
         return -1;
     }
 
-    //Enrique
     public int getMaxVisitID() {
 
         try {
@@ -543,7 +516,6 @@ public class DBReaderWriter {
         return -1;
     }
 
-    //Kelvin
     public int getAllTHICollected() {
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT COUNT(*) FROM THI");
@@ -560,7 +532,6 @@ public class DBReaderWriter {
         return 0;
     }
 
-    //Kelvin
     public int getRegisteredPatientCount() {
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT COUNT(*) FROM Patient");
@@ -576,8 +547,6 @@ public class DBReaderWriter {
 
         return 0;
     }
-
-    //Kelvin
 
     public Object[][] getInsuranceAnalytics() {
 
@@ -611,5 +580,7 @@ public class DBReaderWriter {
             return null;
         }
     }
+
+
 
 }

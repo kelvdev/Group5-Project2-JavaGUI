@@ -52,7 +52,7 @@ public class AddPatientScreen extends JPanel {
         createPatientButton = new JButton("Create");
         cancelButton = new JButton("Cancel");
         addDemographicsButton = new JButton("Add Demographics");
-        backButton = new JButton("⬅");
+        backButton = new JButton("<");
 
         int buttonX = GUI.DEFAULT_WIDTH - (buttonWidth + 20);
 

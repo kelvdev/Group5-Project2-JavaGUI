@@ -80,8 +80,10 @@ public class ViewVisitsScreen extends JPanel {
 
         int yOffSet = 100;
 
-        String[] columnNames = {"Visit ID", "Date", "Full Name", "Insurance", "Comments"};
-        Object[][] rows = {{}};
+        String[] columnNames = {"Visit ID", "THC", "Full Name", "Visit Date", "Comments", "THI Result"};
+        Object[][] rows = Application.dbReaderWriter.getAllVisitsFullInformation();
+
+        System.out.println(rows[0][0]);
 
         //table
         visitsTable = new JTable(rows, columnNames);
@@ -89,7 +91,7 @@ public class ViewVisitsScreen extends JPanel {
         visitsTable.setSize(GUI.DEFAULT_WIDTH, GUI.DEFAULT_HEIGHT - yOffSet);
         visitsTable.setForeground(Color.WHITE);
         visitsTable.setBackground(GUI.bgColor);
-        visitsTable.setFont(componentDesign.textFont);
+        visitsTable.setFont(componentDesign.tableTextFont);
         visitsTable.setRowHeight(70);
 
         //scroll pane

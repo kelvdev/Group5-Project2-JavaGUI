@@ -80,7 +80,7 @@ public class ViewPatientsScreen extends JPanel {
 
         int yOffSet = 100;
 
-        String[] columnNames = {"THC", "Name", "DOB", "Insurance"};
+        String[] columnNames = {"THC", "Full Name", "DOB", "Insurance", "# of Visits", "Latest THI Score"};
         Object[][] rows = Application.dbReaderWriter.getAllPatientsFullInformation();
 
         //table
@@ -89,7 +89,7 @@ public class ViewPatientsScreen extends JPanel {
         patientsTable.setSize(GUI.DEFAULT_WIDTH, GUI.DEFAULT_HEIGHT - yOffSet);
         patientsTable.setForeground(Color.WHITE);
         patientsTable.setBackground(GUI.bgColor);
-        patientsTable.setFont(componentDesign.textFont);
+        patientsTable.setFont(componentDesign.tableTextFont);
         patientsTable.setRowHeight(70);
 
         //scroll pane

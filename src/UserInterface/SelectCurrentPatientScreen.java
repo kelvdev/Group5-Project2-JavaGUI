@@ -73,7 +73,7 @@ public class SelectCurrentPatientScreen extends JPanel {
     // initializes all buttons for home screen
     private void initButtons(){
         enterTHCButton = new JButton("Search");
-        backButton = new JButton("⬅");
+        backButton = new JButton("<");
 
         int buttonX = (GUI.DEFAULT_WIDTH/2) - (buttonWidth/2);
 

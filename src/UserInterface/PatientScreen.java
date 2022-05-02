@@ -13,7 +13,7 @@ public class PatientScreen extends JPanel {
     private int buttonWidth = GUI.DEFAULT_WIDTH/4;
     private int buttonHeight = GUI.DEFAULT_HEIGHT/5;
     private Font buttonFont;
-    private JFrame deleteFrame, editFrame;
+    private JFrame deleteFrame;
 
     public PatientScreen(){
         this.setBackground(GUI.bgColor);
@@ -264,49 +264,11 @@ public class PatientScreen extends JPanel {
 
         deleteFrame.add(deletePanel);
 
-        //edit popup
-        editFrame = new JFrame("Enter Patient THC to Edit Patient");
-        editFrame.setLocation(300, 300);
-        editFrame.setSize(500,300);
-        editFrame.setResizable(false);
-        editFrame.setVisible(true);
-        editFrame.setLayout(null);
-
-        JPanel editPanel = new JPanel();
-        editPanel.setBackground(GUI.bgColor);
-        editPanel.setSize(500, 300);
-        editPanel.setLocation(0,0);
-        editPanel.setLayout(null);
-
-        JTextField thcTextField = new JTextField();
-        thcTextField.setSize(500, 50);
-        thcTextField.setLocation(0,0);
-        thcTextField.setHorizontalAlignment(JTextField.CENTER);
-        thcTextField.setBackground(GUI.bgColor);
-        thcTextField.setForeground(Color.WHITE);
-
-        JButton editButton = new JButton("Edit Patient");
-        editButton.setSize(500, 100);
-        editButton.setLocation(0,200);
-        editButton.setHorizontalAlignment(JButton.CENTER);
-        editButton.setBackground(GUI.bgColor);
-        editButton.setForeground(Color.RED);
-
-        editPanel.add(thcTextField);
-        editPanel.add(editButton);
-
-        editFrame.add(editPanel);
-
         deleteFrame.setVisible(false);
-        editFrame.setVisible(false);
     }
 
     private void openDeletePopup(){
         deleteFrame.setVisible(true);
-    }
-
-    private void openEditPopup(){
-        editFrame.setVisible(true);
     }
 
 }
