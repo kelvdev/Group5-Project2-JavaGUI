@@ -60,7 +60,7 @@ public class Application {
     };
 
     public static DBConnector dbConnector = new DBConnector(
-            "jdbc:mysql://localhost/team6",
+            "jdbc:mysql://localhost/team5",
             "root",
             "myawesomepassword");
 
